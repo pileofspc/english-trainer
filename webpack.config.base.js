@@ -62,6 +62,7 @@ module.exports = exports = {
             "@components": PATHS.components,
             "@styles": PATHS.styles,
             "@images": PATHS.images,
+            "@pages": PATHS.pages
         }
     },
     mode: 'development',
