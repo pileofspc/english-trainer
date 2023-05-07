@@ -1,7 +1,7 @@
 <template>
     <header class="header">
         <div class="header__inner _container">
-            <img class="header__logo" src="https://raw.githubusercontent.com/pileofspc/english-trainer/features/cards-html/src/assets/images/main-logo.svg"
+            <img class="header__logo" :src="mainLogo"
                  alt="Логотип verbify" >
             <nav class="header__nav">
                 <a href="#">Главная</a>
@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-
+    import mainLogo from '@images/main-logo.svg';
 </script>
 
 <style lang="scss" scoped>
