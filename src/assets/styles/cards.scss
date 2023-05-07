@@ -1,0 +1,206 @@
+@use "/src/assets/styles/reset.scss";
+
+:root {
+    --main-background: #EBF4F8;
+    --header: #FFFFFF;
+    --main-button: #0880AE;
+    --main-button-text-colot: #EBF4F8;;
+    --alternate-button: #FFFFFF;
+    --alternate-button-text-color: #7C9CBF;
+    --font: 'IBM Plex Sans', sans-serif;
+    --card-background-color: #FFFFFF;
+    --box-shadow: 0px 12px 24px rgba(44, 39, 56, 0.05),
+                  0px 24px 48px rgba(44, 39, 56, 0.07);
+}
+
+
+._container {
+    width: 1200px;
+}
+
+body {
+    margin: 0;  
+    background-color: var(--main-background);
+    font-family: var(--font);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+
+    &__inner {
+        margin: 0 auto;
+        max-width: 100%;
+        min-width: 690px;   
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        background-color: var(--header);
+        border-radius: 8px;
+        box-shadow: var(--box-shadow);
+    }
+
+    &__logo {
+        height: 40px;
+        justify-self: start;
+        margin-left: 16px;
+    }
+
+    &__list {
+        display: flex;
+        align-items: start;
+        padding: 0;
+        margin-left: 90px;
+    }
+
+
+    &__button {
+        border: none;
+        height: 34px;
+        width: 100px;
+        box-shadow: var(--box-shadow);
+        border-radius: 3px;
+        font-size: 14px;
+        
+    }
+
+    &__button_signin {
+        background-color: var(--alternate-button);
+        border: 1px solid #DBE2EA;
+        margin: 13px 0 13px auto;
+        color: var(--alternate-button-text-color);
+    }
+
+    &__button_login {
+        background-color: var(--main-button);
+        margin: 13px 16px 13px 13px;
+        color: var(--main-button-text-colot)
+    }
+   
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    padding: 0 10px;
+    font-size: 16px;
+}
+
+.main-content {
+
+    margin-top: 25px;
+
+    &__container {
+        margin: 0 auto;
+        max-width: 100%;
+        min-width: 285px;   
+
+    }
+
+    &__cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
+        gap: 20px;
+        
+    }
+}
+
+
+.card {
+    display: flex;
+    flex-direction: column;
+    min-height: 430px;
+    overflow: hidden;
+    background-color: var(--card-background-color);
+    box-shadow: var(--box-shadow);
+    border-radius: 24px;
+    padding: 16px;
+    padding-bottom: 30px;
+
+    &__img {
+        align-content: center;
+        height: 200px;
+        background-size: cover;
+        background-position: center;
+        border-radius: 16px;
+    }
+
+    &__img_animals {
+        background-image: url('/src/assets/images/cards/cat_640x640.jpg');
+    }
+
+    &__img_sports {
+        background-image: url('/src/assets/images/cards/sport1.jpg');
+    }
+
+    &__title {
+        margin: 0;
+        margin-top: 20px;
+        font-size: 28px;
+        font-weight: 700;
+
+    }
+
+    &__description {
+        margin: 0;
+        margin-top: 8px;
+        margin-bottom: 27px;
+        font-size: 16px;
+        overflow-wrap: break-word;
+        hyphens:auto;
+    }
+
+    &__button {
+        align-self: flex-start;
+        min-width: 140px;
+        padding: 12px;
+        margin: 0;
+        margin-top: auto;
+        border: 1px solid #DBE2EA;
+        box-shadow: 0px 2px 4px rgba(44, 39, 56, 0.0001), 0px 4px 8px rgba(44, 39, 56, 0.08);
+        border-radius: 6px;
+        font-size: 16px;
+        color: var(--alternate-button-text-color);
+        background-color: var(--alternate-button);
+    }
+}
+
+.footer {
+
+    margin-top: auto;
+
+    &_description {
+        margin-top: 16px;
+        margin-left: 16px;
+    }
+
+    &__inner {
+        margin: 0 auto;
+        margin-top: 25px;
+        max-width: 100%;
+        min-width: 690px; 
+        height: 200px;  
+        align-items: center;
+        background-color: var(--header);
+        border-radius: 10px 10px 0 0;
+        box-shadow: var(--box-shadow);
+    }
+
+    &__navigate {
+        display: flex;
+        align-items: flex-end;
+        padding: 0;
+        height: 50%;
+        margin-left: 16px;
+        gap: 20px;
+}
+
+}
