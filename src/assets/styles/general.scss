@@ -1,0 +1,19 @@
+@use './reset';
+@use './vars';
+@use './fonts';
+
+body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    background-color: var(--main-background);
+}
+
+._container {
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}

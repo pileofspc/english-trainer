@@ -56,12 +56,12 @@ PAGES.forEach((page) => {
 module.exports = exports = {
     resolve: {
         alias: {
-            "@": PATHS.root,
             "@root": PATHS.root,
             "@modules": PATHS.modules,
             "@components": PATHS.components,
             "@styles": PATHS.styles,
             "@images": PATHS.images,
+            "@pages": PATHS.pages
         }
     },
     mode: 'development',

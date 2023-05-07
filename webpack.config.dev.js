@@ -12,7 +12,7 @@ let newOptions = {
         port: 3000,
         hot: true,
         compress: true,
-        // watchFiles: ['src/'],
+        watchFiles: ['src/**/*.html'],
     },
     output: {
         clean: false
