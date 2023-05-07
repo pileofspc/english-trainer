@@ -3,13 +3,12 @@
         "baseUrl": "./",
         "paths": {
             "/*": ["*"],
-            "@/*": ["*"],
             "@root/*": ["*"],
             "@modules/*": ["src/modules/*"],
             "@components/*": ["src/components/*"],
+            "@pages/*": ["src/pages/*"],
             "@styles/*": ["src/assets/styles/*"],
-            "@images/*": ["src/assets/images/*"],
-            "@pages/*": ["src/pages/*"]
+            "@images/*": ["src/assets/images/*"]
         }
     }
 }
