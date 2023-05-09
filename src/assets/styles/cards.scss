@@ -1,87 +1,8 @@
-@use "/src/assets/styles/reset";
-
-:root {
-    --main-background: #EBF4F8;
-    --header: #FFFFFF;
-    --main-button: #0880AE;
-    --main-button-text-colot: #EBF4F8;;
-    --alternate-button: #FFFFFF;
-    --alternate-button-text-color: #7C9CBF;
-    --font: 'IBM Plex Sans', sans-serif;
-    --card-background-color: #FFFFFF;
-    --box-shadow: 0px 12px 24px rgba(44, 39, 56, 0.05),
-                  0px 24px 48px rgba(44, 39, 56, 0.07);
-}
-
-
-._container {
-    width: 1200px;
-}
-
-body {
-    margin: 0;  
-    background-color: var(--main-background);
-    font-family: var(--font);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-.header {
-
-    &__inner {
-        margin: 0 auto;
-        max-width: 100%;
-        min-width: 690px;   
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        background-color: var(--header);
-        border-radius: 8px;
-        box-shadow: var(--box-shadow);
-    }
-
-    &__logo {
-        height: 40px;
-        justify-self: start;
-        margin-left: 16px;
-    }
-
-    &__list {
-        display: flex;
-        align-items: start;
-        padding: 0;
-        margin-left: 90px;
-    }
-
-
-    &__button {
-        border: none;
-        height: 34px;
-        width: 100px;
-        box-shadow: var(--box-shadow);
-        border-radius: 3px;
-        font-size: 14px;
-        
-    }
-
-    &__button_signin {
-        background-color: var(--alternate-button);
-        border: 1px solid #DBE2EA;
-        margin: 13px 0 13px auto;
-        color: var(--alternate-button-text-color);
-    }
-
-    &__button_login {
-        background-color: var(--main-button);
-        margin: 13px 16px 13px 13px;
-        color: var(--main-button-text-colot)
-    }
-   
-}
+@use "/src/assets/styles/reset.scss";
+@use "/src/assets/styles/general.scss";
+@use "/src/assets/styles/bem.scss";
 
 a {
-    text-decoration: none;
     color: black;
 }
 
@@ -101,7 +22,7 @@ li {
     &__container {
         margin: 0 auto;
         max-width: 100%;
-        min-width: 285px;   
+        min-width: 285px;
 
     }
 
@@ -109,7 +30,7 @@ li {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
         gap: 20px;
-        
+
     }
 }
 
@@ -146,7 +67,6 @@ li {
         margin-top: 20px;
         font-size: 28px;
         font-weight: 700;
-
     }
 
     &__description {
@@ -155,7 +75,7 @@ li {
         margin-bottom: 27px;
         font-size: 16px;
         overflow-wrap: break-word;
-        hyphens:auto;
+        hyphens: auto;
     }
 
     &__button {
@@ -164,43 +84,11 @@ li {
         padding: 12px;
         margin: 0;
         margin-top: auto;
-        border: 1px solid #DBE2EA;
+        border: 1px solid var(--alternate-button-border);
         box-shadow: 0px 2px 4px rgba(44, 39, 56, 0.0001), 0px 4px 8px rgba(44, 39, 56, 0.08);
         border-radius: 6px;
         font-size: 16px;
         color: var(--alternate-button-text-color);
         background-color: var(--alternate-button);
     }
-}
-
-.footer {
-
-    margin-top: auto;
-
-    &_description {
-        margin-top: 16px;
-        margin-left: 16px;
-    }
-
-    &__inner {
-        margin: 0 auto;
-        margin-top: 25px;
-        max-width: 100%;
-        min-width: 690px; 
-        height: 200px;  
-        align-items: center;
-        background-color: var(--header);
-        border-radius: 10px 10px 0 0;
-        box-shadow: var(--box-shadow);
-    }
-
-    &__navigate {
-        display: flex;
-        align-items: flex-end;
-        padding: 0;
-        height: 50%;
-        margin-left: 16px;
-        gap: 20px;
-}
-
 }
