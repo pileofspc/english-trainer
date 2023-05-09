@@ -1,16 +1,24 @@
 <template>
     <Header></Header>
-    <main>
-        <slot></slot>
+    <main class="layout__main">
+        <div class="_container">
+            <slot></slot>
+        </div>
     </main>
-    <Footer></Footer>
+    <Footer class="layout__footer"></Footer>
 </template>
 
 <script setup>
-import Header from '@modules/Header/Header.vue';
-import Footer from '@modules/Footer/Footer.vue';
+    import Header from '@modules/Header/Header.vue';
+    import Footer from '@modules/Footer/Footer.vue';
 </script>
 
 <style lang="scss" scoped>
+    .layout__main {
+        margin-top: 24px;
+    }
 
+    .layout__footer {
+        margin-top: 24px;
+    }
 </style>
