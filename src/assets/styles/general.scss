@@ -1,16 +1,51 @@
 @use './reset';
-@use './vars';
 @use './fonts';
 
+:root {
+    --container-max-width: 1400px;
+    --container-min-width: 800px;
+
+    --c-primary: #2C2738;
+    --c-secondary: #756F86;
+    --c-muted: #7C9CBF;
+    --c-bright: #FFFFFF;
+    --c-shade: #DBE2EA;
+    --c-tint: #EBF4F8;
+    --c-accent: #0880AE;
+    --c-warning: #F2AC57;
+    --c-success: #14A38B;
+    --c-error: #FF7171;
+
+    --main-background: var(--c-tint);
+    --header: var(--c-bright);
+    --main-button: var(--c-accent);
+    --main-button-text-color: var(--c-tint);
+    --alternate-button: var(--c-bright);
+    --alternate-button-border: var(--c-shade);
+    --alternate-button-text-color: var(--c-muted);
+    --card-background-color: var(--c-bright);
+
+    --block-shadow: 0 0 25px 20px rgba(44, 39, 56, 0.05);
+    --card-shadow: 0px 12px 16px rgba(44, 39, 56, 0.05),
+                    0px 24px 24px rgba(44, 39, 56, 0.07);
+
+    --ff-primary: 'IBM Plex Sans', sans-serif;
+    --fw-regular: 400;
+    --fw-bold: 500;
+}
+
 body {
-    font-family: 'IBM Plex Sans', sans-serif;
+    font-family: var(--ff-primary);
     background-color: var(--main-background);
 }
 
-._container {
-    max-width: 1400px;
+.app-wrapper {
+    max-width: var(--container-max-width);
     margin-left: auto;
     margin-right: auto;
+
+    padding: 8px;
+    min-width: var(--container-min-width);
 }
 
 a {
