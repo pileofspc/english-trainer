@@ -1,42 +1,36 @@
 body {
-    margin: 0;
-    background-color: var(--main-background);
+
     font-family: var(--ff-primary);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    max-width: var(--container-max-width);
-    margin-left: auto;
-    margin-right: auto;
-    padding: 8px;
-    min-width: var(--container-min-width);
-    box-sizing: content-box;
+    background-color: var(--main-background);
 }
 
 .header {
     font-size: 16px;
     font-weight: 400;
 
+    &__container {
+        box-sizing: content-box;
+    }
+
     &__inner {
         display: flex;
         align-items: center;
         gap: 12px;
         padding: 12px;
-
-        border-radius: 8px;
-        background-color: var(--header);
-        box-shadow: var(--block-shadow);
     }
 
     &__logo {
-        height: 40px;
         margin-left: 16px;
+    }
+
+    &__logo-img {
+        height: 40px;
     }
 
     &__nav {
         display: flex;
         gap: 24px;
-        margin-left: min(6.5%, 60px);
+        margin-left: min(5%, 60px);
     }
 
     &__button {
@@ -47,8 +41,18 @@ body {
         min-width: max-content;
 
         &:hover {
-            color: red;
+            color: var(--c-accent);
         }
+    }
+}
+
+.main-content {
+
+    margin-top: 24px;
+    flex-grow: 1;
+    
+    &__inner {
+        box-sizing: content-box;
     }
 }
 
@@ -77,32 +81,20 @@ body {
 
 .footer {
 
-    margin-top: auto;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    margin-top: 24px;
+    background-color: var(--c-bright);
+    border-top: 1px solid var(--c-shade);
+    box-shadow: var(--block-shadow);
 
-    &_description {
-        margin-top: 16px;
-        margin-left: 16px;
-    }
-
-    &__inner {
-        margin: 0 auto;
-        margin-top: 25px;
-        max-width: 100%;
-        min-width: 690px;
-        height: 200px;
-        align-items: center;
-        background-color: var(--header);
-        border-radius: 10px 10px 0 0;
-        box-shadow: var(--block-shadow);
-    }
-
-    &__navigate {
+    &__nav {
         display: flex;
-        align-items: flex-end;
-        padding: 0;
-        height: 50%;
-        margin-left: 16px;
-        gap: 20px;
+        gap: 10px;
+    }
+
+    &__link:hover {
+        color: var(--c-accent);
     }
 }
 
