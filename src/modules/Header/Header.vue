@@ -1,20 +1,26 @@
 <template>
     <header class="header">
-        <div class="header__inner _container">
-            <img class="header__logo" :src="mainLogo"
-                 alt="Логотип verbify" >
-            <nav class="header__nav">
-                <a href="#">Главная</a>
-                <a href="#">О нас</a>
-                <a href="#">Контакты</a>
-            </nav>
-            <button class="header__button header__button_sign-in">Регистрация</button>
-            <button class="header__button header__button_login">Войти</button>
+        <div class="header__container _container">
+            <div class="header__inner block">
+                <a href="/" class="header__logo">
+                    <img class="header__logo-img" :src="mainLogo"
+                         alt="Логотип verbify">
+                </a>
+                <nav class="header__nav">
+                    <a class="header__link" href="/">Главная</a>
+                    <a class="header__link" href="/about.html">О нас</a>
+                    <a class="header__link" href="/cards.html">Контакты</a>
+                </nav>
+                <VButtonBright text="Регистрация" style="margin-left: auto;"></VButtonBright>
+                <VButtonAccent text="Войти"></VButtonAccent>
+            </div>
         </div>
     </header>
 </template>
 
 <script setup>
+    import VButtonBright from '@components/UI/VButtonBright.vue'
+    import VButtonAccent from '@components/UI/VButtonAccent.vue';
     import mainLogo from '@images/main-logo.svg';
 </script>
 
@@ -22,53 +28,39 @@
     .header {
         font-size: 16px;
         font-weight: 400;
-        margin-top: 8px;
+
+        &__container {
+            box-sizing: content-box;
+        }
 
         &__inner {
             display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
             align-items: center;
-            min-width: 690px;
+            gap: 12px;
+            box-sizing: content-box;
             padding: 12px;
-
-            border-radius: 8px;
-            background-color: var(--header);
-            box-shadow: var(--block-shadow);
         }
 
         &__logo {
-            height: 40px;
             margin-left: 16px;
+        }
+
+        &__logo-img {
+            height: 40px;
         }
 
         &__nav {
             display: flex;
-            margin-left: 90px;
-            gap: 25px;
+            gap: 24px;
+            margin-left: min(5%, 60px);
         }
 
-        &__button {
-            font-size: 14px;
-            font-weight: 500;
-            padding: 8px 28px;
+        &__link {
+            min-width: max-content;
 
-            border: none;
-            box-shadow: var(--card-shadow);
-            border-radius: 3px;
-            cursor: pointer;
-        }
-
-        &__button_sign-in {
-            margin-left: auto;
-            color: var(--alternate-button-text-color);
-            background-color: var(--alternate-button);
-            border: 1px solid #DBE2EA;
-        }
-
-        &__button_login {
-            color: var(--main-button-text-color);
-            background-color: var(--main-button);
+            &:hover {
+                color: var(--c-accent);
+            }
         }
     }
 </style>

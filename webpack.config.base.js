@@ -3,6 +3,7 @@ const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 // const ESLintWebpackPlugin = require('eslint-webpack-plugin');
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const SpritePlugin = require('svg-sprite-loader/plugin');
 const { VueLoaderPlugin } = require('vue-loader');
 const helpers = require('./webpack-helpers/webpack-helpers');
@@ -20,27 +21,32 @@ const PATHS = {
     assets: path.resolve(__dirname, './src', 'assets'),
     images: path.resolve(__dirname, 'src', 'assets', 'images'),
     styles: path.resolve(__dirname, 'src', 'assets', 'styles'),
-    external: path.resolve(__dirname, 'src', 'assets', 'external'),
+    static: path.resolve(__dirname, 'src', 'static'),
 
     distJs: '.',
     distAssets: 'assets',
     distCss: 'assets/css',
     distImg: 'assets/images',
+
+    distStatic: path.resolve(__dirname, 'dist', 'static'),
 }
 global.PATHS = PATHS;
 
 const ENTRIES = {};
 
 // Array of names of *.html files:
-let PAGES = helpers.getFolders(PATHS.pages);
+// let PAGES = helpers.getFolders(PATHS.pages);
+let PAGES = helpers.getFoldersWithHtml(PATHS.pages);
 
 // Array of HtmlWebpackPlugin entries for PAGES:
 let htmlPluginPages = PAGES.map(
-    (page) => new HtmlWebpackPlugin({
-        template: path.join(PATHS.pages, page, `${page}.html`),
-        filename: `${page}.html`,
-        chunks: [path.parse(page).name],
-    })
+    (page) => new HtmlWebpackPlugin(
+        {
+            template: path.join(PATHS.pages, page, `${page}.html`),
+            filename: `${page}.html`,
+            chunks: [path.parse(page).name]
+        }
+    )
 );
 
 // Js entries for each page of PAGES:
@@ -107,14 +113,14 @@ module.exports = exports = {
                             },
                         ]
                     },
-                    {
-                        test: /\.(png|jpg|jpeg|gif|svg)$/i,
-                        resourceQuery: /static/,
-                        type: 'asset/resource',
-                        generator: {
-                            filename: `${PATHS.distImg}/static/[name][ext]`
-                        }
-                    },
+                    // {
+                    //     test: /\.(png|jpg|jpeg|gif|svg)$/i,
+                    //     resourceQuery: /static/,
+                    //     type: 'asset/resource',
+                    //     generator: {
+                    //         filename: `${PATHS.distImg}/static/[name][ext]`
+                    //     }
+                    // },
                     {
                         test: /\.(png|jpg|jpeg|gif|svg)$/i,
                         type: 'asset/resource',
@@ -170,5 +176,10 @@ module.exports = exports = {
         }),
         // new ESLintWebpackPlugin(),
         new VueLoaderPlugin(),
+        new CopyWebpackPlugin({
+            patterns: [
+                { from: PATHS.static, to: PATHS.distStatic }
+            ]
+        }),
     ]
 };
