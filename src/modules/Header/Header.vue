@@ -1,6 +1,6 @@
 <template>
     <header class="header">
-        <div class="header__container _container">
+        <div class="_container">
             <div class="header__inner block">
                 <a href="/" class="header__logo">
                     <img class="header__logo-img" :src="mainLogo"
@@ -28,10 +28,6 @@
     .header {
         font-size: 16px;
         font-weight: 400;
-
-        &__container {
-            box-sizing: content-box;
-        }
 
         &__inner {
             display: flex;

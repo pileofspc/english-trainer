@@ -255,6 +255,7 @@
         }
 
         &__link-img {
+            height: 100%;
             object-fit: cover;
         }
 
