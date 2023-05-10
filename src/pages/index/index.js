@@ -1,8 +1,8 @@
 import '@styles/general.scss';
 
 import { createApp } from 'vue';
-import MainPage from '@pages/index/MainPage.vue';
+import PageMain from '@pages/index/PageMain.vue';
 
 let appNode = document.querySelector('.app-wrapper');
-const app = createApp(MainPage);
+const app = createApp(PageMain);
 app.mount(appNode);

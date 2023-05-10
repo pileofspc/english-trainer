@@ -35,15 +35,18 @@ global.PATHS = PATHS;
 const ENTRIES = {};
 
 // Array of names of *.html files:
-let PAGES = helpers.getFolders(PATHS.pages);
+// let PAGES = helpers.getFolders(PATHS.pages);
+let PAGES = helpers.getFoldersWithHtml(PATHS.pages);
 
 // Array of HtmlWebpackPlugin entries for PAGES:
 let htmlPluginPages = PAGES.map(
-    (page) => new HtmlWebpackPlugin({
-        template: path.join(PATHS.pages, page, `${page}.html`),
-        filename: `${page}.html`,
-        chunks: [path.parse(page).name],
-    })
+    (page) => new HtmlWebpackPlugin(
+        {
+            template: path.join(PATHS.pages, page, `${page}.html`),
+            filename: `${page}.html`,
+            chunks: [path.parse(page).name]
+        }
+    )
 );
 
 // Js entries for each page of PAGES:
