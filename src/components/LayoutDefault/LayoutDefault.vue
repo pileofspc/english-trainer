@@ -16,6 +16,8 @@
 <style lang="scss" scoped>
     .layout__main {
         margin-top: 24px;
+
+        flex-grow: 1;
     }
 
     .layout__footer {

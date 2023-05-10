@@ -35,10 +35,6 @@
             gap: 12px;
             box-sizing: content-box;
             padding: 12px;
-
-            //border-radius: 8px;
-            //background-color: var(--header);
-            //box-shadow: var(--block-shadow);
         }
 
         &__logo {

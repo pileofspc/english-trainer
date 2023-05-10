@@ -18,8 +18,6 @@
 
 <style lang="scss" scoped>
     .footer {
-        margin-top: 24px;
-
         padding-top: 30px;
         padding-bottom: 30px;
 
