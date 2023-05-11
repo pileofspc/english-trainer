@@ -2,3 +2,96 @@
 @use "/src/assets/styles/general.scss";
 @use "/src/assets/styles/bem.scss";
 
+.main-content {
+
+    &__inner {
+
+    }
+
+    &__info {
+        display: flex; 
+        gap: 20px;     
+    }
+}
+
+.contacts {
+
+    // display: flex;
+    // flex-direction: column;
+    flex-basis: 50%;
+
+    &__info-item {
+        display: flex;
+        flex-wrap: wrap;
+        
+    }
+
+    &__tag {
+
+    }
+
+    &__text {
+
+    }
+}
+
+.form {
+
+    display: flex;
+    flex-direction: column;
+    flex-basis: 50%;
+    gap: 30px;
+    padding: 40px 30px;
+
+    &__header {
+        font-weight: var(--fw-bold);
+        font-size: 30px;
+    }
+
+    &__description {
+        font-weight: var(--fw-regular);
+        font-size: 16px;
+    }
+
+    &__field {
+        display: flex;
+        flex-direction: column;
+    }
+
+    &__label {
+        font-weight: var(--fw-regular);
+        font-size: 16px;
+    }
+
+    &__input {
+        min-height: 52px;
+        border: 1px solid #DBE2EA;
+        box-shadow: var(--input-shadow);
+        border-radius: 6px;
+        transition: border-color 0.1s;
+        
+        &:focus {
+            border: 1px solid var(--c-accent);
+            outline: none;
+        }
+    }
+
+    &__textarea {
+        max-height: 200px;
+        min-height: 120px;
+        border: 1px solid #DBE2EA;
+        box-shadow: var(--input-shadow);
+        border-radius: 6px;
+        resize: none;
+        transition: border-color 0.1s;
+
+        &:focus {
+            border: 1px solid var(--c-accent);
+            outline: none;
+        }
+    }
+
+    &__button {
+        align-self: flex-start;
+    }
+}

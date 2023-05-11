@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Контакты</title>
 </head>
+
 <body class="app-wrapper">
     <header class="header">
         <div class="header__container _container">
             <div class="header__inner block">
                 <a href="/" class="header__logo">
-                    <img class="header__logo-img" src="/src/assets/images/main-logo.svg"
-                         alt="Логотип verbify">
+                    <img class="header__logo-img" src="/src/assets/images/main-logo.svg" alt="Логотип verbify">
                 </a>
                 <nav class="header__nav">
                     <a class="header__link" href="/">Главная</a>
@@ -26,8 +27,60 @@
     </header>
     <main class="main-content">
         <div class="main-content__inner _container">
-            <div class="header__inner block">
-
+            <div class="main-content__info">
+                <div class="contacts block">
+                    <div class="contacts__info-item">
+                        <div class="contacts__tag">
+                            Наш адрес
+                        </div>
+                        <div class="contacts__text">
+                            Улица Пушкина, дом Колотушкина 1, EZ
+                        </div>
+                    </div>
+                    <div class="contacts__info-item">
+                        <div class="contacts__tag">
+                            Email:
+                        </div>
+                        <div class="contacts__text">
+                            sobakaulybaka@hehe.cum
+                        </div>
+                    </div>
+                    <div class="contacts__info-item">
+                        <div class="contacts__tag">
+                            Наш адрес
+                        </div>
+                        <div class="contacts__text">
+                            Улица Пушкина, дом Колотушкина 1, EZ
+                        </div>
+                    </div>
+                </div>
+                <form class="form block">
+                    <div>
+                        <div class="form__header">
+                            Форма обратной связи
+                        </div>
+                        <div class="form__description">
+                            Как правило, наша команда отвечает в течение 24-28 часов.
+                        </div>
+                    </div>
+                    <div class="form__field">
+                        <label class="form__label" for="name">Имя</label>
+                        <input class="form__input" type="text" id="name" name="name">
+                    </div>
+                    <div class="form__field">
+                        <label class="form__label" for="email">Почта</label>
+                        <input class="form__input" type="email" id="email" name="email">
+                    </div>
+                    <div class="form__field">
+                        <label class="form__label" for="subject">Тема</label>
+                        <input class="form__input" type="text" id="subject" name="subject">
+                    </div>
+                    <div class="form__field">
+                        <label class="form__label" for="message">Текст сообщения</label>
+                        <textarea class="form__textarea" id="message" name="message"></textarea>
+                    </div>
+                    <button class="button button_accent form__button">Отправить</button>
+                </form>
             </div>
         </div>
     </main>
@@ -45,4 +98,5 @@
         </div>
     </footer>
 </body>
+
 </html>
