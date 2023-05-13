@@ -35,7 +35,6 @@ global.PATHS = PATHS;
 const ENTRIES = {};
 
 // Array of names of *.html files:
-// let PAGES = helpers.getFolders(PATHS.pages);
 let PAGES = helpers.getFoldersWithHtml(PATHS.pages);
 
 // Array of HtmlWebpackPlugin entries for PAGES:
@@ -75,20 +74,11 @@ module.exports = exports = {
     output: {
         path: PATHS.dist,
         filename: `${PATHS.distJs}/[name].js`,
+        publicPath: '/',
         clean: true
     },
     module: {
         rules: [
-            {
-                test: /\.m?jsx?$/i,
-                exclude: /node_modules/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-react'],
-                    }
-                }
-            },
             {
                 test: /\.vue$/,
                 loader: 'vue-loader'
@@ -113,14 +103,6 @@ module.exports = exports = {
                             },
                         ]
                     },
-                    // {
-                    //     test: /\.(png|jpg|jpeg|gif|svg)$/i,
-                    //     resourceQuery: /static/,
-                    //     type: 'asset/resource',
-                    //     generator: {
-                    //         filename: `${PATHS.distImg}/static/[name][ext]`
-                    //     }
-                    // },
                     {
                         test: /\.(png|jpg|jpeg|gif|svg)$/i,
                         type: 'asset/resource',
@@ -176,10 +158,10 @@ module.exports = exports = {
         }),
         // new ESLintWebpackPlugin(),
         new VueLoaderPlugin(),
-        new CopyWebpackPlugin({
-            patterns: [
-                { from: PATHS.static, to: PATHS.distStatic }
-            ]
-        }),
+        // new CopyWebpackPlugin({
+        //     patterns: [
+        //         { from: PATHS.static, to: PATHS.distStatic }
+        //     ]
+        // }),
     ]
 };

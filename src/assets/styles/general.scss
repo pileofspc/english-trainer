@@ -7,6 +7,8 @@
     --container-pl: 8px;
 
     --wrapper-pt: 8px;
+    --mt-big: 24px;
+    --mt-small: 16px;
 
     --c-primary: #2C2738;
     --c-secondary: #756F86;
@@ -50,6 +52,7 @@ body {
     margin-right: auto;
     padding-left: var(--container-pl);
     padding-right: var(--container-pl);
+    box-sizing: content-box;
 }
 
 .app-wrapper {
@@ -63,6 +66,12 @@ body {
     border-radius: 8px;
     background-color: var(--c-bright);
     box-shadow: var(--block-shadow);
+}
+
+.card {
+    border-radius: 16px;
+    background-color: var(--c-bright);
+    box-shadow: var(--card-shadow);
 }
 
 a {

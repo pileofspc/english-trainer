@@ -8,7 +8,7 @@ let newOptions = {
     module: {
         rules: [
             {
-                test: /\.m?js$/i,
+                test: /\.m?jsx?$/i,
                 exclude: /node_modules/,
                 use: {
                     loader: 'babel-loader',
@@ -57,3 +57,5 @@ exports = module.exports = merge(base, newOptions);
 
 let css = helpers.getCssPlugin(exports);
 css.options.filename = css.options.filename.replace('[name]', '[name].[hash]');
+
+console.log(exports.module.rules);
