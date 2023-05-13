@@ -7,7 +7,7 @@
         text: {
             type: String,
             required: true
-        }
+        },
     });
 </script>
 

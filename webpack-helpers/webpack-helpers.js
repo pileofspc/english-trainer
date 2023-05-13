@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 
 function getFilesOfExt(filepath, ...ext) {
-    return fs.readdirSync(filepath, {withFileTypes: true}).filter((dirEnt) => {
+    return fs.readdirSync(filepath, { withFileTypes: true }).filter(dirEnt => {
         let lowerCaseName = dirEnt.name.toLowerCase();
         let result = false;
         for (let i = 0; i < ext.length; i++) {
@@ -12,18 +12,22 @@ function getFilesOfExt(filepath, ...ext) {
             }
         }
         return result
-    }).map((dirEnt) => {
-        return dirEnt.name;
-    });
+    }).map(dirEnt => dirEnt.name);
 };
 
 function getFolders(filepath) {
-    return fs.readdirSync(filepath, {withFileTypes: true}).filter((dirEnt) => {
-        return !dirEnt.isFile();
-    }).map((dirEnt) => {
-        return dirEnt.name;
-    });
+    return fs.readdirSync(filepath, { withFileTypes: true })
+        .filter(dirEnt => !dirEnt.isFile())
+        .map(dirEnt => dirEnt.name);
 };
+
+function getFoldersWithHtml(filepath) {
+    return fs.readdirSync(filepath, { withFileTypes: true })
+        .filter(dirEnt => !dirEnt.isFile())
+        .filter(dirEnt => getFilesOfExt(path.resolve(dirEnt.path, dirEnt.name), 'html').length)
+        .map(dirEnt => dirEnt.name);
+}
+getFoldersWithHtml( path.resolve(__dirname, '../', 'src', 'pages') );
 
 function getCssPlugin(exp) {
     for (let item of exp.plugins) {
@@ -69,6 +73,7 @@ exports = module.exports = {
     getFilesOfExt,
     getFolders,
     getCssPlugin,
+    getFoldersWithHtml,
     absPathToJsconfigArray,
     resolveAliases,
     PATH
