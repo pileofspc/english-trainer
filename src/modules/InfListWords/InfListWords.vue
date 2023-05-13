@@ -1,6 +1,9 @@
 <template>
     <div class="inf-list-words">
-        <CardWord class="inf-list-words__word" v-for="index in 50"></CardWord>
+        <CardWord class="inf-list-words__word"
+                  v-for="word in words"
+                  v-bind="word"
+        ></CardWord>
     </div>
 </template>
 
@@ -11,38 +14,38 @@
     let words = ref(
         [
             {
-                word: 'Hello',
                 imgPath: '/static/sport1.jpg',
+                word: 'Hello',
                 translation: 'Привет'
             },
             {
-                word: 'Hello',
                 imgPath: '/static/sport1.jpg',
+                word: 'Hello',
                 translation: 'Привет'
             },
             {
-                word: 'Hello',
                 imgPath: '/static/sport1.jpg',
+                word: 'Hello',
                 translation: 'Привет'
             },
             {
-                word: 'Hello',
                 imgPath: '/static/sport1.jpg',
+                word: 'Hello',
                 translation: 'Привет'
             },
             {
-                word: 'Hello',
                 imgPath: '/static/sport1.jpg',
+                word: 'Hello',
                 translation: 'Привет'
             },
             {
-                word: 'Hello',
                 imgPath: '/static/sport1.jpg',
+                word: 'Hello',
                 translation: 'Привет'
             },
             {
-                word: 'Hello',
                 imgPath: '/static/sport1.jpg',
+                word: 'Hello',
                 translation: 'Привет'
             },
         ]

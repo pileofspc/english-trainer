@@ -12,16 +12,10 @@
             ref="itemContainer"
             :style="{transform: `translate(${currentX}px)`}"
         >
-            <div class="slider__item" v-for="item in sliderItems">
-                <a class="slider__link block" :href="item.route">
-                    <img class="slider__link-img" :src="item.imgPath" :alt="item.title">
-                </a>
-                <div class="slider__data">
-                    <div class="slider__title">{{ item.title }}</div>
-                    <div class="slider__description">{{ item.description }}</div>
-                    <VButtonAccent text="Изучить" class="slider__button-learn"></VButtonAccent>
-                </div>
-            </div>
+            <Theme v-for="item in sliderItems"
+                   v-bind="item"
+                   class="slider__item">
+            </Theme>
         </div>
 
 
@@ -34,71 +28,63 @@
 </template>
 
 <script setup>
-    import VButtonAccent from "@components/UI/VButtonAccent.vue";
+    import Theme from '@modules/Theme/Theme.vue';
     import ChevronLeft from '@images/icons/ChevronLeft.svg?sprite';
     import ChevronRight from '@images/icons/ChevronRight.svg?sprite';
-    import {computed, onMounted, ref} from "vue";
-
-
-    // const props = defineProps({
-    //     route: String,
-    //     imgPath: String,
-    //     title: String,
-    //     description: String
-    // });
+    import { computed, onMounted, ref } from "vue";
 
     const sliderItems = ref([
         {
-            route: 'hello',
-            imgPath: '/static/cat_640x640.jpg',
+            id: 'hello',
+            imgPath: 'static/cat_640x640.jpg',
             title: 'Животные 111',
             description: 'Dolor felis venenatis homero sapientem litora porttitor non epicuri consul. Mauris vituperata reformidans accumsan eos laudem moderatius mediocrem. Altera homero assueverit graeci salutatus molestie.',
         },
         {
-            route: 'hello',
-            imgPath: '/static/cat_640x640.jpg',
+            id: 'hello',
+            imgPath: 'static/cat_640x640.jpg',
             title: 'Животные 222',
             description: 'Dolor felis venenatis homero sapientem litora porttitor non epicuri consul. Mauris vituperata reformidans accumsan eos laudem moderatius mediocrem. Altera homero assueverit graeci salutatus molestie.',
         },
         {
-            route: 'hello',
-            imgPath: '/static/cat_640x640.jpg',
+            id: 'hello',
+            imgPath: 'static/cat_640x640.jpg',
             title: 'Животные 333',
             description: 'Dolor felis venenatis homero sapientem litora porttitor non epicuri consul. Mauris vituperata reformidans accumsan eos laudem moderatius mediocrem. Altera homero assueverit graeci salutatus molestie.',
         },
         {
-            route: 'hello',
-            imgPath: '/static/cat_640x640.jpg',
+            id: 'hello',
+            imgPath: 'static/cat_640x640.jpg',
             title: 'Животные 444 asdasd dfsgds fdsg',
             description: 'Dolor felis venenatis homero sapientem litora porttitor non epicuri consul. Mauris vituperata reformidans accumsan eos laudem moderatius mediocrem. Altera homero assueverit graeci salutatus molestie.',
         },
         {
-            route: 'hello',
-            imgPath: '/static/cat_640x640.jpg',
+            id: 'hello',
+            imgPath: 'static/cat_640x640.jpg',
             title: 'Животные 555',
             description: 'Dolor felis venenatis homero sapientem litora porttitor non epicuri consul. Mauris vituperata reformidans accumsan eos laudem moderatius mediocrem. Altera homero assueverit graeci salutatus molestie.',
         },
         {
-            route: 'hello',
-            imgPath: '/static/cat_640x640.jpg',
+            id: 'hello',
+            imgPath: 'static/cat_640x640.jpg',
             title: 'Животные 666',
             description: 'Dolor felis venenatis homero sapientem litora porttitor non epicuri consul. Mauris vituperata reformidans accumsan eos laudem moderatius mediocrem. Altera homero assueverit graeci salutatus molestie.',
         },
         {
-            route: 'hello',
-            imgPath: '/static/cat_640x640.jpg',
+            id: 'hello',
+            imgPath: 'static/cat_640x640.jpg',
             title: 'Животные 777',
             description: 'Dolor felis venenatis homero sapientem litora porttitor non epicuri consul. Mauris vituperata reformidans accumsan eos laudem moderatius mediocrem. Altera homero assueverit graeci salutatus molestie.',
         },
         {
-            route: 'hello',
-            imgPath: '/static/cat_640x640.jpg',
+            id: 'hello',
+            imgPath: 'static/cat_640x640.jpg',
             title: 'Животные 888',
             description: 'Dolor felis venenatis homero sapientem litora porttitor non epicuri consul. Mauris vituperata reformidans accumsan eos laudem moderatius mediocrem. Altera homero assueverit graeci salutatus molestie.',
         },
         {
-            route: 'hello',
-            imgPath: '/static/cat_640x640.jpg',
+            id: 'hello',
+            imgPath: 'static/cat_640x640.jpg',
             title: 'Животные 999',
             description: 'Dolor felis venenatis homero sapientem litora porttitor non epicuri consul. Mauris vituperata reformidans accumsan eos laudem moderatius mediocrem. Altera homero assueverit graeci salutatus molestie.',
         },
@@ -158,7 +144,7 @@
 
     function mapItems(itemsRef) {
         itemsRef.value = [itemsRef.value[itemsRef.value.length - 1], ...itemsRef.value, itemsRef.value[0]];
-    };
+    }
     function disableTransition() {
         itemContainer.value.classList.add('slider__item-container_no-transition');
     }
@@ -230,55 +216,6 @@
 
         &__item {
             flex-shrink: 0;
-
-            display: flex;
-            align-items: center;
-            gap: 80px;
-            width: 100%;
-
-            margin-left: 100px;
-
-            transform: translate(-100px);
-        }
-
-        &__link {
-            max-width: 400px;
-            max-height: 400px;
-            flex-shrink: 0.15;
-            overflow: hidden;
-
-            transition: transform 0.2s;
-
-            &:hover {
-                transform: scale(1.04);
-            }
-        }
-
-        &__link-img {
-            height: 100%;
-            object-fit: cover;
-        }
-
-        &__data {
-            display: flex;
-            flex-direction: column;
-            font-size: 20px;
-        }
-
-        &__title {
-            font-size: 56px;
-            line-height: 1.2;
-            font-weight: var(--fw-bold);
-        }
-
-        &__description {
-            margin-top: 10px;
-        }
-
-        &__button-learn {
-            font-size: 16px;
-            margin-top: 24px;
-            align-self: flex-start;
         }
 
         &__slide {

@@ -2,11 +2,11 @@
     <div class="theme-header block">
             <div class="theme-header__theme">
                 <div class="theme-header__img-container block">
-                    <img class="theme-header__img" :src="props.theme.imgPath" :alt="props.theme.title">
+                    <img class="theme-header__img" :src="props.imgPath" :alt="props.title">
                 </div>
                 <div class="theme-header__data">
-                    <div class="theme-header__title">{{ props.theme.title }}</div>
-                    <div class="theme-header__description">{{ props.theme.description }}</div>
+                    <div class="theme-header__title">{{ props.title }}</div>
+                    <div class="theme-header__description">{{ props.description }}</div>
                     <VButtonAccent text="Тренировать слова" class="theme-header__button-learn"></VButtonAccent>
                 </div>
             </div>
@@ -17,10 +17,9 @@
     import VButtonAccent from '@components/UI/VButtonAccent.vue';
 
     const props = defineProps({
-        theme: {
-            type: Object,
-            required: true
-        }
+        imgPath: String,
+        title: String,
+        description: String
     });
 
 </script>

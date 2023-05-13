@@ -6,16 +6,17 @@ let newOptions = {
     devtool: 'source-map',
     devServer: {
         static: {
-            directory: global.PATHS.dist,
-            // publicPath: '/',
+            directory: global.PATHS.static,
+            publicPath: '/static',
         },
         port: 3000,
         hot: true,
         compress: true,
         watchFiles: ['src/**/*.html'],
+        historyApiFallback: true
     },
     output: {
-        clean: false
+        clean: true
     },
     module: {
         rules: [

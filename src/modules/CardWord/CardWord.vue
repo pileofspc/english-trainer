@@ -1,23 +1,25 @@
 <template>
-    <div class="word card">
-        <div class="word__img-container">
-            <img class="word__img" src="static/sport1.jpg" alt="WORD">
+    <div class="card-word card">
+        <div class="card-word__img-container">
+            <img class="card-word__img" :src="props.imgPath" alt="WORD">
         </div>
-        <div class="word__data">
-            <div class="word__title">
-                animals
-            </div>
-            <div class="word__translation">
-                животные
-            </div>
+        <div class="card-word__word">
+            <div class="card-word__title">{{ word }}</div>
+            <div class="card-word__translation">{{ translation }}</div>
         </div>
     </div>
 </template>
 
-<script setup></script>
+<script setup>
+    const props = defineProps({
+        imgPath: String,
+        word: String,
+        translation: String
+    });
+</script>
 
 <style scoped lang="scss">
-    .word {
+    .card-word {
         display: flex;
         flex-direction: column;
         align-items: center;
