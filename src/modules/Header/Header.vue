@@ -19,8 +19,8 @@
 </template>
 
 <script setup>
-    import VButtonBright from '@components/UI/VButtonBright.vue'
-    import VButtonAccent from '@components/UI/VButtonAccent.vue';
+    import VButtonBright from '@components/VButtonBright.vue'
+    import VButtonAccent from '@components/VButtonAccent.vue';
     import mainLogo from '@images/main-logo.svg';
 </script>
 

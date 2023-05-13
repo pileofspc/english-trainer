@@ -1,18 +1,23 @@
 <template>
     <div class="theme">
-        <router-link class="theme__link block" :to="`/theme/${props.id}`">
+        <router-link class="theme__link block" :to="toRoute">
             <img class="theme__link-img" :src="props.imgPath" :alt="props.title">
         </router-link>
         <div class="theme__data">
             <div class="theme__title">{{ props.title }}</div>
             <div class="theme__description">{{ props.description }}</div>
-            <VButtonAccent text="Изучить" class="theme__button-learn"></VButtonAccent>
+            <router-link
+                :to="toRoute"
+                class="theme__button-learn"
+            >
+                <VButtonAccent text="Изучить"></VButtonAccent>
+            </router-link>
         </div>
     </div>
 </template>
 
 <script setup>
-    import VButtonAccent from "@components/UI/VButtonAccent.vue";
+    import VButtonAccent from "@components/VButtonAccent.vue";
 
     const props = defineProps({
         id: [String, Number],
@@ -20,6 +25,8 @@
         title: String,
         description: String
     })
+
+    const toRoute = `/word-set/${props.id}`;
 </script>
 
 <style lang="scss" scoped>

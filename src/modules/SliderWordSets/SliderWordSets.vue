@@ -12,10 +12,10 @@
             ref="itemContainer"
             :style="{transform: `translate(${currentX}px)`}"
         >
-            <Theme v-for="item in sliderItems"
+            <WordSet v-for="item in sliderItems"
                    v-bind="item"
                    class="slider__item">
-            </Theme>
+            </WordSet>
         </div>
 
 
@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-    import Theme from '@modules/Theme/Theme.vue';
+    import WordSet from '@modules/WordSet/WordSet.vue';
     import ChevronLeft from '@images/icons/ChevronLeft.svg?sprite';
     import ChevronRight from '@images/icons/ChevronRight.svg?sprite';
     import { computed, onMounted, ref } from "vue";

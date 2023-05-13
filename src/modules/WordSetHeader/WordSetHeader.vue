@@ -7,14 +7,18 @@
                 <div class="theme-header__data">
                     <div class="theme-header__title">{{ props.title }}</div>
                     <div class="theme-header__description">{{ props.description }}</div>
-                    <VButtonAccent text="Тренировать слова" class="theme-header__button-learn"></VButtonAccent>
+                    <router-link class="theme-header__button-learn" :to="routeTo">
+                        <VButtonAccent text="Тренировать слова"></VButtonAccent>
+                    </router-link>
+
                 </div>
             </div>
     </div>
 </template>
 
 <script setup>
-    import VButtonAccent from '@components/UI/VButtonAccent.vue';
+    import { useRoute } from "vue-router";
+    import VButtonAccent from '@components/VButtonAccent.vue';
 
     const props = defineProps({
         imgPath: String,
@@ -22,6 +26,8 @@
         description: String
     });
 
+    const route = useRoute();
+    const routeTo = `/word-set/${route.params.wordSetId}/train`;
 </script>
 
 <style scoped lang="scss">

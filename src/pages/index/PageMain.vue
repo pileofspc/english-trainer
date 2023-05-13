@@ -1,11 +1,11 @@
 <template>
     <LayoutDefault>
-        <SliderThemes></SliderThemes>
+        <SliderWordSets></SliderWordSets>
     </LayoutDefault>
 </template>
 
 <script setup>
-    import SliderThemes from "@modules/SliderThemes/SliderThemes.vue";
+    import SliderWordSets from "@modules/SliderWordSets/SliderWordSets.vue";
 </script>
 
 <style lang="scss"></style>

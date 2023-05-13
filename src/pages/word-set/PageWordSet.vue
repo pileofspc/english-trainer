@@ -1,6 +1,6 @@
 <template>
     <LayoutDefault>
-        <ThemeHeader v-bind="theme"></ThemeHeader>
+        <WordSetHeader v-bind="wordSet"></WordSetHeader>
         <InfListWords class="page-theme__words"></InfListWords>
     </LayoutDefault>
 </template>
@@ -8,13 +8,12 @@
 <script setup>
     import { useRoute } from "vue-router";
 
-    import ThemeHeader from '@modules/ThemeHeader/ThemeHeader.vue';
+    import WordSetHeader from '@modules/WordSetHeader/WordSetHeader.vue';
     import InfListWords from '@modules/InfListWords/InfListWords.vue';
 
     const route = useRoute();
-    console.log(route.params.themeId)
 
-    let theme = {
+    let wordSet = {
         themeId: 'hello',
         imgPath: '/static/cat_640x640.jpg',
         title: 'Животные 111',
