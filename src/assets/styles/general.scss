@@ -1,5 +1,9 @@
-@use './reset';
-@use './fonts';
+@use 'reset';
+@use 'fonts';
+
+:root {
+
+}
 
 :root {
     --container-maxw: 1200px;
@@ -40,6 +44,10 @@
     --fw-bold: 600;
 }
 
+html {
+    //min-width: var(--container-minw);
+}
+
 body {
     font-family: var(--ff-primary);
     background-color: var(--main-background);
@@ -47,18 +55,18 @@ body {
 
 ._container {
     max-width: var(--container-maxw);
-    min-width: var(--container-minw);
+    //min-width: var(--container-minw);
     margin-left: auto;
     margin-right: auto;
     padding-left: var(--container-pl);
     padding-right: var(--container-pl);
-    box-sizing: content-box;
+    //box-sizing: content-box;
 }
 
 .app-wrapper {
-    padding-top: var(--wrapper-pt);
     display: flex;
     flex-direction: column;
+    padding-top: var(--wrapper-pt);
     min-height: 100vh;
 }
 

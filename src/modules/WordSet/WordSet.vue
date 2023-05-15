@@ -10,14 +10,14 @@
                 :to="toRoute"
                 class="theme__button-learn"
             >
-                <VButtonAccent text="Изучить"></VButtonAccent>
+                <VButton variant="accent" text="Изучить"></VButton>
             </router-link>
         </div>
     </div>
 </template>
 
 <script setup>
-    import VButtonAccent from "@components/VButtonAccent.vue";
+    import VButton from "@components/VButton.vue";
 
     const props = defineProps({
         id: [String, Number],
@@ -39,7 +39,6 @@
         margin-left: 100px;
 
         transform: translate(-100px);
-
 
         &__link {
             max-width: 400px;

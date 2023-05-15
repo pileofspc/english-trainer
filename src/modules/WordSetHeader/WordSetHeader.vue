@@ -8,7 +8,7 @@
                     <div class="theme-header__title">{{ props.title }}</div>
                     <div class="theme-header__description">{{ props.description }}</div>
                     <router-link class="theme-header__button-learn" :to="routeTo">
-                        <VButtonAccent text="Тренировать слова"></VButtonAccent>
+                        <VButton variant="accent" text="Тренировать слова"></VButton>
                     </router-link>
 
                 </div>
@@ -18,7 +18,7 @@
 
 <script setup>
     import { useRoute } from "vue-router";
-    import VButtonAccent from '@components/VButtonAccent.vue';
+    import VButton from '@components/VButton.vue';
 
     const props = defineProps({
         imgPath: String,

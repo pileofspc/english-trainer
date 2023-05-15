@@ -1,5 +1,10 @@
 <template>
-    <div class="slider slider_cards block" ref="slider">
+    <div
+        class="slider slider_cards block"
+        @mouseenter="stopAutoSlide()"
+        @mouseleave="startAutoSlide(time)"
+        v-resizer="update"
+    >
         <button class="slider__slide slider__slide_left" @click="slidePrev">
             <svg class="slider__slide-svg">
                 <use :href="`#${ChevronLeft.id}`"></use>
@@ -10,7 +15,7 @@
         <div
             class="slider__item-container"
             ref="itemContainer"
-            :style="{transform: `translate(${currentX}px)`}"
+            :style="{ transform: `translate(${currentX}px)`}"
         >
             <WordSet v-for="item in sliderItems"
                    v-bind="item"
@@ -31,7 +36,8 @@
     import WordSet from '@modules/WordSet/WordSet.vue';
     import ChevronLeft from '@images/icons/ChevronLeft.svg?sprite';
     import ChevronRight from '@images/icons/ChevronRight.svg?sprite';
-    import { computed, onMounted, ref } from "vue";
+    import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+
 
     const sliderItems = ref([
         {
@@ -90,13 +96,14 @@
         },
     ]);
 
-    const time = 5000;
 
     mapItems(sliderItems);
 
+    let timer;
+    const time = 5000;
     let inTransition = false;
-    const slider = ref();
     const itemContainer = ref();
+
     const firstIndex = 1;
     const lastIndex = sliderItems.value.length - 2;
     const middleIndex = Math.ceil(sliderItems.value.length/2 - 1);
@@ -104,97 +111,92 @@
     const sliderWidth = ref(1164);
     const currentPos = ref(middleIndex);
     const gap = ref(100);
+
     const itemWidth = computed(() => sliderWidth.value);
     const offset = computed(() => itemWidth.value + gap.value);
     const currentX = computed(() => offset.value * -1 * currentPos.value);
 
+
     onMounted(() => {
-        update();
-        window.addEventListener('resize', () => {
-            update();
-        });
-        itemContainer.value.addEventListener('transitionstart', () => {
-            inTransition = true;
-        });
-        itemContainer.value.addEventListener('transitionend', () => {
-            inTransition = false;
-            tryReset();
-        });
-
-
-
-        let timer = startAutoSlide(time);
-
-        slider.value.addEventListener('mouseenter', () => {
-            stopAutoSlide(timer);
-        });
-        slider.value.addEventListener('mouseleave', () => {
-            timer = startAutoSlide(time);
-        });
-
+        startAutoSlide(time);
         // Это нужно для избежания перемотки на большое расстояние когда вкладка неактивна
-        window.addEventListener('visibilitychange', () => {
-            if (document.visibilityState === 'hidden') {
-                stopAutoSlide(timer)
-            } else {
-                timer = startAutoSlide(time)
-            }
-        })
+        window.addEventListener('visibilitychange', onTabChange);
     });
 
+    onBeforeUnmount(() => {
+        stopAutoSlide();
+        window.removeEventListener('visibilitychange', onTabChange);
+    });
+
+
+    function onTabChange(e) {
+        if (document.visibilityState === 'hidden') {
+            stopAutoSlide(timer)
+        } else {
+            startAutoSlide(time)
+        }
+    }
+    function update() {
+        sliderWidth.value = itemContainer.value.offsetWidth;
+    }
+    function tryReset() {
+        if (currentPos.value > lastIndex) {
+            slideFastTo(firstIndex);
+        }
+        if(currentPos.value < firstIndex) {
+            slideFastTo(lastIndex);
+        }
+    }
+
+    function slideFastTo(index) {
+        disableTransition();
+        currentPos.value = index;
+    }
+    function slideTo(index) {
+        if (inTransition) {
+            return
+        }
+        enableTransition();
+        currentPos.value = index;
+        inTransition = true;
+        addSelfRemovingListeners();
+    }
+    function slideNext() {
+        slideTo(currentPos.value + 1);
+    }
+    function slidePrev() {
+        slideTo(currentPos.value - 1);
+    }
+    function startAutoSlide(time) {
+        timer = setInterval(() => {
+            slideNext()
+        }, time)
+    }
+    function stopAutoSlide() {
+        clearInterval(timer)
+    }
     function mapItems(itemsRef) {
         itemsRef.value = [itemsRef.value[itemsRef.value.length - 1], ...itemsRef.value, itemsRef.value[0]];
     }
     function disableTransition() {
-        itemContainer.value.classList.add('slider__item-container_no-transition');
+        itemContainer.value.classList.remove('slider__item-container_transition')
     }
     function enableTransition() {
-        // TODO если возможно, переделать без setTimeout
-        // Не знаю как сделать по-другому так, чтобы класс убирался по завершении вычислений computed свойств
-        setTimeout(() => {
-            itemContainer.value.classList.remove('slider__item-container_no-transition')
-        });
+        itemContainer.value.classList.add('slider__item-container_transition');
     }
+    function addSelfRemovingListeners() {
+        let afterTransition = (e) => {
+            if (e.target === itemContainer.value) {
+                disableTransition()
+                inTransition = false;
+                tryReset();
 
-    function update() {
-        disableTransition();
-        sliderWidth.value = itemContainer.value.offsetWidth;
-        enableTransition();
-    }
-    function tryReset() {
-        if (currentPos.value > lastIndex) {
-            disableTransition();
-            slideTo(firstIndex);
-            enableTransition();
-        }
-        if(currentPos.value < firstIndex) {
-            disableTransition();
-            slideTo(lastIndex);
-            enableTransition();
-        }
-    }
-    function slideTo(index) {
-        currentPos.value = index;
-    }
-    function slideNext() {
-        if (inTransition) {
-            return
-        }
-        slideTo(currentPos.value + 1);
-    }
-    function slidePrev() {
-        if (inTransition) {
-            return
-        }
-        slideTo(currentPos.value - 1);
-    }
-    function startAutoSlide(time) {
-        return setInterval(() => {
-            slideNext()
-        }, time)
-    }
-    function stopAutoSlide(timerId) {
-        clearInterval(timerId)
+                itemContainer.value.removeEventListener('transitionend', afterTransition);
+                itemContainer.value.removeEventListener('transitioncancel', afterTransition);
+            }
+        };
+        itemContainer.value.addEventListener('transitionend', afterTransition);
+        itemContainer.value.addEventListener('transitioncancel', afterTransition);
     }
 </script>
 
@@ -207,10 +209,9 @@
 
         &__item-container {
             display: flex;
-            transition: transform 0.8s;
 
-            &_no-transition {
-                transition: none;
+            &_transition {
+                transition: transform 0.8s;
             }
         }
 

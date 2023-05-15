@@ -57,5 +57,3 @@ exports = module.exports = merge(base, newOptions);
 
 let css = helpers.getCssPlugin(exports);
 css.options.filename = css.options.filename.replace('[name]', '[name].[hash]');
-
-console.log(exports.module.rules);
