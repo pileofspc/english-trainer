@@ -6,6 +6,7 @@
 
 <script setup>
     import SliderWordSets from "@modules/SliderWordSets/SliderWordSets.vue";
+    import LayoutDefault from '@components/LayoutDefault.vue';
 </script>
 
 <style lang="scss"></style>

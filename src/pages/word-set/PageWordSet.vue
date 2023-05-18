@@ -8,6 +8,7 @@
 <script setup>
     import { useRoute } from "vue-router";
 
+    import LayoutDefault from '@components/LayoutDefault.vue';
     import WordSetHeader from '@modules/WordSetHeader/WordSetHeader.vue';
     import InfListWords from '@modules/InfListWords/InfListWords.vue';
 

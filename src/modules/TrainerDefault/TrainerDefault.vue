@@ -179,8 +179,8 @@
 
         &__result-image {
             color: var(--c-success);
-            width: 200px;
-            height: 200px;
+            width: 140px;
+            height: 140px;
 
             margin-left: auto;
             margin-right: auto;

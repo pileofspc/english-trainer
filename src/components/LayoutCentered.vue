@@ -1,7 +1,7 @@
 <template>
     <Header></Header>
     <main class="layout__main">
-        <div class="_container">
+        <div class="layout__main-container _flex-container">
             <slot></slot>
         </div>
     </main>
@@ -19,6 +19,16 @@
         &__main {
             margin-top: 24px;
             flex-grow: 1;
+
+            display: flex;
+            flex-direction: column;
+        }
+
+        &__main-container {
+            flex-grow: 1;
+            width: 100%;
+
+            justify-content: center;
         }
 
         &__footer {

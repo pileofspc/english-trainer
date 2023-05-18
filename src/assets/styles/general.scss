@@ -63,6 +63,16 @@ body {
     //box-sizing: content-box;
 }
 
+._flex-container {
+    display: flex;
+    flex-direction: column;
+    max-width: var(--container-maxw);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--container-pl);
+    padding-right: var(--container-pl);
+}
+
 .app-wrapper {
     display: flex;
     flex-direction: column;
