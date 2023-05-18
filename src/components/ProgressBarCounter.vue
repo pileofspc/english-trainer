@@ -8,16 +8,16 @@
             </div>
             <ProgressBar
                 class="progress-bar-counter__progress"
-                :value="props.current / props.total"
+                :value="progressValue"
             />
         </div>
-        <div class="progress-bar-counter__value">{{ `${Math.ceil(props.current / props.total * 100)}%` }}</div>
+        <div class="progress-bar-counter__value">{{ `${Math.ceil(progressValue * 100)}%` }}</div>
     </div>
 </template>
 
 <script setup>
     import ProgressBar from "@components/ProgressBar.vue";
-    import { onBeforeMount } from "vue";
+    import { computed, onBeforeMount } from "vue";
 
     const props = defineProps({
         current: {
@@ -28,21 +28,30 @@
             type: [String, Number],
             required: true
         },
+        max: {
+            type: [String, Number],
+        }
     });
 
     let currentNum = Number(props.current);
     let totalNum = Number(props.total);
+    let maxNum = Number(props.max);
 
-    // Validation
+    // Валидация пропсов. Выведена отдельно т.к. нельзя сравнить пропсы в defineProps
     onBeforeMount(() => {
         if (
             currentNum < 0 ||
             totalNum < 0 ||
-            totalNum < currentNum
+            maxNum < 0 ||
+
+            currentNum > totalNum ||
+            totalNum > maxNum
         ) {
             console.error('Invalid properties! Total must be > Current!')
         }
     })
+
+    let progressValue = computed(() => props.max ? props.total / props.max : props.current / props.total);
 </script>
 
 <style lang="scss" scoped>
