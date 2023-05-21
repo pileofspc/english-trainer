@@ -44,6 +44,10 @@
             object-fit: cover;
         }
 
+        &__word {
+            text-align: center;
+        }
+
         &__title {
             margin-top: 6px;
             font-weight: var(--fw-semi-bold);

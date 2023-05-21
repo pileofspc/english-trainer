@@ -1,0 +1,60 @@
+@use "sass:map";
+@use "sass:list";
+
+$breakpoints: (
+    (
+        name: 'sm',
+        value: 690px
+    ),
+    (
+        name: 'md',
+        value: 992px
+    ),
+    (
+        name: 'lg',
+        value: 1200px
+    )
+);
+
+@mixin respond($media) {
+    $firstBreakpoint: list.nth($breakpoints, 1);
+    $lastBreakpoint: list.nth($breakpoints, -1);
+
+    @if $media == map.get( $firstBreakpoint, 'name' ) or $media == min {
+        @media only screen and ( max-width: map.get($firstBreakpoint, 'value') ) { @content; }
+    }
+    @else if $media == max {
+        @media only screen and (min-width: map.get($lastBreakpoint, 'value')) { @content; }
+    }
+    @else {
+        @each $breakpoint in $breakpoints {
+            $index: list.index($breakpoints, $breakpoint);
+            // Все кроме первого элемента
+            @if $index != 1 {
+                $prevBreakpoint: list.nth($breakpoints, $index - 1);
+
+                @if map.get($breakpoint, 'name') == $media {
+                    @media only screen and (min-width: map.get($prevBreakpoint, 'value') + 1) and (max-width: map.get($breakpoint, 'value') - 1) { @content; }
+                }
+            }
+        }
+    }
+}
+
+@mixin respondMax($media) {
+    @if $media == min {
+        $breakpoint: list.nth($breakpoints, 1);
+        @media only screen and ( max-width: map.get($breakpoint, 'value') - 1 ) { @content; }
+    }
+    @else if $media == max {
+        $breakpoint: list.nth($breakpoints, -1);
+        @media only screen and ( max-width: map.get($breakpoint, 'value') - 1 ) { @content; }
+    }
+    @else {
+        @each $breakpoint in $breakpoints {
+            @if map.get($breakpoint, 'name') == $media {
+                @media only screen and ( max-width: map.get($breakpoint, 'value') - 1 ) { @content; }
+            }
+        }
+    }
+}

@@ -11,20 +11,21 @@
                     <a class="header__link" href="/about.html">О нас</a>
                     <a class="header__link" href="/cards.html">Контакты</a>
                 </nav>
-                <VButtonBright text="Регистрация" style="margin-left: auto;"></VButtonBright>
-                <VButtonAccent text="Войти"></VButtonAccent>
+                <VButton class="button1" variant="bright" text="Регистрация" style="margin-left: auto;"></VButton>
+                <VButton variant="accent" text="Войти"></VButton>
             </div>
         </div>
     </header>
 </template>
 
 <script setup>
-    import VButtonBright from '@components/UI/VButtonBright.vue'
-    import VButtonAccent from '@components/UI/VButtonAccent.vue';
+    import VButton from '@components/VButton.vue'
     import mainLogo from '@images/main-logo.svg';
 </script>
 
 <style lang="scss" scoped>
+    @use '@styles/mixins' as m;
+
     .header {
         font-size: 16px;
         font-weight: 400;
@@ -33,7 +34,6 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            box-sizing: content-box;
             padding: 12px;
         }
 
@@ -59,4 +59,12 @@
             }
         }
     }
+
+    //@include m.respondMax(md) {
+    //
+    //}
+    //
+    //@include m.respondMax(min) {
+    //
+    //}
 </style>

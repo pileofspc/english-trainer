@@ -14,13 +14,15 @@
 </script>
 
 <style lang="scss" scoped>
-    .layout__main {
-        margin-top: 24px;
 
-        flex-grow: 1;
-    }
+    .layout {
+        &__main {
+            margin-top: 24px;
+            flex-grow: 1;
+        }
 
-    .layout__footer {
-        margin-top: 24px;
+        &__footer {
+            margin-top: 24px;
+        }
     }
 </style>

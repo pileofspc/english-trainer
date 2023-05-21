@@ -23,7 +23,6 @@
 
         background-color: var(--c-bright);
         border-top: 1px solid var(--c-shade);
-
         box-shadow: var(--block-shadow);
 
         &__nav {
