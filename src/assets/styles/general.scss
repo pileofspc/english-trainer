@@ -2,10 +2,6 @@
 @use 'fonts';
 
 :root {
-
-}
-
-:root {
     --container-maxw: 1200px;
     --container-minw: 690px;
     --container-pl: 8px;
@@ -38,6 +34,7 @@
     --card-shadow: 0px 12px 16px rgba(44, 39, 56, 0.03),
                     0px 24px 24px rgba(44, 39, 56, 0.05);
     --input-shadow:  0px 4px 8px 0px rgba(44, 39, 56, 0.04);
+
 
 
     --ff-primary: 'IBM Plex Sans', sans-serif;
