@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack serve --config webpack.config.dev.js",
     "build dev": "webpack --config webpack.config.dev.js --output-clean",
-    "build prod": "webpack --config webpack.config.prod.js",
+    "build prod": "webpack --config webpack.config.prod.js --output-clean",
     "addMissingJs": "node webpack-helpers/addMissingJs.js",
     "createDepGraph": "depcruise src/ --config -T dot | dot -T svg | depcruise-wrap-stream-in-html > dependency-graph.html"
   },
@@ -51,7 +51,7 @@
     "date-fns": "^2.30.0",
     "external-svg-loader": "^1.6.1",
     "uuid": "^9.0.0",
-    "vue": "^3.2.47",
+    "vue": "^3.3.4",
     "vue-router": "^4.2.0"
   },
   "imports": {

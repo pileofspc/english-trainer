@@ -1,5 +1,11 @@
 <template>
-    <button class="button" :class="`button_${props.variant}`">{{ props.text }}</button>
+    <button
+        class="button"
+        :class="{[`button_${props.variant}`]: true, button_inactive: props.inactive}"
+        :disabled="props.inactive"
+    >
+        {{ props.text }}
+    </button>
 </template>
 
 <script setup>
@@ -18,7 +24,8 @@
                     'success'
                 ].includes(value)
             }
-        }
+        },
+        inactive: Boolean
     });
 </script>
 
@@ -55,6 +62,11 @@
             color: var(--c-bright);
             background-color: var(--c-success);
             border: 1px solid var(--c-success);
+        }
+
+        &_inactive {
+            filter: grayscale(1) opacity(0.2);
+            cursor: not-allowed;
         }
     }
 </style>

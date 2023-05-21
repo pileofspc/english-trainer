@@ -168,12 +168,17 @@
         slideTo(currentPos.value - 1);
     }
     function startAutoSlide(time) {
+        if (timer) {
+            return
+        }
+
         timer = setInterval(() => {
             slideNext()
         }, time)
     }
     function stopAutoSlide() {
-        clearInterval(timer)
+        clearInterval(timer);
+        timer = null;
     }
     function mapItems(itemsRef) {
         itemsRef.value = [itemsRef.value[itemsRef.value.length - 1], ...itemsRef.value, itemsRef.value[0]];

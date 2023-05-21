@@ -32,7 +32,7 @@
                 <use :href="`#${ successImage.id }`"></use>
             </svg>
             <div class="trainer__result-title">Упражнение завершено</div>
-            <div class="trainer__result-description">Вы правильно перевели {{ correctAnswers }} слов, переведено неправильно {{ totalAnswers - correctAnswers }} слов</div>
+            <div class="trainer__result-description">Вы правильно перевели {{ correctAnswersText }}, переведено неправильно {{ wrongAnswersText }}</div>
         </div>
     </div>
 </template>
@@ -105,6 +105,26 @@
     const correctAnswers = ref(0);
     const totalAnswers = ref(0);
     const showResults = ref(false);
+
+    const correctAnswersText = computed(() => getRenderedText(correctAnswers.value));
+    const wrongAnswersText = computed(() => getRenderedText(totalAnswers.value - correctAnswers.value));
+
+    function getRenderedText(number) {
+        const lastDigit = number % 10;
+        if (
+            lastDigit === 2 ||
+            lastDigit === 3 ||
+            lastDigit === 4
+        ) {
+            return `${number} слова`
+        } else if (
+            lastDigit === 1
+        ) {
+            return `${number} слово`
+        } else {
+            return `${number} слов`
+        }
+    }
 
     function nextWord() {
         if (currentWordPos.value < data.length - 1) {

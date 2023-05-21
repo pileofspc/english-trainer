@@ -3,8 +3,7 @@ const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 // const ESLintWebpackPlugin = require('eslint-webpack-plugin');
-const CopyWebpackPlugin = require("copy-webpack-plugin");
-const SpritePlugin = require('svg-sprite-loader/plugin');
+// const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { VueLoaderPlugin } = require('vue-loader');
 const helpers = require('./webpack-helpers/webpack-helpers');
 

@@ -6,7 +6,9 @@ let newOptions = {
     devtool: 'source-map',
     devServer: {
         static: {
+            // from
             directory: global.PATHS.static,
+            // to
             publicPath: '/static',
         },
         port: 3000,
