@@ -1,18 +1,18 @@
 <template>
     <div class="theme-header block">
-            <div class="theme-header__theme">
-                <div class="theme-header__img-container block">
-                    <img class="theme-header__img" :src="props.imgPath" :alt="props.title">
-                </div>
-                <div class="theme-header__data">
-                    <div class="theme-header__title">{{ props.title }}</div>
-                    <div class="theme-header__description">{{ props.description }}</div>
-                    <router-link class="theme-header__button-learn" :to="routeTo">
-                        <VButton variant="accent" text="Тренировать слова"></VButton>
-                    </router-link>
-
-                </div>
+        <div class="theme-header__theme">
+            <div class="theme-header__img-container block">
+                <img class="theme-header__img" :src="props.imgPath" :alt="props.title">
             </div>
+            <div class="theme-header__data">
+                <div class="theme-header__title">{{ props.title }}</div>
+                <div class="theme-header__description">{{ props.description }}</div>
+<!--                    <router-link class="theme-header__button-learn" :to="routeTo">-->
+<!--                        <VButton variant="accent" text="Тренировать слова"></VButton>-->
+<!--                    </router-link>-->
+
+            </div>
+        </div>
     </div>
 </template>
 

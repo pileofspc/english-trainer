@@ -10,7 +10,19 @@
             <div class="trainer__middle">
                 <div class="trainer__word">{{ currentWordData.word }}</div>
                 <div class="trainer__translation">{{ currentWordData.visibleTranslation }}</div>
-                <div class="trainer__task">Верный ли это перевод?</div>
+                <div class="trainer__status"
+                    v-if="!showCurrentWordResult"
+                >
+                    Верный ли это перевод?
+                </div>
+                <div class="trainer__status"
+                     v-if="showCurrentWordResult"
+                >
+                    <svg class="trainer__status-svg" :style="{color: statusColor}">
+                        <use :href="`#${statusIcon.id}`"></use>
+                    </svg>
+                    <span class="trainer__status-text">{{ statusText }}</span>
+                </div>
                 <div class="trainer__controls">
                     <VButton
                         class="trainer__button"
@@ -27,6 +39,7 @@
                 </div>
             </div>
         </div>
+
         <div class="trainer__results" v-if="showResults">
             <svg class="trainer__result-image">
                 <use :href="`#${ successImage.id }`"></use>
@@ -41,10 +54,13 @@
 
 
 <script setup>
-    import { computed, ref } from "vue";
+    import {computed, reactive, ref} from "vue";
     import ProgressBarCounter from "@components/ProgressBarCounter.vue";
     import VButton from '@components/VButton.vue';
     import successImage from '@images/icons/Success.svg?sprite';
+
+    import Checkmark from '@images/icons/Checkmark.svg?sprite';
+    import Cross from '@images/icons/Cross.svg?sprite';
 
     let data = [
         {
@@ -100,12 +116,16 @@
     ];
 
     const currentWordPos = ref(0);
-    const currentWordData = computed(() => data[currentWordPos.value]);
-    const isTranslationCorrect = computed(() => currentWordData.value.visibleTranslation === currentWordData.value.actualTranslation);
     const correctAnswers = ref(0);
     const totalAnswers = ref(0);
+    const statusIcon = ref(Cross);
+    const statusText = ref('Неправильно');
+    const statusColor = ref('var(--c-error)');
+    const showCurrentWordResult = ref(false);
     const showResults = ref(false);
 
+    const currentWordData = computed(() => data[currentWordPos.value]);
+    const isTranslationCorrect = computed(() => currentWordData.value.visibleTranslation === currentWordData.value.actualTranslation);
     const correctAnswersText = computed(() => getRenderedText(correctAnswers.value));
     const wrongAnswersText = computed(() => getRenderedText(totalAnswers.value - correctAnswers.value));
 
@@ -134,6 +154,9 @@
         }
     }
     function checkUserAnswer(answer) {
+        if (showCurrentWordResult.value) {
+            return
+        }
         if (answer && isTranslationCorrect.value || !answer && !isTranslationCorrect.value) {
             userAnsweredCorrectly()
         } else {
@@ -141,13 +164,37 @@
         }
     }
     function userAnsweredCorrectly() {
+        changeStatus(true);
+        showCurrentWordResult.value = true;
         correctAnswers.value++;
         totalAnswers.value++;
-        nextWord();
+
+        setTimeout(() => {
+            showCurrentWordResult.value = false;
+            nextWord();
+        }, 1000)
     }
     function userAnsweredIncorrectly() {
+        changeStatus(false);
+        showCurrentWordResult.value = true;
         totalAnswers.value++;
-        nextWord();
+
+        setTimeout(() => {
+            showCurrentWordResult.value = false;
+            nextWord();
+        }, 1000);
+    }
+    function changeStatus(boolean) {
+        if (boolean === true) {
+            statusIcon.value = Checkmark;
+            statusText.value = 'Правильно';
+            statusColor.value = 'var(--c-success)';
+        }
+        if (boolean === false) {
+            statusIcon.value = Cross;
+            statusText.value = 'Неправильно';
+            statusColor.value = 'var(--c-error)';
+        }
     }
 </script>
 
@@ -171,10 +218,19 @@
             filter: opacity(0.6);
         }
 
-        &__task {
+        &__status {
+            display: flex;
+            align-items: center;
             margin-top: 20px;
             color: var(--c-secondary);
             font-size: 16px;
+
+            min-height: 40px;
+        }
+
+        &__status-svg {
+            width: 36px;
+            height: 36px;
         }
 
         &__controls {

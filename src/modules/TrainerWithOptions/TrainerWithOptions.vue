@@ -11,7 +11,12 @@
                 <div class="trainer-eng-to-rus__main">
                     <div class="trainer-eng-to-rus__word-data">
                         <div class="trainer-eng-to-rus__word">{{ currentWordData.word }}</div>
-                        <div class="trainer-eng-to-rus__transcription">{{ currentWordData.transcription }}</div>
+                        <div
+                            class="trainer-eng-to-rus__transcription"
+                            v-if="props.from === 'eng'"
+                        >
+                            {{ currentWordData.transcription }}
+                        </div>
                         <div class="trainer-eng-to-rus__image-container" :class="{'trainer-eng-to-rus__image-container_blurred': !revealed}">
                             <img class="trainer-eng-to-rus__image" :src="currentWordData.imgPath" alt="">
                         </div>
@@ -22,7 +27,7 @@
                             class="trainer-eng-to-rus__option"
                             :translation="option.translation"
                             :status="option.status"
-                            @click="choose(option)"
+                            @click="onChoose(option)"
                         />
                     </div>
 
@@ -56,6 +61,15 @@
     import TrainerOption from '@modules/TrainerOption/TrainerOption.vue';
     import VButton from '@components/VButton.vue';
     import successImage from '@images/icons/Success.svg?sprite';
+
+    const props = defineProps({
+        from: {
+            type: String,
+            validator(value) {
+                return ['rus', 'eng'].includes(value)
+            }
+        },
+    });
 
     let data = [
         {
@@ -210,11 +224,6 @@
         }
     }
     function onContinue() {
-        if (currentChosen.value.isCorrect) {
-            userAnsweredCorrectly()
-        } else {
-            userAnsweredIncorrectly()
-        }
         currentChosen.value = null;
         revealed.value = false;
         nextWord();
@@ -241,7 +250,7 @@
             chosenOption.status = 'chosen-incorrect';
         }
     }
-    function choose(chosenOption) {
+    function onChoose(chosenOption) {
         if (revealed.value) {
             return
         }
@@ -249,6 +258,11 @@
         revealChosen(chosenOption);
         revealed.value = true;
         currentChosen.value = chosenOption;
+        if (currentChosen.value.isCorrect) {
+            userAnsweredCorrectly()
+        } else {
+            userAnsweredIncorrectly()
+        }
     }
 </script>
 

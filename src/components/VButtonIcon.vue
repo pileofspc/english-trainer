@@ -1,21 +1,24 @@
 <template>
     <button
         class="button"
-        :class="{[`button_${props.variant}`]: true, button_inactive: props.inactive}"
+        :class="{[`button_${props.variant}`]: true, 'button_inactive': props.inactive}"
         :disabled="props.inactive"
     >
-        {{ props.text }}
+    <svg class="button__icon">
+        <use class="button__icon-svg" :href="`#${props.iconId}`"></use>
+    </svg>
     </button>
 </template>
 
 <script setup>
     const props = defineProps({
-        text: {
+        iconId: {
             type: String,
             required: true
         },
         variant: {
             type: String,
+            required: true,
             validator(value) {
                 return [
                     'accent',
@@ -33,12 +36,17 @@
     .button {
         font-size: 14px;
         font-weight: 500;
-        padding: 8px 28px;
+        line-height: 0;
 
         border: none;
         box-shadow: var(--card-shadow);
-        border-radius: 6px;
+        border-radius: 10px;
         cursor: pointer;
+
+        &__icon {
+            width: 40px;
+            height: 40px;
+        }
 
         &_accent {
             color: var(--c-bright);

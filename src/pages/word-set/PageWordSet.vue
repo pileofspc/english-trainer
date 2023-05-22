@@ -1,7 +1,8 @@
 <template>
     <LayoutDefault>
-        <WordSetHeader v-bind="wordSet"></WordSetHeader>
-        <InfListWords class="page-theme__words"></InfListWords>
+        <WordSetHeader v-bind="wordSet" />
+        <TrainLinks class="page-theme__train-links" />
+        <InfListWords class="page-theme__words" />
     </LayoutDefault>
 </template>
 
@@ -11,6 +12,7 @@
     import LayoutDefault from '@components/LayoutDefault.vue';
     import WordSetHeader from '@modules/WordSetHeader/WordSetHeader.vue';
     import InfListWords from '@modules/InfListWords/InfListWords.vue';
+    import TrainLinks from "@modules/TrainLinks/TrainLinks.vue";
 
     const route = useRoute();
 
@@ -25,6 +27,10 @@
 <style scoped lang="scss">
     .page-theme {
         &__words {
+            margin-top: var(--mt-big);
+        }
+
+        &__train-links {
             margin-top: var(--mt-big);
         }
     }

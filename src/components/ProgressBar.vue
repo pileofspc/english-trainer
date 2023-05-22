@@ -1,7 +1,7 @@
 <template>
     <div class="progress-bar">
         <div class="progress-bar__total">
-            <div class="progress-bar__current" :style="{width: `${props.value * 100}%`}"></div>
+            <div class="progress-bar__current" :style="{width: `${props.value * 100}%`, transition: props.transition}"></div>
         </div>
     </div>
 </template>
@@ -14,6 +14,10 @@
             validator(value) {
                 return parseFloat(value) >= 0 && parseFloat(value) <= 1
             }
+        },
+        transition: {
+            type: String,
+            default: 'none'
         }
     });
 </script>
