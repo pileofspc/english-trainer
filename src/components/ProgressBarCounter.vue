@@ -9,6 +9,7 @@
             <ProgressBar
                 class="progress-bar-counter__progress"
                 :value="progressValue"
+                transition="ease 0.2s"
             />
         </div>
         <div class="progress-bar-counter__value">{{ `${Math.ceil(progressValue * 100)}%` }}</div>

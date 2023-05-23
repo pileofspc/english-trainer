@@ -80,15 +80,26 @@ body {
 }
 
 .block {
-    border-radius: 8px;
+    border-radius: 12px;
     background-color: var(--c-bright);
     box-shadow: var(--block-shadow);
+}
+
+.block-title {
+    font-size: 24px;
+    font-weight: var(--fw-semi-bold);
 }
 
 .card {
     border-radius: 16px;
     background-color: var(--c-bright);
     box-shadow: var(--card-shadow);
+}
+
+.hollow-card {
+    outline: 1px solid var(--c-shade);
+    border-radius: 16px;
+    box-shadow: var(--input-shadow);
 }
 
 .input {

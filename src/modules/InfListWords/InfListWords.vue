@@ -55,8 +55,8 @@
 <style scoped lang="scss">
     .inf-list-words {
         display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+        gap: 20px;
 
         &__word {
             width: auto;
