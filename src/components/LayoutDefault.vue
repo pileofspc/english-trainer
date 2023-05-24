@@ -14,7 +14,6 @@
 </script>
 
 <style lang="scss" scoped>
-
     .layout {
         &__main {
             margin-top: 24px;

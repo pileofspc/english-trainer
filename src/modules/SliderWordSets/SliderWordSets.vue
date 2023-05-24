@@ -208,7 +208,7 @@
 <style scoped lang="scss">
     .slider {
         position: relative;
-        padding: 60px 60px;
+        padding: 32px 60px;
 
         overflow: hidden;
 
