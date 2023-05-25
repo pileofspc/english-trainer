@@ -4,7 +4,7 @@
             <img class="theme__link-img" :src="props.imgPath" :alt="props.title">
         </router-link>
         <div class="theme__data">
-            <div class="theme__title">{{ props.title }}</div>
+            <div class="theme__title large-block-title">{{ props.title }}</div>
             <div class="theme__description">{{ props.description }}</div>
             <router-link
                 :to="toRoute"
@@ -62,12 +62,6 @@
             display: flex;
             flex-direction: column;
             font-size: 20px;
-        }
-
-        &__title {
-            font-size: 56px;
-            line-height: 1.2;
-            font-weight: var(--fw-bold);
         }
 
         &__description {

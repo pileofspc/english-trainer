@@ -1,10 +1,10 @@
 <template>
     <LayoutDefault>
-        <div class="page-main__contents">
+        <div class="page-main__first-row">
             <About class="page-main__about" />
             <WordOfDay class="page-main__word-of-day" />
-            <SliderWordSets class="page-main__slider" />
         </div>
+        <SliderWordSets class="page-main__slider" />
     </LayoutDefault>
 </template>
 
@@ -17,22 +17,21 @@
 
 <style lang="scss" scoped>
     .page-main {
-        &__contents {
+        &__first-row {
             display: flex;
-            flex-wrap: wrap;
             gap: 24px;
         }
 
         &__about {
-            flex-basis: 62%;
-        }
-
-        &__word-of-day {
             flex-grow: 1;
         }
 
-        &__slider {
+        &__word-of-day {
+            flex-basis: 38%;
+        }
 
+        &__slider {
+            margin-top: 24px;
         }
     }
 </style>

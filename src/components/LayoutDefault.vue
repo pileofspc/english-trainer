@@ -17,7 +17,6 @@
     .layout {
         &__main {
             margin-top: 24px;
-            flex-grow: 1;
         }
 
         &__footer {

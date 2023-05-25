@@ -5,72 +5,54 @@
                 <img class="theme-header__img" :src="props.imgPath" :alt="props.title">
             </div>
             <div class="theme-header__data">
-                <div class="theme-header__title">{{ props.title }}</div>
+                <div class="theme-header__title block-title">{{ props.title }}</div>
                 <div class="theme-header__description">{{ props.description }}</div>
-<!--                    <router-link class="theme-header__button-learn" :to="routeTo">-->
-<!--                        <VButton variant="accent" text="Тренировать слова"></VButton>-->
-<!--                    </router-link>-->
-
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-    import { useRoute } from "vue-router";
-    import VButton from '@components/VButton.vue';
-
     const props = defineProps({
         imgPath: String,
         title: String,
         description: String
     });
-
-    const route = useRoute();
-    const routeTo = `/word-set/${route.params.wordSetId}/train`;
 </script>
 
 <style scoped lang="scss">
     .theme-header {
         position: relative;
         padding: 20px;
-
         overflow: hidden;
 
+        background: white url('@images/artwork.svg') no-repeat calc(100% + 20px) 0%;
+        background-size: auto 100%;
+
         &__theme {
-            flex-shrink: 0;
-
             display: flex;
-            align-items: center;
-            gap: 80px;
-            width: 100%;
-
-            margin-left: 100px;
-
-            transform: translate(-100px);
+            flex-shrink: 0;
+            gap: 24px;
         }
 
         &__img-container {
             max-width: 180px;
             max-height: 180px;
-            flex-shrink: 0.15;
             overflow: hidden;
+            align-self: center;
         }
 
         &__img {
             object-fit: cover;
+            width: 100%;
+            height: 100%;
         }
 
         &__data {
             display: flex;
             flex-direction: column;
             font-size: 16px;
-        }
-
-        &__title {
-            font-size: 20px;
-            line-height: 1.2;
-            font-weight: var(--fw-bold);
+            width: calc(100% - 440px);
         }
 
         &__description {
