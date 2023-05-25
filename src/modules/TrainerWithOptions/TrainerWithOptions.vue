@@ -13,7 +13,7 @@
                         <div class="trainer-eng-to-rus__word">{{ currentWordData.word }}</div>
                         <div
                             class="trainer-eng-to-rus__transcription"
-                            v-if="props.from === 'eng'"
+                            v-if="props.from !== 'rus'"
                         >
                             {{ currentWordData.transcription }}
                         </div>
