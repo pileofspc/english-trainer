@@ -26,7 +26,7 @@
         padding: 20px;
         overflow: hidden;
 
-        background: white url('@images/artwork.svg') no-repeat calc(100% + 20px) 0%;
+        background: white url('@images/Artwork.svg') no-repeat calc(100% + 20px) 0%;
         background-size: auto 100%;
 
         &__theme {
