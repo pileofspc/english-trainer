@@ -22,11 +22,11 @@
 
     const rootStyle = getComputedStyle(document.documentElement);
     Chart.defaults.backgroundColor = [
-        rootStyle.getPropertyValue('--c-accent'),
-        rootStyle.getPropertyValue('--c-success'),
-        rootStyle.getPropertyValue('--c-error'),
         rootStyle.getPropertyValue('--c-warning'),
-        rootStyle.getPropertyValue('--c-secondary'),
+        rootStyle.getPropertyValue('--c-success'),
+        rootStyle.getPropertyValue('--c-primary'),
+        rootStyle.getPropertyValue('--c-shade'),
+        rootStyle.getPropertyValue('--c-graph'),
     ];
 
     const props = defineProps({

@@ -35,8 +35,6 @@
     import trainDefault from "@images/trainers/train.png";
     import trainEngRus from "@images/trainers/train-eng-rus.png";
     import trainRusEng from "@images/trainers/train-rus-eng.png";
-
-    console.log(trainDefault)
 </script>
 
 <style lang="scss" scoped>

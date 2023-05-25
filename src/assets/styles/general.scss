@@ -20,6 +20,7 @@
     --c-warning: #F2AC57;
     --c-success: #14A38B;
     --c-error: #FF7171;
+    --c-graph: rgb(214, 207, 110);
 
     --main-background: var(--c-tint);
     --header: var(--c-bright);
@@ -43,10 +44,6 @@
     --fw-bold: 600;
 }
 
-html {
-    //min-width: var(--container-minw);
-}
-
 body {
     font-family: var(--ff-primary);
     background-color: var(--main-background);
@@ -54,12 +51,11 @@ body {
 
 ._container {
     max-width: var(--container-maxw);
-    //min-width: var(--container-minw);
     margin-left: auto;
     margin-right: auto;
     padding-left: var(--container-pl);
     padding-right: var(--container-pl);
-    //box-sizing: content-box;
+
 }
 
 ._flex-container {
@@ -72,27 +68,10 @@ body {
     padding-right: var(--container-pl);
 }
 
-.app-wrapper {
-    display: flex;
-    flex-direction: column;
-    padding-top: var(--wrapper-pt);
-    min-height: 100vh;
-}
-
 .block {
     border-radius: 12px;
     background-color: var(--c-bright);
     box-shadow: var(--block-shadow);
-}
-
-.block-title {
-    font-size: 28px;
-    font-weight: var(--fw-semi-bold);
-}
-
-.small-block-title {
-    font-size: 24px;
-    font-weight: var(--fw-semi-bold);
 }
 
 .card {
@@ -112,6 +91,21 @@ body {
     border-radius: 6px;
     padding: 8px 16px;
     box-shadow: var(--input-shadow);
+}
+
+.block-title {
+    font-size: 28px;
+    font-weight: var(--fw-semi-bold);
+}
+
+.small-block-title {
+    font-size: 24px;
+    font-weight: var(--fw-semi-bold);
+}
+
+.large-block-title {
+    font-size: 42px;
+    font-weight: var(--fw-bold);
 }
 
 a {
