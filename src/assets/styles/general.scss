@@ -21,6 +21,7 @@
     --c-success: #14A38B;
     --c-error: #FF7171;
     --c-graph: rgb(214, 207, 110);
+    --c-transparent: rgb(0, 0, 0, 0.8);
 
     --main-background: var(--c-tint);
     --header: var(--c-bright);
@@ -74,6 +75,13 @@ body {
     box-shadow: var(--block-shadow);
 }
 
+.form {
+    padding: 30px 30px;
+    border-radius: 24px;
+    background-color: var(--c-bright);
+    box-shadow: var(--block-shadow);
+}
+
 .card {
     border-radius: 16px;
     background-color: var(--c-bright);
@@ -91,6 +99,11 @@ body {
     border-radius: 6px;
     padding: 8px 16px;
     box-shadow: var(--input-shadow);
+}
+
+.form-title {
+    font-size: 34px;
+    font-weight: var(--fw-bold);
 }
 
 .block-title {

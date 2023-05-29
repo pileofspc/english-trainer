@@ -10,7 +10,7 @@
                 :to="toRoute"
                 class="theme__button-learn"
             >
-                <VButton variant="accent" text="Изучить"></VButton>
+                <VButton variant="accent">Изучить</VButton>
             </router-link>
         </div>
     </div>

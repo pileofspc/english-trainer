@@ -34,11 +34,12 @@
                 </div>
                 <div class="trainer-eng-to-rus__controls">
                     <VButton
-                        text="Продолжить"
                         variant="accent"
                         :inactive="!revealed"
                         @click="onContinue"
-                    />
+                    >
+                        Продолжить
+                    </VButton>
                 </div>
             </div>
         </div>

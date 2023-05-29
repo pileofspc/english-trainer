@@ -1,5 +1,11 @@
 <template>
     <header class="header">
+        <Modal v-if="showRegisterModal" @close="closeModals">
+            <FormRegister />
+        </Modal>
+        <Modal v-if="showLoginModal" @close="closeModals">
+            <FormLogin />
+        </Modal>
         <div class="_container">
             <div class="header__inner block">
                 <a href="/" class="header__logo">
@@ -11,16 +17,40 @@
                     <a class="header__link" href="/about.html">О нас</a>
                     <a class="header__link" href="/cards.html">Контакты</a>
                 </nav>
-                <VButton class="button1" variant="bright" text="Регистрация" style="margin-left: auto;"></VButton>
-                <VButton variant="accent" text="Войти"></VButton>
+
+                <VButton class="header__first-button"
+                         variant="bright"
+                         @click="showRegisterModal = true"
+                >
+                    Регистрация
+                </VButton>
+
+                <VButton variant="accent"
+                         @click="showLoginModal = true"
+                >
+                    Войти
+                </VButton>
             </div>
         </div>
     </header>
 </template>
 
 <script setup>
+    import { ref } from "vue";
+
     import VButton from '@components/VButton.vue'
     import mainLogo from '@images/main-logo.svg';
+    import Modal from '@components/Modal.vue';
+    import FormRegister from '@components/FormRegister.vue';
+    import FormLogin from '@components/FormLogin.vue';
+
+    const showRegisterModal = ref(true);
+    const showLoginModal = ref(false);
+
+    function closeModals() {
+        showLoginModal.value = false;
+        showRegisterModal.value = false;
+    }
 </script>
 
 <style lang="scss" scoped>
@@ -58,13 +88,9 @@
                 color: var(--c-accent);
             }
         }
-    }
 
-    //@include m.respondMax(md) {
-    //
-    //}
-    //
-    //@include m.respondMax(min) {
-    //
-    //}
+        &__first-button {
+            margin-left: auto;
+        }
+    }
 </style>

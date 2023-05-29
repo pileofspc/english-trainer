@@ -1,19 +1,14 @@
 <template>
-    <button
-        class="button"
-        :class="{[`button_${props.variant}`]: true, button_inactive: props.inactive}"
-        :disabled="props.inactive"
+    <button class="button"
+            :class="{[`button_${props.variant}`]: true, button_inactive: props.inactive}"
+            :disabled="props.inactive"
     >
-        {{ props.text }}
+        <slot></slot>
     </button>
 </template>
 
 <script setup>
     const props = defineProps({
-        text: {
-            type: String,
-            required: true
-        },
         variant: {
             type: String,
             validator(value) {
