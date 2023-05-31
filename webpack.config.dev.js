@@ -17,9 +17,6 @@ let newOptions = {
         watchFiles: ['src/**/*.html'],
         historyApiFallback: true
     },
-    output: {
-        clean: true
-    },
     module: {
         rules: [
             {

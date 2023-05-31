@@ -2,6 +2,7 @@
     <Header></Header>
     <main class="layout__main">
         <div class="_container">
+            <Breadcrumbs class="layout__breadcrumbs" />
             <slot></slot>
         </div>
     </main>
@@ -11,6 +12,7 @@
 <script setup>
     import Header from '@modules/Header/Header.vue';
     import Footer from '@modules/Footer/Footer.vue';
+    import Breadcrumbs from '@modules/Breadcrumbs/Breadcrumbs.vue';
 </script>
 
 <style lang="scss" scoped>
@@ -21,6 +23,10 @@
 
         &__footer {
             margin-top: 24px;
+        }
+
+        &__breadcrumbs {
+            margin-bottom: 24px;
         }
     }
 </style>

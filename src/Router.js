@@ -10,15 +10,18 @@ export default createRouter({
     routes: [
         {
             path: '/:pathMatch(.*)*',
+            name: 'PageError',
             component: PageError
         },
         {
             path: '/',
-            component: PageMain
+            name: 'PageMain',
+            component: PageMain,
         },
         {
             path: '/word-set/:wordSetId',
-            component: PageWordSet
+            name: 'PageWordSet',
+            component: PageWordSet,
         },
         {
             path: '/word-set/:wordSetId/:trainingType',
