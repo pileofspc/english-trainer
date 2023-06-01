@@ -9,8 +9,7 @@
     </LayoutDefault>
 </template>
 
-<script setup>
-
+<script setup lang="ts">
     import SliderWordSets from '@modules/SliderWordSets/SliderWordSets.vue';
     import LayoutDefault from '@components/LayoutDefault.vue';
     import WordOfDay from '@modules/WordOfDay/WordOfDay.vue';
@@ -39,6 +38,10 @@
 
         &__reviews {
             margin-top: 24px;
+        }
+
+        &__breadcrumbs {
+            margin-bottom: 24px;
         }
     }
 </style>

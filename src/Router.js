@@ -16,12 +16,12 @@ export default createRouter({
         {
             path: '/',
             name: 'PageMain',
-            component: PageMain,
+            component: PageMain
         },
         {
             path: '/word-set/:wordSetId',
             name: 'PageWordSet',
-            component: PageWordSet,
+            component: PageWordSet
         },
         {
             path: '/word-set/:wordSetId/:trainingType',
