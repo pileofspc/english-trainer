@@ -26,16 +26,18 @@
                 <div class="trainer__controls">
                     <VButton
                         class="trainer__button"
-                        text="Не верно"
                         variant="error"
                         @click="checkUserAnswer(false)"
-                    />
+                    >
+                        Не верно
+                    </VButton>
                     <VButton
                         class="trainer__button"
-                        text="Верно"
                         variant="success"
                         @click="checkUserAnswer(true)"
-                    />
+                    >
+                        Верно
+                    </VButton>
                 </div>
             </div>
         </div>
