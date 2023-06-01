@@ -8,7 +8,7 @@
     <Footer class="layout__footer"></Footer>
 </template>
 
-<script setup>
+<script setup lang="ts">
     import Header from '@modules/Header/Header.vue';
     import Footer from '@modules/Footer/Footer.vue';
 </script>

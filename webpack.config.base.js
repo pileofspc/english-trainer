@@ -2,7 +2,6 @@ const path = require('path');
 const fs = require('fs');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-// const ESLintWebpackPlugin = require('eslint-webpack-plugin');
 // const CopyWebpackPlugin = require("copy-webpack-plugin");
 const { VueLoaderPlugin } = require('vue-loader');
 const helpers = require('./webpack-helpers/webpack-helpers');
@@ -59,6 +58,7 @@ PAGES.forEach((page) => {
 
 module.exports = exports = {
     resolve: {
+        extensions: [".ts", ".tsx", '...'],
         alias: {
             "@root": PATHS.root,
             "@modules": PATHS.modules,
@@ -73,14 +73,21 @@ module.exports = exports = {
     output: {
         path: PATHS.dist,
         filename: `${PATHS.distJs}/[name].js`,
-        publicPath: '/',
-        clean: true
+        publicPath: '/'
     },
     module: {
         rules: [
             {
                 test: /\.vue$/,
                 loader: 'vue-loader'
+            },
+            {
+                test: /\.tsx?$/,
+                exclude: /node_modules/,
+                loader: 'ts-loader',
+                options: {
+                    transpileOnly: true
+                }
             },
             {
                 oneOf: [
@@ -155,7 +162,6 @@ module.exports = exports = {
         new MiniCssExtractPlugin({
             filename: `${PATHS.distCss}/[name].css`,
         }),
-        // new ESLintWebpackPlugin(),
         new VueLoaderPlugin(),
         // new CopyWebpackPlugin({
         //     patterns: [
