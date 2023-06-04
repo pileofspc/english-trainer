@@ -1,16 +1,29 @@
 <template>
-    <div class="reviews block">
+    <div class="reviews block" v-if="!isLoading">
         <Review
-            v-for="i in 5"
-            img-path="/static/person.jpg"
-            author="Владислав"
-            text="Equidem disputationi velit perpetua unum gloriatur alienum porro nostra. Curabitur ornatus vero saepe reprehendunt. Constituam omittam postea duo nisl sodales quem splendide epicuri suavitate."
+            v-for="item in reviews"
+            :img-path="item.img"
+            :author="item.name"
+            :text="item.review"
         />
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
     import Review from '@components/Review.vue';
+    import apis from '/src/apis.json';
+    import { ref } from 'vue';
+    import type { IReview, Res } from '/src/pages/index';
+
+    const isLoading = ref(true);
+    const reviews = ref<IReview[]>([]);
+
+    fetch(apis.reviews + '?count=5')
+    .then(res => res.json())
+    .then((json: Res<IReview[]>) => {
+        reviews.value = json.data
+        isLoading.value = false;
+    })
 </script>
 
 <style lang="scss" scoped>

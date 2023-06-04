@@ -1,17 +1,17 @@
 <template>
-    <LayoutDefault>
+    <LayoutMainPage>
         <div class="page-main__first-row">
             <About class="page-main__about" />
             <WordOfDay class="page-main__word-of-day" />
         </div>
         <SliderWordSets class="page-main__slider" />
         <Reviews class="page-main__reviews"></Reviews>
-    </LayoutDefault>
+    </LayoutMainPage>
 </template>
 
 <script setup lang="ts">
     import SliderWordSets from '@modules/SliderWordSets/SliderWordSets.vue';
-    import LayoutDefault from '@components/LayoutDefault.vue';
+    import LayoutMainPage from '@components/LayoutMainPage.vue';
     import WordOfDay from '@modules/WordOfDay/WordOfDay.vue';
     import About from '@components/About.vue';
     import Reviews from '@components/Reviews.vue';

@@ -8,7 +8,9 @@
       "@components/*": ["src/components/*"],
       "@pages/*": ["src/pages/*"],
       "@styles/*": ["src/assets/styles/*"],
-      "@images/*": ["src/assets/images/*"]
+      "@images/*": ["src/assets/images/*"],
+      "@stores/*": ["src/stores/*"],
+      "@types": ["src/pages/index/index.d.ts"]
     },
 
     // As long as you are using a build tool, we recommend you to author and ship in ES modules.
@@ -20,9 +22,7 @@
 
     // We expect users to use bundlers.
     // So here we enable some resolution features that are only available in bundlers.
-    //"moduleResolution": "Bundler",
-    //Webstorm не понимает "moduleResolution": "Bundler"
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
 
     // `allowImportingTsExtensions` can only be used when `noEmit` or `emitDeclarationOnly` is set.
@@ -30,6 +30,11 @@
     // <https://github.com/microsoft/TypeScript/issues/49844>
     // And `emitDeclarationOnly` is not always wanted.
     // Considering it's not likely to be commonly used in Vue codebases, we don't enable it here.
+
+    // Для себя сделал так. noEmit нужен, чтобы в src не появлялись js файлы, а allowImportingTsExtensions - просто мне кажется так более удобно
+    // webstorm не понимает allowImportingTsExtensions, но все равно оставлю хотя бы для вскода
+    "noEmit": true,
+    // "allowImportingTsExtensions": true,
 
     // Required in Vue projects
     "jsx": "preserve",

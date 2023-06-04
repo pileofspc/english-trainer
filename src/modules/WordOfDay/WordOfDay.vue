@@ -1,15 +1,32 @@
 <template>
     <div class="word-of-day block">
         <div class="word-of-day__title small-block-title">Слово дня</div>
-        <div class="word-of-day__word">Create [krēˈāt]</div>
+        <div class="word-of-day__word">{{ `${word} ${transcription}` }}</div>
         <div class="word-of-day__main">
-            <PieChart></PieChart>
+            <Doughnut :items="chartItems"></Doughnut>
         </div>
     </div>
 </template>
 
-<script setup>
-    import PieChart from '@components/PieChart.vue';
+<script setup lang="ts">
+    import Doughnut from '@components/Doughnut.vue';
+    import apis from '/src/apis.json';
+    import { computed, ref } from 'vue';
+    import type { IWord, Res } from '@types';
+
+    const wordData = ref<IWord>();
+    const word = computed(() => wordData.value?.word);
+    const transcription = computed(() => wordData.value?.transcription);
+    const chartItems = computed(
+        () => wordData.value?.translations.map((item) => ({ name: item.translation, value: item.frequency })) || []
+    );
+
+
+    fetch(apis.wordofday)
+    .then((res) => res.json())
+    .then((json: Res<IWord>) => {
+        wordData.value = json.data;
+    });
 
 </script>
 

@@ -8,11 +8,17 @@ const PageTrain = () => import("@pages/train/PageTrain.vue");
 export default createRouter({
     history: createWebHistory(),
     routes: [
-        {
-            path: '/:pathMatch(.*)*',
-            name: 'PageError',
-            component: PageError
-        },
+        // {
+        //     path: '/error404',
+        //     name: 'PageError',
+        //     component: PageError
+        // },
+        // {
+        //     path: '/:pathMatch(.*)*',
+        //     redirect: {
+        //         name: 'PageError'
+        //     }
+        // },
         {
             path: '/',
             name: 'PageMain',

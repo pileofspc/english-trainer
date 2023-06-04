@@ -1,20 +1,21 @@
 <template>
     <div class="card-word card">
         <div class="card-word__img-container">
-            <img class="card-word__img" :src="props.imgPath" alt="WORD">
+            <img class="card-word__img" :src="props.img" alt="Слово">
         </div>
         <div class="card-word__word">
-            <div class="card-word__title">{{ word }}</div>
-            <div class="card-word__translation">{{ translation }}</div>
+            <div class="card-word__title">{{ props.word }}</div>
+            <div class="card-word__translation">{{ props.translation }}</div>
         </div>
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
     const props = defineProps({
-        imgPath: String,
+        img: String,
         word: String,
-        translation: String
+        translation: String,
+        transcription: String
     });
 </script>
 
@@ -33,6 +34,9 @@
         &__img-container {
             border-radius: 8px;
             overflow: hidden;
+
+            width: 100%;
+            height: 80%;
         }
         
         &__data {
@@ -41,6 +45,7 @@
 
         &__img {
             height: 100%;
+            width: 100%;
             object-fit: cover;
         }
 

@@ -1,6 +1,5 @@
 <template>
     <LayoutDefault>
-        <Breadcrumbs :items="breadCrumbs"></Breadcrumbs>
         <component
             class="page-train__trainer"
             :is="chosenVariant.component"
@@ -10,13 +9,14 @@
 </template>
 
 <script setup lang="ts">
-    import { useRoute } from "vue-router";
-    import { computed } from "vue";
-
     import LayoutDefault from "@components/LayoutDefault.vue";
-    import TrainerWithOptions from '@modules/TrainerWithOptions/TrainerWithOptions.vue';
-    import TrainerRightWrong from "@modules/TrainerRightWrong/TrainerRightWrong.vue";
-    import Breadcrumbs from '@components/Breadcrumbs.vue';
+import TrainerRightWrong from "@modules/TrainerRightWrong/TrainerRightWrong.vue";
+import TrainerWithOptions from '@modules/TrainerWithOptions/TrainerWithOptions.vue';
+import type { IBreadcrumbItem } from "@types";
+import { computed, onBeforeMount, ref, watch } from "vue";
+import { useRoute } from "vue-router";
+import apis from '/src/apis.json';
+import { useBreadcrumbsStore } from "/src/stores/storeBreadcrumbs";
 
     const route = useRoute();
 
@@ -38,13 +38,18 @@
 
     const chosenVariant = variantMap.get(route.params.trainingType);
 
-    const breadCrumbs = computed(() => [
-        {
-            displayName: 'Главная',
-            to: 'PageMain'
+    const bcstore = useBreadcrumbsStore();
+    const displayName1 = ref('');
+    const breadCrumbs = computed<IBreadcrumbItem[]>(() => [
+        { 
+            displayName: 'Главная', 
+            to: { 
+                name: 'PageMain', 
+                replace: true 
+            } 
         },
         {
-            displayName: 'Набор слов',
+            displayName: displayName1.value,
             to: {
                 name: 'PageWordSet',
                 params: {
@@ -56,6 +61,14 @@
             displayName: chosenVariant.displayName
         }
     ])
+
+    watch(breadCrumbs, () => {
+        bcstore.breadcrumbs = breadCrumbs.value
+    })
+
+    fetch(apis.wordset + '?id=fruits')
+    .then(res => res.json())
+    .then(res => displayName1.value = res.title)
 </script>
 
 <style lang="scss" scoped></style>

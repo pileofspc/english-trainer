@@ -8,8 +8,9 @@
 </template>
 
 <script setup lang="ts">
-    import type { IBreadcrumbItem, PropType} from "@pages/index";
-
+    import type { PropType} from "vue";
+    import type { IBreadcrumbItem} from "@types";
+    
     const props = defineProps({
         items: {
             type: Array as PropType<IBreadcrumbItem[]>,
@@ -22,9 +23,5 @@
     .breadcrumbs {
         display: flex;
         padding: 20px;
-
-        &__item {
-
-        }
     }
 </style>

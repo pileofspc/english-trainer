@@ -12,14 +12,13 @@
         </button>
 
 
-        <div
-            class="slider__item-container"
+        <div class="slider__item-container"
             ref="itemContainer"
             :style="{ transform: `translate(${currentX}px)`}"
         >
-            <WordSet v-for="item in sliderItems"
-                   v-bind="item"
-                   class="slider__item">
+            <WordSet v-for="item in mappedItems" :key="uuidv4()"
+                    v-bind="item"
+                    class="slider__item">
             </WordSet>
         </div>
 
@@ -32,89 +31,48 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+    import apis from '/src/apis.json';
     import WordSet from '@modules/WordSet/WordSet.vue';
     import ChevronLeft from '@images/icons/ChevronLeft.svg?sprite';
     import ChevronRight from '@images/icons/ChevronRight.svg?sprite';
     import { computed, onBeforeUnmount, onMounted, ref } from "vue";
+    import type { Ref } from 'vue';
+    import type { IWordSet, Res } from '@types';
+    import { watch } from 'vue';
+    import {v4 as uuidv4} from 'uuid';
+    
 
-
-    const sliderItems = ref([
-        {
-            id: 'hello',
-            imgPath: '/static/cat_640x640.jpg',
-            title: 'Животные 111',
-            description: 'Dolor felis venenatis homero sapientem litora porttitor non epicuri consul. Mauris vituperata reformidans accumsan eos laudem moderatius mediocrem. Altera homero assueverit graeci salutatus molestie.',
-        },
-        {
-            id: 'hello',
-            imgPath: '/static/cat_640x640.jpg',
-            title: 'Животные 222',
-            description: 'Dolor felis venenatis homero sapientem litora porttitor non epicuri consul. Mauris vituperata reformidans accumsan eos laudem moderatius mediocrem. Altera homero assueverit graeci salutatus molestie.',
-        },
-        {
-            id: 'hello',
-            imgPath: '/static/cat_640x640.jpg',
-            title: 'Животные 333',
-            description: 'Dolor felis venenatis homero sapientem litora porttitor non epicuri consul. Mauris vituperata reformidans accumsan eos laudem moderatius mediocrem. Altera homero assueverit graeci salutatus molestie.',
-        },
-        {
-            id: 'hello',
-            imgPath: '/static/cat_640x640.jpg',
-            title: 'Животные 444 asdasd dfsgds fdsg',
-            description: 'Dolor felis venenatis homero sapientem litora porttitor non epicuri consul. Mauris vituperata reformidans accumsan eos laudem moderatius mediocrem. Altera homero assueverit graeci salutatus molestie.',
-        },
-        {
-            id: 'hello',
-            imgPath: '/static/cat_640x640.jpg',
-            title: 'Животные 555',
-            description: 'Dolor felis venenatis homero sapientem litora porttitor non epicuri consul. Mauris vituperata reformidans accumsan eos laudem moderatius mediocrem. Altera homero assueverit graeci salutatus molestie.',
-        },
-        {
-            id: 'hello',
-            imgPath: '/static/cat_640x640.jpg',
-            title: 'Животные 666',
-            description: 'Dolor felis venenatis homero sapientem litora porttitor non epicuri consul. Mauris vituperata reformidans accumsan eos laudem moderatius mediocrem. Altera homero assueverit graeci salutatus molestie.',
-        },
-        {
-            id: 'hello',
-            imgPath: '/static/cat_640x640.jpg',
-            title: 'Животные 777',
-            description: 'Dolor felis venenatis homero sapientem litora porttitor non epicuri consul. Mauris vituperata reformidans accumsan eos laudem moderatius mediocrem. Altera homero assueverit graeci salutatus molestie.',
-        },
-        {
-            id: 'hello',
-            imgPath: '/static/cat_640x640.jpg',
-            title: 'Животные 888',
-            description: 'Dolor felis venenatis homero sapientem litora porttitor non epicuri consul. Mauris vituperata reformidans accumsan eos laudem moderatius mediocrem. Altera homero assueverit graeci salutatus molestie.',
-        },
-        {
-            id: 'hello',
-            imgPath: '/static/cat_640x640.jpg',
-            title: 'Животные 999',
-            description: 'Dolor felis venenatis homero sapientem litora porttitor non epicuri consul. Mauris vituperata reformidans accumsan eos laudem moderatius mediocrem. Altera homero assueverit graeci salutatus molestie.',
-        },
-    ]);
-
-
-    mapItems(sliderItems);
-
-    let timer;
-    const time = 5000;
-    let inTransition = false;
-    const itemContainer = ref();
-
-    const firstIndex = 1;
-    const lastIndex = sliderItems.value.length - 2;
-    const middleIndex = Math.ceil(sliderItems.value.length/2 - 1);
-
+    let sliderCount = 5;
+    const sliderItems = ref<IWordSet[]>([]);
     const sliderWidth = ref(1164);
+    let middleIndex = Math.ceil((sliderCount + 2)/2 - 1);
     const currentPos = ref(middleIndex);
     const gap = ref(100);
+    const itemContainer = ref();
 
+    const mappedItems = computed<IWordSet[]>(() => [
+        sliderItems.value[sliderItems.value.length - 1], 
+        ...sliderItems.value, 
+        sliderItems.value[0]
+    ]);
+    const firstIndex = 1;
+    const lastIndex = computed(() => mappedItems.value.length - 2);    
     const itemWidth = computed(() => sliderWidth.value);
     const offset = computed(() => itemWidth.value + gap.value);
     const currentX = computed(() => offset.value * -1 * currentPos.value);
+
+    
+    const time = 5000;
+    let inTransition = false;
+    let timer: ReturnType<typeof setInterval> | null;
+    
+    
+    fetch(apis.wordsets + '?count=' + sliderCount)
+    .then((res) => res.json())
+    .then((json: Res<IWordSet[]>) => {
+        sliderItems.value = json.data
+    })
 
 
     onMounted(() => {
@@ -129,9 +87,9 @@
     });
 
 
-    function onTabChange(e) {
+    function onTabChange(e: Event) {
         if (document.visibilityState === 'hidden') {
-            stopAutoSlide(timer)
+            stopAutoSlide()
         } else {
             startAutoSlide(time)
         }
@@ -140,19 +98,19 @@
         sliderWidth.value = itemContainer.value.offsetWidth;
     }
     function tryReset() {
-        if (currentPos.value > lastIndex) {
+        if (currentPos.value > lastIndex.value) {
             slideFastTo(firstIndex);
         }
         if(currentPos.value < firstIndex) {
-            slideFastTo(lastIndex);
+            slideFastTo(lastIndex.value);
         }
     }
 
-    function slideFastTo(index) {
+    function slideFastTo(index: number) {
         disableTransition();
         currentPos.value = index;
     }
-    function slideTo(index) {
+    function slideTo(index: number) {
         if (inTransition) {
             return
         }
@@ -167,7 +125,7 @@
     function slidePrev() {
         slideTo(currentPos.value - 1);
     }
-    function startAutoSlide(time) {
+    function startAutoSlide(time: number) {
         if (timer) {
             return
         }
@@ -177,11 +135,10 @@
         }, time)
     }
     function stopAutoSlide() {
-        clearInterval(timer);
-        timer = null;
-    }
-    function mapItems(itemsRef) {
-        itemsRef.value = [itemsRef.value[itemsRef.value.length - 1], ...itemsRef.value, itemsRef.value[0]];
+        if (timer) {
+            clearInterval(timer);
+            timer = null;
+        }
     }
     function disableTransition() {
         itemContainer.value.classList.remove('slider__item-container_transition')
@@ -190,7 +147,7 @@
         itemContainer.value.classList.add('slider__item-container_transition');
     }
     function addSelfRemovingListeners() {
-        let afterTransition = (e) => {
+        let afterTransition = (e: Event) => {
             if (e.target === itemContainer.value) {
                 disableTransition()
                 inTransition = false;
