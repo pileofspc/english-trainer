@@ -1,27 +1,24 @@
 <template>
     <div class="theme">
         <router-link class="theme__link block" :to="toRoute">
-            <img class="theme__link-img" :src="props.imgPath" :alt="props.title">
+            <img class="theme__link-img" :src="props.imgThemePath" :alt="props.title">
         </router-link>
         <div class="theme__data">
             <div class="theme__title large-block-title">{{ props.title }}</div>
             <div class="theme__description">{{ props.description }}</div>
-            <router-link
-                :to="toRoute"
-                class="theme__button-learn"
-            >
+            <router-link class="theme__button-learn" :to="toRoute">
                 <VButton variant="accent">Изучить</VButton>
             </router-link>
         </div>
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
     import VButton from "@components/VButton.vue";
 
     const props = defineProps({
         id: [String, Number],
-        imgPath: String,
+        imgThemePath: String,
         title: String,
         description: String
     })
@@ -41,9 +38,9 @@
         transform: translate(-100px);
 
         &__link {
-            max-width: 400px;
-            max-height: 400px;
-            flex-shrink: 0.15;
+            width: 300px;
+            height: 300px;
+            flex-shrink: 0;
             overflow: hidden;
 
             transition: transform 0.2s;

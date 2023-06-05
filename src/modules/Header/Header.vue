@@ -44,7 +44,7 @@
     import FormRegister from '@components/FormRegister.vue';
     import FormLogin from '@components/FormLogin.vue';
 
-    const showRegisterModal = ref(true);
+    const showRegisterModal = ref(false);
     const showLoginModal = ref(false);
 
     function closeModals() {

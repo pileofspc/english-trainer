@@ -1,55 +1,23 @@
 <template>
     <div class="inf-list-words">
         <CardWord class="inf-list-words__word"
-                  v-for="word in words"
-                  v-bind="word"
-        ></CardWord>
+                v-for="word in props.words"
+                v-bind="word"
+        />
     </div>
 </template>
 
-<script setup>
-    import { ref } from "vue";
+<script setup lang="ts">
     import CardWord from '@modules/CardWord/CardWord.vue';
+    import type { IWordShallow } from "@types";
+    import type { PropType } from "vue";
 
-    let words = ref(
-        [
-            {
-                imgPath: '/static/sport1.jpg',
-                word: 'Hello',
-                translation: 'Привет'
-            },
-            {
-                imgPath: '/static/sport1.jpg',
-                word: 'Hello',
-                translation: 'Привет'
-            },
-            {
-                imgPath: '/static/sport1.jpg',
-                word: 'Hello',
-                translation: 'Привет'
-            },
-            {
-                imgPath: '/static/sport1.jpg',
-                word: 'Hello',
-                translation: 'Привет'
-            },
-            {
-                imgPath: '/static/sport1.jpg',
-                word: 'Hello',
-                translation: 'Привет'
-            },
-            {
-                imgPath: '/static/sport1.jpg',
-                word: 'Hello',
-                translation: 'Привет'
-            },
-            {
-                imgPath: '/static/sport1.jpg',
-                word: 'Hello',
-                translation: 'Привет'
-            },
-        ]
-    );
+    const props = defineProps({
+        wordSetId: String,
+        words: {
+            type: Array as PropType<IWordShallow[] | undefined[]>,
+        }
+    })
 </script>
 
 <style scoped lang="scss">

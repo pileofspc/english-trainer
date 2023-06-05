@@ -1,7 +1,7 @@
 <template>
     <div class="review">
         <div class="review__img-container">
-            <img class="review__img" :src="imageUrl" alt="Фото автора отзыва">
+            <img class="review__img" :src="props.imgPath || DefaultImage" alt="Фото автора отзыва">
         </div>
         <div class="review__author small-block-title">{{ props.author }}</div>
         <div class="review__text">{{ props.text }}</div>
@@ -10,7 +10,6 @@
 
 <script setup>
     import DefaultImage from '@images/Artwork.svg';
-    import {onMounted, ref} from "vue";
 
     const props = defineProps({
         imgPath: String,
@@ -23,16 +22,6 @@
             required: true
         }
     });
-
-    const imageUrl = ref(null);
-    fetchImage();
-
-    function fetchImage() {
-        fetch(props.imgPath)
-            .then(res => res.blob())
-            .then(blob => imageUrl.value = URL.createObjectURL(blob))
-    }
-
 </script>
 
 <style lang="scss" scoped>
@@ -55,6 +44,9 @@
 
         &__author {
             margin-top: 12px;
+            margin-left: auto;
+            margin-right: auto;
+            width: min-content;
         }
 
         &__text {

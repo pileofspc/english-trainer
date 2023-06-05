@@ -16,10 +16,12 @@ const PATHS = {
     pages: path.resolve(__dirname, 'src', 'pages'),
     modules: path.resolve(__dirname,'src', 'modules'),
     components: path.resolve(__dirname, 'src', 'components'),
-    assets: path.resolve(__dirname, './src', 'assets'),
+    assets: path.resolve(__dirname, 'src', 'assets'),
     images: path.resolve(__dirname, 'src', 'assets', 'images'),
     styles: path.resolve(__dirname, 'src', 'assets', 'styles'),
     static: path.resolve(__dirname, 'src', 'static'),
+    stores: path.resolve(__dirname, 'src', 'stores'),
+    types: path.resolve(__dirname, 'src', 'pages', 'index', 'index.d.ts'),
 
     distJs: '.',
     distAssets: 'assets',
@@ -63,9 +65,11 @@ module.exports = exports = {
             "@root": PATHS.root,
             "@modules": PATHS.modules,
             "@components": PATHS.components,
+            "@pages": PATHS.pages,
             "@styles": PATHS.styles,
             "@images": PATHS.images,
-            "@pages": PATHS.pages
+            "@stores": PATHS.stores,
+            "@types": PATHS.types
         }
     },
     mode: 'development',

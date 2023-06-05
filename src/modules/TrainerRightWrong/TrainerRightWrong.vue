@@ -5,18 +5,18 @@
                 class="trainer__progress"
                 :current="correctAnswers"
                 :total="totalAnswers"
-                :max="data.length"
+                :max="props.trainerData.length"
             />
             <div class="trainer__middle">
-                <div class="trainer__word">{{ currentWordData.word }}</div>
-                <div class="trainer__translation">{{ currentWordData.visibleTranslation }}</div>
+                <div class="trainer__word">{{ currentWordData?.word }}</div>
+                <div class="trainer__translation">{{ currentWordData?.visibleTranslation }}</div>
                 <div class="trainer__status"
                     v-if="!showCurrentWordResult"
                 >
                     Верный ли это перевод?
                 </div>
                 <div class="trainer__status"
-                     v-if="showCurrentWordResult"
+                    v-if="showCurrentWordResult"
                 >
                     <svg class="trainer__status-svg" :style="{color: statusColor}">
                         <use :href="`#${statusIcon.id}`"></use>
@@ -55,67 +55,23 @@
 
 
 
-<script setup>
-    import {computed, reactive, ref} from "vue";
+<script setup lang="ts">
     import ProgressBarCounter from "@components/ProgressBarCounter.vue";
     import VButton from '@components/VButton.vue';
     import successImage from '@images/icons/Success.svg?sprite';
+    import { computed, ref } from "vue";
 
     import Checkmark from '@images/icons/Checkmark.svg?sprite';
     import Cross from '@images/icons/Cross.svg?sprite';
+    import type { PropType } from "vue";
+    import type { IRightWrongWord } from "@types";
 
-    let data = [
-        {
-            word: 'fever1',
-            visibleTranslation: 'лихорадка1',
-            actualTranslation: 'лихорадка1'
-        },
-        {
-            word: 'fever2',
-            visibleTranslation: 'стол2',
-            actualTranslation: 'лихорадка2'
-        },
-        {
-            word: 'fever3',
-            visibleTranslation: 'лихорадка3',
-            actualTranslation: 'лихорадка3'
-        },
-        {
-            word: 'fever4',
-            visibleTranslation: 'стол4',
-            actualTranslation: 'лихорадка4'
-        },
-        {
-            word: 'fever5',
-            visibleTranslation: 'лихорадка5',
-            actualTranslation: 'лихорадка5'
-        },
-        {
-            word: 'fever6',
-            visibleTranslation: 'стол6',
-            actualTranslation: 'лихорадка6'
-        },
-        {
-            word: 'fever7',
-            visibleTranslation: 'стол7',
-            actualTranslation: 'лихорадка7'
-        },
-        {
-            word: 'fever8',
-            visibleTranslation: 'стол8',
-            actualTranslation: 'лихорадка8'
-        },
-        {
-            word: 'fever9',
-            visibleTranslation: 'стол9',
-            actualTranslation: 'лихорадка9'
-        },
-        {
-            word: 'fever10',
-            visibleTranslation: 'стол10',
-            actualTranslation: 'лихорадка10'
-        },
-    ];
+    const props = defineProps({
+        trainerData: {
+            type: Array as PropType<IRightWrongWord[] | undefined[]>,
+            required: true
+        }
+    })
 
     const currentWordPos = ref(0);
     const correctAnswers = ref(0);
@@ -126,12 +82,12 @@
     const showCurrentWordResult = ref(false);
     const showResults = ref(false);
 
-    const currentWordData = computed(() => data[currentWordPos.value]);
-    const isTranslationCorrect = computed(() => currentWordData.value.visibleTranslation === currentWordData.value.actualTranslation);
+    const currentWordData = computed(() => props.trainerData[currentWordPos.value]);
+    const isTranslationCorrect = computed(() => currentWordData.value?.visibleTranslation === currentWordData.value?.actualTranslation);
     const correctAnswersText = computed(() => getRenderedText(correctAnswers.value));
     const wrongAnswersText = computed(() => getRenderedText(totalAnswers.value - correctAnswers.value));
 
-    function getRenderedText(number) {
+    function getRenderedText(number: number) {
         const lastDigit = number % 10;
         if (
             lastDigit === 2 ||
@@ -149,13 +105,13 @@
     }
 
     function nextWord() {
-        if (currentWordPos.value < data.length - 1) {
+        if (currentWordPos.value < props.trainerData.length - 1) {
             currentWordPos.value++;
         } else {
             showResults.value = true;
         }
     }
-    function checkUserAnswer(answer) {
+    function checkUserAnswer(answer: boolean) {
         if (showCurrentWordResult.value) {
             return
         }
@@ -186,7 +142,7 @@
             nextWord();
         }, 1000);
     }
-    function changeStatus(boolean) {
+    function changeStatus(boolean: boolean) {
         if (boolean === true) {
             statusIcon.value = Checkmark;
             statusText.value = 'Правильно';

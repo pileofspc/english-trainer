@@ -13,7 +13,7 @@
                         <div class="trainer-eng-to-rus__word">{{ currentWordData.word }}</div>
                         <div
                             class="trainer-eng-to-rus__transcription"
-                            v-if="props.from !== 'rus'"
+                            v-if="props.trainingType !== 'train-ru-en'"
                         >
                             {{ currentWordData.transcription }}
                         </div>
@@ -56,19 +56,18 @@
 
 
 
-<script setup>
+<script setup lang="ts">
     import { computed, ref } from "vue";
     import ProgressBarCounter from "@components/ProgressBarCounter.vue";
     import TrainerOption from '@modules/TrainerOption/TrainerOption.vue';
     import VButton from '@components/VButton.vue';
     import successImage from '@images/icons/Success.svg?sprite';
+    import type { PropType } from "vue";
+    import type { TrainingType } from "@types";
 
     const props = defineProps({
-        from: {
-            type: String,
-            validator(value) {
-                return ['rus', 'eng'].includes(value)
-            }
+        trainingType: {
+            type: String as PropType<TrainingType>
         },
     });
 

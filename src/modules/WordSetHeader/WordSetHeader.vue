@@ -2,7 +2,7 @@
     <div class="theme-header block">
         <div class="theme-header__theme">
             <div class="theme-header__img-container block">
-                <img class="theme-header__img" :src="props.imgPath" :alt="props.title">
+                <img class="theme-header__img" :src="props.imgThemePath" :alt="props.title">
             </div>
             <div class="theme-header__data">
                 <div class="theme-header__title block-title">{{ props.title }}</div>
@@ -12,9 +12,9 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
     const props = defineProps({
-        imgPath: String,
+        imgThemePath: String,
         title: String,
         description: String
     });
@@ -27,7 +27,7 @@
         overflow: hidden;
 
         background: white url('@images/Artwork.svg') no-repeat calc(100% + 20px) 0%;
-        background-size: auto 100%;
+        background-size: auto 101%;
 
         &__theme {
             display: flex;
@@ -36,8 +36,8 @@
         }
 
         &__img-container {
-            max-width: 180px;
-            max-height: 180px;
+            width: 180px;
+            height: 180px;
             overflow: hidden;
             align-self: center;
         }
@@ -52,7 +52,7 @@
             display: flex;
             flex-direction: column;
             font-size: 16px;
-            width: calc(100% - 440px);
+            width: calc(100% - 480px);
         }
 
         &__description {
