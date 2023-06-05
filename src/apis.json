@@ -1,9 +1,0 @@
-{
-  "wordset": "http://localhost:4000/api/word-set",
-  "wordsets": "http://localhost:4000/api/word-sets",
-  "wordofday": "http://localhost:4000/api/day-word",
-  "rightwrong": "http://localhost:4000/api/right-wrong",
-  "enru": "http://localhost:4000/api/en-ru",
-  "ruen": "http://localhost:4000/api/ru-en",
-  "reviews": "http://localhost:4000/api/reviews"
-}

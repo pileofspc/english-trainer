@@ -14,9 +14,9 @@
 
     import { useBreadcrumbsStore } from "@stores/storeBreadcrumbs";
     import { computed, ref, watch } from 'vue';
-    import type { IBreadcrumbItem, IWordSet, IWordSimple, Res } from '@types';
+    import type { IBreadcrumbItem, IWordSet, WordSetJson, IWordShallow, Res } from '@types';
     import { useRouter, useRoute } from 'vue-router';
-    import apis from '/src/apis.json';
+    import apis from '/src/api';
 
 
     const route = useRoute();
@@ -24,20 +24,22 @@
     const isLoading = ref(true);
 
     const wordSet = ref<IWordSet>();
-    const words = computed<IWordSimple[]>(() => wordSet.value?.words || []);
+    const words = computed<IWordShallow[]>(() => wordSet.value?.words || []);
 
     const breadCrumbs = computed<IBreadcrumbItem[]>(() => [
         { displayName: 'Главная' , to: { name: 'PageMain', replace: true }},
+        { displayName: 'Наборы слов' , to: { name: 'PageMain', replace: true }},
         { displayName: wordSet.value?.title || '' },
     ])
     const bcstore = useBreadcrumbsStore();
+    // вотчер вместо присваивания компьютед свойства нужен, чтобы избежать ошибки типов
     watch(breadCrumbs, () => {
         bcstore.breadcrumbs = breadCrumbs.value
     })
 
     fetch(apis.wordset + '?id=' + route.params.wordSetId)
     .then( (res) => res.json() )
-    .then( (res: Res<IWordSet>) => {
+    .then( (res: Res<WordSetJson>) => {
         if (res.status) {
             wordSet.value = res.data
             isLoading.value = false

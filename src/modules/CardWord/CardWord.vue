@@ -1,7 +1,7 @@
 <template>
     <div class="card-word card">
         <div class="card-word__img-container">
-            <img class="card-word__img" :src="props.img" alt="Слово">
+            <img class="card-word__img" :src="props.img" :alt="props.translation || 'Слово'">
         </div>
         <div class="card-word__word">
             <div class="card-word__title">{{ props.word }}</div>
@@ -34,19 +34,17 @@
         &__img-container {
             border-radius: 8px;
             overflow: hidden;
-
             width: 100%;
-            height: 80%;
+            height: 160px;
         }
-        
-        &__data {
-            text-align: center;
-        }
-
         &__img {
             height: 100%;
             width: 100%;
             object-fit: cover;
+        }
+        
+        &__data {
+            text-align: center;
         }
 
         &__word {

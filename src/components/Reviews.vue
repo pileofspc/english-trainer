@@ -11,16 +11,16 @@
 
 <script setup lang="ts">
     import Review from '@components/Review.vue';
-    import apis from '/src/apis.json';
+    import apis from '/src/api';
     import { ref } from 'vue';
-    import type { IReview, Res } from '/src/pages/index';
+    import type { ReviewsJson, Res } from '/src/pages/index';
 
     const isLoading = ref(true);
-    const reviews = ref<IReview[]>([]);
+    const reviews = ref<ReviewsJson>([]);
 
     fetch(apis.reviews + '?count=5')
     .then(res => res.json())
-    .then((json: Res<IReview[]>) => {
+    .then((json: Res<ReviewsJson>) => {
         reviews.value = json.data
         isLoading.value = false;
     })

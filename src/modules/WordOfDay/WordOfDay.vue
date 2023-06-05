@@ -10,11 +10,11 @@
 
 <script setup lang="ts">
     import Doughnut from '@components/Doughnut.vue';
-    import apis from '/src/apis.json';
+    import apis from '/src/api';
     import { computed, ref } from 'vue';
-    import type { IWord, Res } from '@types';
+    import type { WordOfDayJson, Res } from '@types';
 
-    const wordData = ref<IWord>();
+    const wordData = ref<WordOfDayJson>();
     const word = computed(() => wordData.value?.word);
     const transcription = computed(() => wordData.value?.transcription);
     const chartItems = computed(
@@ -24,7 +24,7 @@
 
     fetch(apis.wordofday)
     .then((res) => res.json())
-    .then((json: Res<IWord>) => {
+    .then((json: Res<WordOfDayJson>) => {
         wordData.value = json.data;
     });
 

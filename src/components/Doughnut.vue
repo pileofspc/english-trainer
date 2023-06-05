@@ -93,9 +93,9 @@
         },
     })
 
-    const names = computed(() => props.items?.map(item => item.name));
-    const values = computed(() => props.items?.map(item => item.value));
-    const sum = computed(() => values.value?.reduce( (sum, el) => sum + el ));
+    const names = computed(() => props.items.map(item => item.name));
+    const values = computed(() => props.items.map(item => item.value));
+    const sum = computed(() => values.value.reduce( (sum, el) => sum + el ));
 
 
     const chartData = computed( () => {

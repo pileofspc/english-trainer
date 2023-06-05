@@ -10,7 +10,7 @@
                     :bg="trainDefault"
                 />
             </router-link>
-            <router-link :to="{name: 'PageTrain', params: { trainingType: 'train-eng-rus'} }">
+            <router-link :to="{name: 'PageTrain', params: { trainingType: 'train-en-ru'} }">
                 <TrainLink
                     class="hollow-card"
                     title="С английского на русский"
@@ -18,7 +18,7 @@
                     :bg="trainEngRus"
                 />
             </router-link>
-            <router-link :to="{name: 'PageTrain', params: { trainingType: 'train-rus-eng'} }">
+            <router-link :to="{name: 'PageTrain', params: { trainingType: 'train-ru-en'} }">
                 <TrainLink
                     class="hollow-card"
                     title="С русского на английский"
@@ -30,7 +30,7 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
     import TrainLink from "@modules/TrainLink/TrainLink.vue";
     import trainDefault from "@images/trainers/train.png";
     import trainEngRus from "@images/trainers/train-eng-rus.png";

@@ -32,15 +32,13 @@
 </template>
 
 <script setup lang="ts">
-    import apis from '/src/apis.json';
-    import WordSet from '@modules/WordSet/WordSet.vue';
     import ChevronLeft from '@images/icons/ChevronLeft.svg?sprite';
     import ChevronRight from '@images/icons/ChevronRight.svg?sprite';
+    import WordSet from '@modules/WordSet/WordSet.vue';
+    import type { IWordSet, Res, WordSetsJson } from '@types';
+    import { v4 as uuidv4 } from 'uuid';
     import { computed, onBeforeUnmount, onMounted, ref } from "vue";
-    import type { Ref } from 'vue';
-    import type { IWordSet, Res } from '@types';
-    import { watch } from 'vue';
-    import {v4 as uuidv4} from 'uuid';
+    import apis from '/src/api';
     
 
     let sliderCount = 5;
@@ -70,7 +68,7 @@
     
     fetch(apis.wordsets + '?count=' + sliderCount)
     .then((res) => res.json())
-    .then((json: Res<IWordSet[]>) => {
+    .then((json: Res<WordSetsJson>) => {
         sliderItems.value = json.data
     })
 
