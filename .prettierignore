@@ -1,0 +1,8 @@
+node_modules/
+static/
+dist/
+backup/
+.env
+.vscode
+.idea
+dependency-graph.html

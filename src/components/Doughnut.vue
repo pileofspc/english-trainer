@@ -1,13 +1,22 @@
 <template>
     <div class="pie-chart">
         <div class="pie-chart__chart-container">
-            <Doughnut class="pie-chart__chart" :options="chartOptions" :data="chartData" />
+            <Doughnut
+                class="pie-chart__chart"
+                :options="chartOptions"
+                :data="chartData"
+            />
         </div>
         <div class="pie-chart__data">
             <div class="pie-chart__item" v-for="(item, index) in props.items">
-                <div class="pie-chart__item-square" :style="{ backgroundColor: colors[index] }"></div>
-                <div class="pie-chart__item-percentage">{{ `${getPercentage(item.value, sum )}` }}</div>
-                <div class="pie-chart__item-text">{{ `${item.name}` }}</div>
+                <div
+                    class="pie-chart__item-square"
+                    :style="{ backgroundColor: colors[index] }"
+                ></div>
+                <div class="pie-chart__item-percentage">
+                    {{ `${getPercentage(item?.value, sum)}` }}
+                </div>
+                <div class="pie-chart__item-text">{{ `${item?.name}` }}</div>
             </div>
         </div>
     </div>
@@ -20,44 +29,45 @@
     // В типах ChartJS ошибка, или я что-то не понял. ТС ругается на то, что я передаю массив colors, а не строку, хотя всё прекрасно работает и с массивом.
     // Так как ошибку показывает в темплейте, и я не знаю как заглушить конкретную ошибку в нем, пришлось отключать проверку для всего файла, а не для конкретной строки.
     import { computed, ref } from "vue";
-    import { Doughnut } from 'vue-chartjs';
-    import { Chart, PieController, ArcElement, Tooltip } from 'chart.js';
+    import { Doughnut } from "vue-chartjs";
+    import { Chart, PieController, ArcElement, Tooltip } from "chart.js";
     import type { PropType } from "vue";
     import type { IDoughnutItem } from "@types";
 
     const props = defineProps({
         items: {
-            type: Array as PropType<IDoughnutItem[]>,
+            type: Array as PropType<IDoughnutItem[] | undefined[]>,
             required: true,
-        }
-    })
+        },
+    });
 
     Chart.register(PieController, ArcElement, Tooltip);
 
     // Максимум 5 элементов и соответственно 5 цветов
     const rootStyle = getComputedStyle(document.documentElement);
     const colors = [
-        rootStyle.getPropertyValue('--c-warning'),
-        rootStyle.getPropertyValue('--c-success'),
-        rootStyle.getPropertyValue('--c-primary'),
-        rootStyle.getPropertyValue('--c-shade'),
-        rootStyle.getPropertyValue('--c-graph'),
+        rootStyle.getPropertyValue("--c-warning"),
+        rootStyle.getPropertyValue("--c-success"),
+        rootStyle.getPropertyValue("--c-primary"),
+        rootStyle.getPropertyValue("--c-shade"),
+        rootStyle.getPropertyValue("--c-graph"),
     ];
 
     function sliceText(maxChars: number, text: string): string[] | string {
         if (text.length <= maxChars) {
-            return text
+            return text;
         }
-        
+
+        function getSpaceIndex() {
+            const before = currentSlice.lastIndexOf(" ", maxChars);
+            if (before !== -1) {
+                return before;
+            }
+            return currentSlice.indexOf(" ", maxChars);
+        }
+
         let currentSlice = text;
         let result = [];
-        function getSpaceIndex() {
-            const before = currentSlice.lastIndexOf(' ', maxChars);
-            if (before !== -1) {
-                return before
-            }
-            return currentSlice.indexOf(' ', maxChars)
-        }
         let closestSpaceIndex = getSpaceIndex();
         while (closestSpaceIndex !== -1) {
             result.push(currentSlice.slice(0, closestSpaceIndex));
@@ -65,9 +75,9 @@
             closestSpaceIndex = getSpaceIndex();
         }
         if (currentSlice.length > 0) {
-            result.push(currentSlice)
+            result.push(currentSlice);
         }
-        return result
+        return result;
     }
 
     const chartOptions = ref({
@@ -78,46 +88,45 @@
                 callbacks: {
                     title(context: any) {
                         const label: string = context[0].label;
-                        return sliceText(24, label)
+                        return sliceText(24, label);
                     },
                     label(context: any) {
-                        return getPercentage(context.parsed, sum.value )
-                    }
-                }
+                        return getPercentage(context.parsed, sum.value);
+                    },
+                },
             },
             animation: {
                 animateRotate: true,
                 duration: 1000,
-                easing: 'easeOutQuad'
-            }
+                easing: "easeOutQuad",
+            },
         },
-    })
+    });
 
-    const names = computed(() => props.items.map(item => item.name));
-    const values = computed(() => props.items.map(item => item.value));
-    const sum = computed(() => values.value.reduce( (sum, el) => sum + el ));
+    const names = computed(() => props.items.map((item) => item?.name));
+    const values = computed(() => props.items.map((item) => item?.value));
+    const sum = computed(() =>
+        values.value.reduce((sum, el) => (sum || 0) + (el || 0))
+    );
 
-
-    const chartData = computed( () => {
+    const chartData = computed(() => {
         return {
             labels: names.value,
             datasets: [
-                { 
+                {
                     data: values.value,
-                    backgroundColor: colors
-                }
+                    backgroundColor: colors,
+                },
             ],
-        }
+        };
     });
-    
 
     function getPercentage(value: number = 0, total: number = 0) {
-        return `${Math.round(value / total * 100)}%`
+        return `${Math.round((value / total) * 100)}%`;
     }
 </script>
 
 <style lang="scss" scoped>
-
     .pie-chart {
         display: flex;
         align-items: center;

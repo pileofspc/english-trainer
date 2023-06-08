@@ -1,7 +1,13 @@
 <template>
     <div class="progress-bar">
         <div class="progress-bar__total">
-            <div class="progress-bar__current" :style="{width: `${props.value * 100}%`, transition: props.transition}"></div>
+            <div
+                class="progress-bar__current"
+                :style="{
+                    width: `${props.value * 100}%`,
+                    transition: props.transition,
+                }"
+            ></div>
         </div>
     </div>
 </template>
@@ -10,15 +16,17 @@
     const props = defineProps({
         value: {
             type: [Number, String],
-            required: true,
+            default: 0,
             validator(value) {
-                return parseFloat(value) >= 0 && parseFloat(value) <= 1
-            }
+                return (
+                    isNaN(value) ||
+                    (parseFloat(value) >= 0 && parseFloat(value) <= 1)
+                );
+            },
         },
         transition: {
             type: String,
-            default: 'none'
-        }
+        },
     });
 </script>
 

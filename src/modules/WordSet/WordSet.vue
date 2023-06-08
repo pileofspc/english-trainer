@@ -1,7 +1,11 @@
 <template>
     <div class="theme">
         <router-link class="theme__link block" :to="toRoute">
-            <img class="theme__link-img" :src="props.imgThemePath" :alt="props.title">
+            <img
+                class="theme__link-img"
+                :src="props.imgThemePath"
+                :alt="props.title"
+            />
         </router-link>
         <div class="theme__data">
             <div class="theme__title large-block-title">{{ props.title }}</div>
@@ -20,8 +24,8 @@
         id: [String, Number],
         imgThemePath: String,
         title: String,
-        description: String
-    })
+        description: String,
+    });
 
     const toRoute = `/word-set/${props.id}`;
 </script>

@@ -11,17 +11,24 @@
             </svg>
         </button>
 
-
-        <div class="slider__item-container"
+        <div
+            class="slider__item-container"
+            :class="{ 'slider__item-container_transition': inTransition }"
             ref="itemContainer"
-            :style="{ transform: `translate(${currentX}px)`}"
+            :style="{ transform: `translate(${currentX}px)` }"
         >
-            <WordSet v-for="item in mappedItems" :key="uuidv4()"
-                    v-bind="item"
-                    class="slider__item">
+            <!-- Транзишны убраны, чтобы они не мешали itemContainer'у -->
+            <WordSet
+                v-for="item in mappedItems"
+                @transitionstart.stop
+                @transitionend.stop
+                @transitioncancel.stop
+                :key="uuidv4()"
+                v-bind="item"
+                class="slider__item"
+            >
             </WordSet>
         </div>
-
 
         <button class="slider__slide slider__slide_right" @click="slideNext">
             <svg class="slider__slide-svg">
@@ -32,90 +39,90 @@
 </template>
 
 <script setup lang="ts">
-    import ChevronLeft from '@images/icons/ChevronLeft.svg?sprite';
-    import ChevronRight from '@images/icons/ChevronRight.svg?sprite';
-    import WordSet from '@modules/WordSet/WordSet.vue';
-    import type { IWordSet, Res, WordSetsJson } from '@types';
-    import { v4 as uuidv4 } from 'uuid';
+    import ChevronLeft from "@images/icons/ChevronLeft.svg?sprite";
+    import ChevronRight from "@images/icons/ChevronRight.svg?sprite";
+    import WordSet from "@modules/WordSet/WordSet.vue";
+    import type { IWordSet, WordSetsJson } from "@types";
+    import { v4 as uuidv4 } from "uuid";
     import { computed, onBeforeUnmount, onMounted, ref } from "vue";
-    import apis from '/src/api';
-    
+    import apis from "/src/api";
+
+    const time = 5000;
+    let timer: ReturnType<typeof setInterval> | null;
 
     let sliderCount = 5;
     const sliderItems = ref<IWordSet[]>([]);
     const sliderWidth = ref(1164);
-    let middleIndex = Math.ceil((sliderCount + 2)/2 - 1);
+    let middleIndex = Math.ceil((sliderCount + 2) / 2 - 1);
     const currentPos = ref(middleIndex);
     const gap = ref(100);
-    const itemContainer = ref();
+    const inTransition = ref(false);
+    const itemContainer = ref<HTMLDivElement | null>(null);
 
     const mappedItems = computed<IWordSet[]>(() => [
-        sliderItems.value[sliderItems.value.length - 1], 
-        ...sliderItems.value, 
-        sliderItems.value[0]
+        sliderItems.value[sliderItems.value.length - 1],
+        ...sliderItems.value,
+        sliderItems.value[0],
     ]);
     const firstIndex = 1;
-    const lastIndex = computed(() => mappedItems.value.length - 2);    
+    const lastIndex = computed(() => mappedItems.value.length - 2);
     const itemWidth = computed(() => sliderWidth.value);
     const offset = computed(() => itemWidth.value + gap.value);
     const currentX = computed(() => offset.value * -1 * currentPos.value);
 
-    
-    const time = 5000;
-    let inTransition = false;
-    let timer: ReturnType<typeof setInterval> | null;
-    
-    
-    fetch(apis.wordsets + '?count=' + sliderCount)
-    .then((res) => res.json())
-    .then((json: Res<WordSetsJson>) => {
-        sliderItems.value = json.data
-    })
-
+    fetch(apis.wordsets + "?count=" + sliderCount)
+        .then((res) => res.json())
+        .then((json: WordSetsJson) => {
+            sliderItems.value = json.data;
+        });
 
     onMounted(() => {
         startAutoSlide(time);
         // Это нужно для избежания перемотки на большое расстояние когда вкладка неактивна
-        window.addEventListener('visibilitychange', onTabChange);
+        window.addEventListener("visibilitychange", onTabChange);
     });
 
     onBeforeUnmount(() => {
         stopAutoSlide();
-        window.removeEventListener('visibilitychange', onTabChange);
+        window.removeEventListener("visibilitychange", onTabChange);
     });
 
-
     function onTabChange(e: Event) {
-        if (document.visibilityState === 'hidden') {
-            stopAutoSlide()
+        if (document.visibilityState === "hidden") {
+            stopAutoSlide();
         } else {
-            startAutoSlide(time)
+            startAutoSlide(time);
         }
     }
     function update() {
-        sliderWidth.value = itemContainer.value.offsetWidth;
+        if (itemContainer.value?.offsetWidth) {
+            sliderWidth.value = itemContainer.value.offsetWidth;
+        }
     }
     function tryReset() {
         if (currentPos.value > lastIndex.value) {
             slideFastTo(firstIndex);
         }
-        if(currentPos.value < firstIndex) {
+        if (currentPos.value < firstIndex) {
             slideFastTo(lastIndex.value);
         }
     }
 
     function slideFastTo(index: number) {
-        disableTransition();
+        inTransition.value = false;
         currentPos.value = index;
     }
     function slideTo(index: number) {
-        if (inTransition) {
-            return
+        if (inTransition.value) {
+            return;
         }
-        enableTransition();
+
+        inTransition.value = true;
         currentPos.value = index;
-        inTransition = true;
-        addSelfRemovingListeners();
+        afterTransition(() => {
+            inTransition.value = false;
+            tryReset();
+        });
     }
     function slideNext() {
         slideTo(currentPos.value + 1);
@@ -125,12 +132,12 @@
     }
     function startAutoSlide(time: number) {
         if (timer) {
-            return
+            return;
         }
 
         timer = setInterval(() => {
-            slideNext()
-        }, time)
+            slideNext();
+        }, time);
     }
     function stopAutoSlide() {
         if (timer) {
@@ -138,25 +145,17 @@
             timer = null;
         }
     }
-    function disableTransition() {
-        itemContainer.value.classList.remove('slider__item-container_transition')
-    }
-    function enableTransition() {
-        itemContainer.value.classList.add('slider__item-container_transition');
-    }
-    function addSelfRemovingListeners() {
-        let afterTransition = (e: Event) => {
-            if (e.target === itemContainer.value) {
-                disableTransition()
-                inTransition = false;
-                tryReset();
-
-                itemContainer.value.removeEventListener('transitionend', afterTransition);
-                itemContainer.value.removeEventListener('transitioncancel', afterTransition);
-            }
+    function afterTransition(callback: Function) {
+        let doThis = (e: Event) => {
+            callback(e);
+            itemContainer.value?.removeEventListener("transitionend", doThis);
+            itemContainer.value?.removeEventListener(
+                "transitioncancel",
+                doThis
+            );
         };
-        itemContainer.value.addEventListener('transitionend', afterTransition);
-        itemContainer.value.addEventListener('transitioncancel', afterTransition);
+        itemContainer.value?.addEventListener("transitionend", doThis);
+        itemContainer.value?.addEventListener("transitioncancel", doThis);
     }
 </script>
 

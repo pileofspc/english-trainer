@@ -5,32 +5,43 @@
                 class="trainer-eng-to-rus__progress"
                 :current="correctAnswers"
                 :total="totalAnswers"
-                :max="data.length"
+                :max="trainerData.length"
             />
             <div class="trainer-eng-to-rus__middle">
                 <div class="trainer-eng-to-rus__main">
                     <div class="trainer-eng-to-rus__word-data">
-                        <div class="trainer-eng-to-rus__word">{{ currentWordData.word }}</div>
+                        <div class="trainer-eng-to-rus__word">
+                            {{ currentWordData?.word }}
+                        </div>
                         <div
                             class="trainer-eng-to-rus__transcription"
                             v-if="props.trainingType !== 'train-ru-en'"
                         >
-                            {{ currentWordData.transcription }}
+                            {{ currentWordData?.transcription }}
                         </div>
-                        <div class="trainer-eng-to-rus__image-container" :class="{'trainer-eng-to-rus__image-container_blurred': !revealed}">
-                            <img class="trainer-eng-to-rus__image" :src="currentWordData.imgPath" alt="">
+                        <div
+                            class="trainer-eng-to-rus__image-container"
+                            :class="{
+                                'trainer-eng-to-rus__image-container_blurred':
+                                    !revealed,
+                            }"
+                        >
+                            <img
+                                class="trainer-eng-to-rus__image"
+                                :src="currentWordData?.img"
+                                alt=""
+                            />
                         </div>
                     </div>
                     <div class="trainer-eng-to-rus__options">
                         <TrainerOption
                             v-for="option in options"
                             class="trainer-eng-to-rus__option"
-                            :translation="option.translation"
+                            :word="option.word"
                             :status="option.status"
                             @click="onChoose(option)"
                         />
                     </div>
-
                 </div>
                 <div class="trainer-eng-to-rus__controls">
                     <VButton
@@ -45,179 +56,76 @@
         </div>
         <div class="trainer-eng-to-rus__results" v-if="showResults">
             <svg class="trainer-eng-to-rus__result-image">
-                <use :href="`#${ successImage.id }`"></use>
+                <use :href="`#${successImage.id}`"></use>
             </svg>
-            <div class="trainer-eng-to-rus__result-title">Упражнение завершено</div>
-            <div class="trainer-eng-to-rus__result-description">Вы правильно перевели {{ correctAnswersText }}, переведено неправильно {{ wrongAnswersText }}</div>
+            <div class="trainer-eng-to-rus__result-title">
+                Упражнение завершено
+            </div>
+            <div class="trainer-eng-to-rus__result-description">
+                Вы правильно перевели {{ correctAnswersText }}, переведено
+                неправильно {{ wrongAnswersText }}
+            </div>
         </div>
     </div>
 </template>
 
-
-
-
 <script setup lang="ts">
-    import { computed, ref } from "vue";
     import ProgressBarCounter from "@components/ProgressBarCounter.vue";
-    import TrainerOption from '@modules/TrainerOption/TrainerOption.vue';
-    import VButton from '@components/VButton.vue';
-    import successImage from '@images/icons/Success.svg?sprite';
+    import VButton from "@components/VButton.vue";
+    import successImage from "@images/icons/Success.svg?sprite";
+    import TrainerOption from "@modules/TrainerOption/TrainerOption.vue";
+    import type {
+        ITrainerOption,
+        IWithOptionsWord,
+        TrainWithOptionJson,
+        TrainingType,
+    } from "@types";
     import type { PropType } from "vue";
-    import type { TrainingType } from "@types";
+    import { computed, ref } from "vue";
+    import api from "/src/api";
 
     const props = defineProps({
         trainingType: {
-            type: String as PropType<TrainingType>
+            type: String as PropType<TrainingType>,
+        },
+        wordSetId: {
+            type: String,
+            required: true,
         },
     });
 
-    let data = [
-        {
-            word: 'wren',
-            transcription: '[ren]',
-            imgPath: '/static/words/krapivnik.jpg',
-            options: [
-                {
-                    translation: 'Настольный теннис',
-                    isCorrect: false
-                },
-                {
-                    translation: 'Крапивник',
-                    isCorrect: true
-                },
-                {
-                    translation: 'Торговля',
-                    isCorrect: false
-                },
-                {
-                    translation: 'Настольный теннис',
-                    isCorrect: false
-                },
-                {
-                    translation: 'Настольный теннис',
-                    isCorrect: false
-                },
-            ]
-        },
-        {
-            word: 'fever',
-            transcription: '[ˈfiːvə(r)]',
-            imgPath: '/static/words/lihoradka.jpg',
-            options: [
-                {
-                    translation: 'Настольный теннис',
-                    isCorrect: false
-                },
-                {
-                    translation: 'Крапивник',
-                    isCorrect: false
-                },
-                {
-                    translation: 'Лихорадка',
-                    isCorrect: true
-                },
-                {
-                    translation: 'Настольный теннис',
-                    isCorrect: false
-                },
-                {
-                    translation: 'Настольный теннис',
-                    isCorrect: false
-                },
-            ]
-        },
-        {
-            word: 'fever2',
-            transcription: '[ˈfiːvə(r)2]',
-            imgPath: '/static/words/krapivnik.jpg',
-            options: [
-                {
-                    translation: 'Настольный теннис',
-                    isCorrect: false
-                },
-                {
-                    translation: 'Крапивник',
-                    isCorrect: false
-                },
-                {
-                    translation: 'Настольный теннис',
-                    isCorrect: false
-                },
-                {
-                    translation: 'Настольный теннис',
-                    isCorrect: false
-                },
-                {
-                    translation: 'Лихорадка2',
-                    isCorrect: true
-                },
-            ]
-        },
-        {
-            word: 'fever3',
-            transcription: '[ˈfiːvə(r)3]',
-            imgPath: '/static/words/krapivnik.jpg',
-            options: [
-                {
-                    translation: 'Настольный теннис',
-                    isCorrect: false
-                },
-                {
-                    translation: 'Лихорадка3',
-                    isCorrect: true
-                },
-                {
-                    translation: 'Крапивник',
-                    isCorrect: false
-                },
-                {
-                    translation: 'Настольный теннис',
-                    isCorrect: false
-                },
-                {
-                    translation: 'Настольный теннис',
-                    isCorrect: false
-                },
-            ]
-        },
-    ];
-
+    const trainerData = ref<IWithOptionsWord[] | undefined[]>([]);
     const currentWordPos = ref(0);
     const showResults = ref(false);
     const revealed = ref(false);
-    const currentChosen = ref(null);
+    const currentChosen = ref<ITrainerOption | null>(null);
     const correctAnswers = ref(0);
     const totalAnswers = ref(0);
 
-    const currentWordData = computed(() => data[currentWordPos.value]);
-    const options = computed( () => currentWordData.value.options.map(option => {
-        option.status = null;
-        return option
-    }));
-    const correctAnswersText = computed(() => getRenderedText(correctAnswers.value));
-    const wrongAnswersText = computed(() => getRenderedText(totalAnswers.value - correctAnswers.value));
+    const currentWordData = computed(
+        () => trainerData.value[currentWordPos.value]
+    );
+    const options = computed(() => currentWordData.value?.options || []);
+    const correctAnswersText = computed(() =>
+        getRenderedText(correctAnswers.value)
+    );
+    const wrongAnswersText = computed(() =>
+        getRenderedText(totalAnswers.value - correctAnswers.value)
+    );
 
-    function getRenderedText(number) {
+    function getRenderedText(number: number) {
         const lastDigit = number % 10;
-        if (
-            lastDigit === 2 ||
-            lastDigit === 3 ||
-            lastDigit === 4
-        ) {
-            return `${number} слова`
-        } else if (
-            lastDigit === 1
-        ) {
-            return `${number} слово`
+        if (lastDigit === 2 || lastDigit === 3 || lastDigit === 4) {
+            return `${number} слова`;
+        } else if (lastDigit === 1) {
+            return `${number} слово`;
         } else {
-            return `${number} слов`
+            return `${number} слов`;
         }
     }
 
-
-
     function nextWord() {
-        if (currentWordPos.value < data.length - 1) {
+        if (currentWordPos.value < trainerData.value.length - 1) {
             currentWordPos.value++;
         } else {
             showResults.value = true;
@@ -236,38 +144,45 @@
         totalAnswers.value++;
     }
 
-    function revealCorrect(chosenOption) {
+    function revealCorrect(chosenOption: ITrainerOption) {
         for (const option of options.value) {
             if (option.isCorrect && option !== chosenOption) {
-                option.status = 'correct';
+                option.status = "correct";
             }
         }
     }
-    function revealChosen(chosenOption) {
+    function revealChosen(chosenOption: ITrainerOption) {
         if (chosenOption.isCorrect) {
-            chosenOption.status = 'chosen-correct';
+            chosenOption.status = "chosen-correct";
         } else {
-            chosenOption.status = 'chosen-incorrect';
+            chosenOption.status = "chosen-incorrect";
         }
     }
-    function onChoose(chosenOption) {
+    function onChoose(chosenOption: ITrainerOption) {
         if (revealed.value) {
-            return
+            return;
         }
         revealCorrect(chosenOption);
         revealChosen(chosenOption);
         revealed.value = true;
         currentChosen.value = chosenOption;
         if (currentChosen.value.isCorrect) {
-            userAnsweredCorrectly()
+            userAnsweredCorrectly();
         } else {
-            userAnsweredIncorrectly()
+            userAnsweredIncorrectly();
         }
     }
+
+    let url =
+        props.trainingType === "train-en-ru"
+            ? api["train-en-ru"]
+            : api["train-ru-en"];
+    fetch(`${url}?id=${props.wordSetId}`)
+        .then((res) => res.json())
+        .then((json: TrainWithOptionJson) => {
+            trainerData.value = json.data.trainerData;
+        });
 </script>
-
-
-
 
 <style lang="scss" scoped>
     .trainer-eng-to-rus {
@@ -315,9 +230,6 @@
             height: 100%;
             width: 100%;
             object-fit: cover;
-        }
-
-        &__options {
         }
 
         &__controls {

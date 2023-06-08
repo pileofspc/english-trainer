@@ -2,7 +2,9 @@
     <div class="train-links block">
         <div class="block-title">Тренировки по данному набору</div>
         <div class="train-links__links">
-            <router-link :to="{ name: 'PageTrain', params: { trainingType: 'train'} }">
+            <router-link
+                :to="{ name: 'PageTrain', params: { trainingType: 'train' } }"
+            >
                 <TrainLink
                     class="hollow-card"
                     title="Верно не верно"
@@ -10,7 +12,12 @@
                     :bg="trainDefault"
                 />
             </router-link>
-            <router-link :to="{name: 'PageTrain', params: { trainingType: 'train-en-ru'} }">
+            <router-link
+                :to="{
+                    name: 'PageTrain',
+                    params: { trainingType: 'train-en-ru' },
+                }"
+            >
                 <TrainLink
                     class="hollow-card"
                     title="С английского на русский"
@@ -18,7 +25,12 @@
                     :bg="trainEngRus"
                 />
             </router-link>
-            <router-link :to="{name: 'PageTrain', params: { trainingType: 'train-ru-en'} }">
+            <router-link
+                :to="{
+                    name: 'PageTrain',
+                    params: { trainingType: 'train-ru-en' },
+                }"
+            >
                 <TrainLink
                     class="hollow-card"
                     title="С русского на английский"

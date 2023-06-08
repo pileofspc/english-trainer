@@ -1,16 +1,26 @@
 <template>
     <div class="breadcrumbs block">
-        <template v-for="item, index in props.items">
-            <component  class="breadcrumbs__item" :is="item.to ? 'router-link' : 'div'"
+        <template v-for="(item, index) in props.items">
+            <component
+                class="breadcrumbs__item"
+                :is="item.to ? 'router-link' : 'div'"
                 :to="item.to"
-                :style="{ color: index === props.items.length - 1 ? 'var(--c-secondary)' : '' }"
+                :style="{
+                    color:
+                        index === props.items.length - 1
+                            ? 'var(--c-secondary)'
+                            : '',
+                }"
             >
                 <svg class="breadcrumbs__home" v-if="index === 0">
                     <use :href="`#${HomeImage.id}`"></use>
                 </svg>
                 {{ item.displayName }}
             </component>
-            <svg class="breadcrumbs__divider" v-if="index !== props.items.length - 1">
+            <svg
+                class="breadcrumbs__divider"
+                v-if="index !== props.items.length - 1"
+            >
                 <use :href="`#${ChevronRight.id}`"></use>
             </svg>
         </template>
@@ -18,18 +28,17 @@
 </template>
 
 <script setup lang="ts">
-    import type { PropType} from "vue";
-    import type { IBreadcrumbItem} from "@types";
-    import HomeImage from '@images/icons/Home.svg?sprite';
-    import ChevronRight from '@images/icons/ChevronRight.svg?sprite';
+    import type { PropType } from "vue";
+    import type { IBreadcrumb } from "@types";
+    import HomeImage from "@images/icons/Home.svg?sprite";
+    import ChevronRight from "@images/icons/ChevronRight.svg?sprite";
 
-    
     const props = defineProps({
         items: {
-            type: Array as PropType<IBreadcrumbItem[]>,
+            type: Array as PropType<IBreadcrumb[]>,
             required: true,
-        }
-    })
+        },
+    });
 </script>
 
 <style lang="scss" scoped>

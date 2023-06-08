@@ -1,15 +1,23 @@
 <template>
-    <div class="trainer-option"
+    <div
+        class="trainer-option"
         :class="{
             'trainer-option_chosen-correct': props.status === 'chosen-correct',
-            'trainer-option_chosen-incorrect': props.status === 'chosen-incorrect',
+            'trainer-option_chosen-incorrect':
+                props.status === 'chosen-incorrect',
             'trainer-option_correct': props.status === 'correct',
         }"
     >
         <div class="trainer-option__main input">
-            <span class="trainer-option__value">{{ props.translation }}</span>
+            <span class="trainer-option__value">{{ props.word }}</span>
         </div>
-        <div class="trainer-option__status" v-if="props.status === 'chosen-incorrect' || props.status === 'chosen-correct' ">
+        <div
+            class="trainer-option__status"
+            v-if="
+                props.status === 'chosen-incorrect' ||
+                props.status === 'chosen-correct'
+            "
+        >
             <svg class="trainer-option__status-svg">
                 <use :href="`#${statusIcon.id}`"></use>
             </svg>
@@ -18,33 +26,33 @@
     </div>
 </template>
 
-<script setup>
-    import {computed} from "vue";
+<script setup lang="ts">
+    import { computed } from "vue";
 
-    import Checkmark from '@images/icons/Checkmark.svg?sprite';
-    import Cross from '@images/icons/Cross.svg?sprite';
+    import Checkmark from "@images/icons/Checkmark.svg?sprite";
+    import Cross from "@images/icons/Cross.svg?sprite";
+    import type { PropType } from "vue";
+    import type { OptionStatus } from "@types";
 
     const props = defineProps({
-        translation: {
+        word: {
             type: String,
-            required: true
+            required: true,
         },
         status: {
-            type: String,
-
-            validator(value) {
-                return ['chosen-correct', 'chosen-incorrect', 'correct'].includes(value)
-            }
+            type: String as PropType<OptionStatus>,
         },
     });
 
-    const statusText = computed(() => props.status === 'chosen-correct' ? 'Правильно' : 'Неправильно');
-    const statusIcon = computed(() => props.status === 'chosen-correct' ? Checkmark : Cross);
+    const statusText = computed(() =>
+        props.status === "chosen-correct" ? "Правильно" : "Неправильно"
+    );
+    const statusIcon = computed(() =>
+        props.status === "chosen-correct" ? Checkmark : Cross
+    );
 </script>
 
 <style lang="scss" scoped>
-
-
     .trainer-option {
         position: relative;
 
@@ -113,14 +121,6 @@
             }
         }
     }
-
-
-
-
-
-
-
-
 
     .trainer-option_correct {
         .trainer-option__main {

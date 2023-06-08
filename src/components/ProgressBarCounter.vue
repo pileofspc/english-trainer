@@ -12,7 +12,9 @@
                 transition="ease 0.2s"
             />
         </div>
-        <div class="progress-bar-counter__value">{{ `${Math.ceil(progressValue * 100)}%` }}</div>
+        <div class="progress-bar-counter__value">
+            {{ `${Math.ceil(progressValue * 100)}%` }}
+        </div>
     </div>
 </template>
 
@@ -23,15 +25,15 @@
     const props = defineProps({
         current: {
             type: [String, Number],
-            required: true
+            required: true,
         },
         total: {
             type: [String, Number],
-            required: true
+            required: true,
         },
         max: {
             type: [String, Number],
-        }
+        },
     });
 
     let currentNum = Number(props.current);
@@ -44,15 +46,16 @@
             currentNum < 0 ||
             totalNum < 0 ||
             maxNum < 0 ||
-
             currentNum > totalNum ||
             totalNum > maxNum
         ) {
-            console.error('Invalid properties! Total must be > Current!')
+            console.error("Invalid properties! Total must be > Current!");
         }
-    })
+    });
 
-    let progressValue = computed(() => props.max ? props.total / props.max : props.current / props.total);
+    let progressValue = computed(() =>
+        props.max ? props.total / props.max : props.current / props.total
+    );
 </script>
 
 <style lang="scss" scoped>
@@ -67,10 +70,6 @@
         &__progress {
             margin-left: 12px;
             flex-grow: 1;
-        }
-
-        &__counter {
-
         }
 
         &__value {

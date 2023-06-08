@@ -5,34 +5,43 @@
                 class="trainer__progress"
                 :current="correctAnswers"
                 :total="totalAnswers"
-                :max="props.trainerData.length"
+                :max="trainerData.length"
             />
             <div class="trainer__middle">
-                <div class="trainer__word">{{ currentWordData?.word }}</div>
-                <div class="trainer__translation">{{ currentWordData?.visibleTranslation }}</div>
-                <div class="trainer__status"
-                    v-if="!showCurrentWordResult"
-                >
+                <div class="trainer__word">
+                    {{ currentWordData?.word }}
+                </div>
+                <div class="trainer__translation">
+                    {{ currentWordData?.visibleTranslation }}
+                </div>
+                <div class="trainer__status" v-if="!showCurrentWordResult">
                     Верный ли это перевод?
                 </div>
-                <div class="trainer__status"
-                    v-if="showCurrentWordResult"
-                >
-                    <svg class="trainer__status-svg" :style="{color: statusColor}">
+                <div class="trainer__status" v-if="showCurrentWordResult">
+                    <svg
+                        class="trainer__status-svg"
+                        :style="{ color: statusColor }"
+                    >
                         <use :href="`#${statusIcon.id}`"></use>
                     </svg>
                     <span class="trainer__status-text">{{ statusText }}</span>
                 </div>
                 <div class="trainer__controls">
                     <VButton
-                        class="trainer__button"
+                        :style="{
+                            width: '400px',
+                            'font-size': '20px',
+                        }"
                         variant="error"
                         @click="checkUserAnswer(false)"
                     >
                         Не верно
                     </VButton>
                     <VButton
-                        class="trainer__button"
+                        :style="{
+                            width: '400px',
+                            'font-size': '20px',
+                        }"
                         variant="success"
                         @click="checkUserAnswer(true)"
                     >
@@ -44,68 +53,74 @@
 
         <div class="trainer__results" v-if="showResults">
             <svg class="trainer__result-image">
-                <use :href="`#${ successImage.id }`"></use>
+                <use :href="`#${successImage.id}`"></use>
             </svg>
             <div class="trainer__result-title">Упражнение завершено</div>
-            <div class="trainer__result-description">Вы правильно перевели {{ correctAnswersText }}, переведено неправильно {{ wrongAnswersText }}</div>
+            <div class="trainer__result-description">
+                Вы правильно перевели {{ correctAnswersText }}, переведено
+                неправильно {{ wrongAnswersText }}
+            </div>
         </div>
     </div>
 </template>
 
-
-
-
 <script setup lang="ts">
     import ProgressBarCounter from "@components/ProgressBarCounter.vue";
-    import VButton from '@components/VButton.vue';
-    import successImage from '@images/icons/Success.svg?sprite';
+    import VButton from "@components/VButton.vue";
+    import successImage from "@images/icons/Success.svg?sprite";
     import { computed, ref } from "vue";
 
-    import Checkmark from '@images/icons/Checkmark.svg?sprite';
-    import Cross from '@images/icons/Cross.svg?sprite';
-    import type { PropType } from "vue";
-    import type { IRightWrongWord } from "@types";
+    import Checkmark from "@images/icons/Checkmark.svg?sprite";
+    import Cross from "@images/icons/Cross.svg?sprite";
+    import type { IRightWrongWord, TrainJson } from "@types";
+    import api from "/src/api";
 
     const props = defineProps({
-        trainerData: {
-            type: Array as PropType<IRightWrongWord[] | undefined[]>,
-            required: true
-        }
-    })
+        wordSetId: {
+            type: String,
+            required: true,
+        },
+    });
+
+    const trainerData = ref<IRightWrongWord[]>([]);
 
     const currentWordPos = ref(0);
     const correctAnswers = ref(0);
     const totalAnswers = ref(0);
     const statusIcon = ref(Cross);
-    const statusText = ref('Неправильно');
-    const statusColor = ref('var(--c-error)');
+    const statusText = ref("Неправильно");
+    const statusColor = ref("var(--c-error)");
     const showCurrentWordResult = ref(false);
     const showResults = ref(false);
 
-    const currentWordData = computed(() => props.trainerData[currentWordPos.value]);
-    const isTranslationCorrect = computed(() => currentWordData.value?.visibleTranslation === currentWordData.value?.actualTranslation);
-    const correctAnswersText = computed(() => getRenderedText(correctAnswers.value));
-    const wrongAnswersText = computed(() => getRenderedText(totalAnswers.value - correctAnswers.value));
+    const currentWordData = computed(
+        () => trainerData.value[currentWordPos.value]
+    );
+    const isTranslationCorrect = computed(
+        () =>
+            currentWordData.value?.visibleTranslation ===
+            currentWordData.value?.actualTranslation
+    );
+    const correctAnswersText = computed(() =>
+        getRenderedText(correctAnswers.value)
+    );
+    const wrongAnswersText = computed(() =>
+        getRenderedText(totalAnswers.value - correctAnswers.value)
+    );
 
     function getRenderedText(number: number) {
         const lastDigit = number % 10;
-        if (
-            lastDigit === 2 ||
-            lastDigit === 3 ||
-            lastDigit === 4
-        ) {
-            return `${number} слова`
-        } else if (
-            lastDigit === 1
-        ) {
-            return `${number} слово`
+        if (lastDigit === 2 || lastDigit === 3 || lastDigit === 4) {
+            return `${number} слова`;
+        } else if (lastDigit === 1) {
+            return `${number} слово`;
         } else {
-            return `${number} слов`
+            return `${number} слов`;
         }
     }
 
     function nextWord() {
-        if (currentWordPos.value < props.trainerData.length - 1) {
+        if (currentWordPos.value < trainerData.value.length - 1) {
             currentWordPos.value++;
         } else {
             showResults.value = true;
@@ -113,12 +128,15 @@
     }
     function checkUserAnswer(answer: boolean) {
         if (showCurrentWordResult.value) {
-            return
+            return;
         }
-        if (answer && isTranslationCorrect.value || !answer && !isTranslationCorrect.value) {
-            userAnsweredCorrectly()
+        if (
+            (answer && isTranslationCorrect.value) ||
+            (!answer && !isTranslationCorrect.value)
+        ) {
+            userAnsweredCorrectly();
         } else {
-            userAnsweredIncorrectly()
+            userAnsweredIncorrectly();
         }
     }
     function userAnsweredCorrectly() {
@@ -130,7 +148,7 @@
         setTimeout(() => {
             showCurrentWordResult.value = false;
             nextWord();
-        }, 1000)
+        }, 1000);
     }
     function userAnsweredIncorrectly() {
         changeStatus(false);
@@ -145,19 +163,20 @@
     function changeStatus(boolean: boolean) {
         if (boolean === true) {
             statusIcon.value = Checkmark;
-            statusText.value = 'Правильно';
-            statusColor.value = 'var(--c-success)';
+            statusText.value = "Правильно";
+            statusColor.value = "var(--c-success)";
         }
         if (boolean === false) {
             statusIcon.value = Cross;
-            statusText.value = 'Неправильно';
-            statusColor.value = 'var(--c-error)';
+            statusText.value = "Неправильно";
+            statusColor.value = "var(--c-error)";
         }
     }
+
+    fetch(api.train + `?id=${props.wordSetId}`)
+        .then((res) => res.json())
+        .then((json: TrainJson) => (trainerData.value = json.data.trainerData));
 </script>
-
-
-
 
 <style lang="scss" scoped>
     .trainer {
