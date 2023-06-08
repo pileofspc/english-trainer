@@ -10,20 +10,21 @@
 </template>
 
 <script setup lang="ts">
-    import Review from '@components/Review.vue';
-    import apis from '/src/api';
-    import { ref } from 'vue';
-    import type { ReviewsJson, Res } from '/src/pages/index';
+    import Review from "@components/Review.vue";
+    import apis from "/src/api";
+    import { ref } from "vue";
+    import type { ReviewsJson, IReview } from "@types";
 
     const isLoading = ref(true);
-    const reviews = ref<ReviewsJson>([]);
+    const reviews = ref<IReview[]>([]);
+    const count = 5;
 
-    fetch(apis.reviews + '?count=5')
-    .then(res => res.json())
-    .then((json: Res<ReviewsJson>) => {
-        reviews.value = json.data
-        isLoading.value = false;
-    })
+    fetch(apis.reviews + "?count=" + count)
+        .then((res) => res.json())
+        .then((json: ReviewsJson) => {
+            reviews.value = json.data;
+            isLoading.value = false;
+        });
 </script>
 
 <style lang="scss" scoped>

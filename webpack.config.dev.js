@@ -1,51 +1,70 @@
-const base = require('./webpack.config.base.js');
-const { merge } = require('webpack-merge');
+const base = require("./webpack.config.base.js");
+const { merge } = require("webpack-merge");
 
 let newOptions = {
-    mode: 'development',
-    devtool: 'source-map',
+    mode: "development",
+    devtool: "source-map",
     devServer: {
         static: {
             // from
             directory: global.PATHS.static,
             // to
-            publicPath: '/static',
+            publicPath: "/static",
         },
         port: 3000,
         hot: true,
         compress: true,
-        watchFiles: ['src/**/*.html'],
-        historyApiFallback: true
+        watchFiles: ["src/**/*.html"],
+        historyApiFallback: true,
     },
     module: {
         rules: [
             {
-                test: /\.(sc|sa|c)ss$/i,
-                use: [
-                    require("mini-css-extract-plugin").loader,
+                oneOf: [
                     {
-                        loader: 'css-loader',
-                        options: {
-                            url: true,
-                        }
+                        test: /\.(sc|sa|c)ss$/i,
+                        resourceQuery: /module/,
+                        use: [
+                            require("mini-css-extract-plugin").loader,
+                            {
+                                loader: "css-loader",
+                                options: {
+                                    modules: true,
+                                    url: true,
+                                },
+                            },
+                            "sass-loader",
+                        ],
                     },
-                    // {
-                    //     loader: 'postcss-loader',
-                    //     options: {
-                    //         postcssOptions: {
-                    //             plugins: [
-                    //                 // require('autoprefixer')
-                    //             ],
-                    //         },
-                            
-                    //     }
-                    // },
-                    // 'resolve-url-loader',
-                    'sass-loader',
+                    {
+                        test: /\.(sc|sa|c)ss$/i,
+                        use: [
+                            require("mini-css-extract-plugin").loader,
+                            {
+                                loader: "css-loader",
+                                options: {
+                                    url: true,
+                                },
+                            },
+                            // {
+                            //     loader: 'postcss-loader',
+                            //     options: {
+                            //         postcssOptions: {
+                            //             plugins: [
+                            //                 // require('autoprefixer')
+                            //             ],
+                            //         },
+
+                            //     }
+                            // },
+                            // 'resolve-url-loader',
+                            "sass-loader",
+                        ],
+                    },
                 ],
             },
-        ]
+        ],
     },
-}
+};
 
 exports = module.exports = merge(base, newOptions);

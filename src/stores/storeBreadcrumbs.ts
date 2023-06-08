@@ -1,10 +1,10 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
-import type { IBreadcrumbItem } from "@types";
+import type { IBreadcrumb } from "@types";
 
-export const useBreadcrumbsStore = defineStore('breadcrumbs', () => {
-    const breadcrumbs = ref<IBreadcrumbItem[]>([]);
+export const useBreadcrumbsStore = defineStore("breadcrumbs", () => {
+    const breadcrumbs = ref<IBreadcrumb[]>([]);
 
-    return { breadcrumbs }
-})
+    return { breadcrumbs };
+});

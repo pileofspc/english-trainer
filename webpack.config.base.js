@@ -1,35 +1,35 @@
-const path = require('path');
-const fs = require('fs');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const path = require("path");
+const fs = require("fs");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 // const CopyWebpackPlugin = require("copy-webpack-plugin");
-const { VueLoaderPlugin } = require('vue-loader');
-const helpers = require('./webpack-helpers/webpack-helpers');
+const { VueLoaderPlugin } = require("vue-loader");
+const helpers = require("./webpack-helpers/webpack-helpers");
 
 const PATHS = {
     root: path.resolve(__dirname),
     helpers: helpers.PATH,
-    jsconfig: path.resolve(__dirname, 'jsconfig.json'),
-    src: path.resolve(__dirname, 'src'),
-    dist: path.resolve(__dirname, 'dist'),
+    jsconfig: path.resolve(__dirname, "jsconfig.json"),
+    src: path.resolve(__dirname, "src"),
+    dist: path.resolve(__dirname, "dist"),
 
-    pages: path.resolve(__dirname, 'src', 'pages'),
-    modules: path.resolve(__dirname,'src', 'modules'),
-    components: path.resolve(__dirname, 'src', 'components'),
-    assets: path.resolve(__dirname, 'src', 'assets'),
-    images: path.resolve(__dirname, 'src', 'assets', 'images'),
-    styles: path.resolve(__dirname, 'src', 'assets', 'styles'),
-    static: path.resolve(__dirname, 'src', 'static'),
-    stores: path.resolve(__dirname, 'src', 'stores'),
-    types: path.resolve(__dirname, 'src', 'pages', 'index', 'index.d.ts'),
+    pages: path.resolve(__dirname, "src", "pages"),
+    modules: path.resolve(__dirname, "src", "modules"),
+    components: path.resolve(__dirname, "src", "components"),
+    assets: path.resolve(__dirname, "src", "assets"),
+    images: path.resolve(__dirname, "src", "assets", "images"),
+    styles: path.resolve(__dirname, "src", "assets", "styles"),
+    static: path.resolve(__dirname, "src", "static"),
+    stores: path.resolve(__dirname, "src", "stores"),
+    types: path.resolve(__dirname, "src", "types.ts"),
 
-    distJs: '.',
-    distAssets: 'assets',
-    distCss: 'assets/css',
-    distImg: 'assets/images',
+    distJs: ".",
+    distAssets: "assets",
+    distCss: "assets/css",
+    distImg: "assets/images",
 
-    distStatic: path.resolve(__dirname, 'dist', 'static'),
-}
+    distStatic: path.resolve(__dirname, "dist", "static"),
+};
 global.PATHS = PATHS;
 
 const ENTRIES = {};
@@ -39,13 +39,12 @@ let PAGES = helpers.getFoldersWithHtml(PATHS.pages);
 
 // Array of HtmlWebpackPlugin entries for PAGES:
 let htmlPluginPages = PAGES.map(
-    (page) => new HtmlWebpackPlugin(
-        {
+    (page) =>
+        new HtmlWebpackPlugin({
             template: path.join(PATHS.pages, page, `${page}.html`),
             filename: `${page}.html`,
-            chunks: [path.parse(page).name]
-        }
-    )
+            chunks: [path.parse(page).name],
+        })
 );
 
 // Js entries for each page of PAGES:
@@ -57,10 +56,9 @@ PAGES.forEach((page) => {
     }
 });
 
-
 module.exports = exports = {
     resolve: {
-        extensions: [".ts", ".tsx", '...'],
+        extensions: [".ts", ".tsx", "..."],
         alias: {
             "@root": PATHS.root,
             "@modules": PATHS.modules,
@@ -69,29 +67,29 @@ module.exports = exports = {
             "@styles": PATHS.styles,
             "@images": PATHS.images,
             "@stores": PATHS.stores,
-            "@types": PATHS.types
-        }
+            "@types": PATHS.types,
+        },
     },
-    mode: 'development',
+    mode: "development",
     entry: ENTRIES,
     output: {
         path: PATHS.dist,
         filename: `${PATHS.distJs}/[name].js`,
-        publicPath: '/'
+        publicPath: "/",
     },
     module: {
         rules: [
             {
                 test: /\.vue$/,
-                loader: 'vue-loader'
+                loader: "vue-loader",
             },
             {
                 test: /\.tsx?$/,
                 exclude: /node_modules/,
-                loader: 'ts-loader',
+                loader: "ts-loader",
                 options: {
-                    transpileOnly: true
-                }
+                    transpileOnly: true,
+                },
             },
             {
                 oneOf: [
@@ -100,32 +98,32 @@ module.exports = exports = {
                         resourceQuery: /sprite/,
                         use: [
                             {
-                                loader: 'svg-sprite-loader',
+                                loader: "svg-sprite-loader",
                             },
-                        ]
+                        ],
                     },
                     {
                         test: /\.svg$/i,
                         resourceQuery: /inline/,
                         use: [
                             {
-                                loader: 'svg-inline-loader',
+                                loader: "svg-inline-loader",
                             },
-                        ]
+                        ],
                     },
                     {
                         test: /\.(png|jpg|jpeg|gif|svg)$/i,
-                        type: 'asset/resource',
+                        type: "asset/resource",
                         generator: {
-                            filename: `${PATHS.distImg}/[name][ext]`
-                        }
-                    }
-                ]
+                            filename: `${PATHS.distImg}/[name][ext]`,
+                        },
+                    },
+                ],
             },
             {
                 test: /\.html$/i,
                 use: {
-                    loader: 'html-loader',
+                    loader: "html-loader",
                     options: {
                         sources: {
                             list: [
@@ -133,8 +131,8 @@ module.exports = exports = {
                                 {
                                     tag: "svg",
                                     attribute: "data-src",
-                                    type: "src"
-                                }
+                                    type: "src",
+                                },
                             ],
                             // Это нужно для того, чтобы приложение не падало, когда не находит нужную картинку
                             // urlFilter(attribute, value, resourcePath) {
@@ -154,11 +152,11 @@ module.exports = exports = {
                             //     }
                             //     return found
                             // }
-                        }
-                    }
-                }
-            }
-        ]
+                        },
+                    },
+                },
+            },
+        ],
     },
 
     plugins: [
@@ -172,5 +170,5 @@ module.exports = exports = {
         //         { from: PATHS.static, to: PATHS.distStatic }
         //     ]
         // }),
-    ]
+    ],
 };

@@ -1,26 +1,25 @@
 <template>
-    <button class="button"
-            :class="{[`button_${props.variant}`]: true, button_inactive: props.inactive}"
-            :disabled="props.inactive"
+    <button
+        class="button"
+        :class="{
+            [`button_${props.variant}`]: true,
+            button_inactive: props.inactive,
+        }"
+        :disabled="props.inactive"
     >
         <slot></slot>
     </button>
 </template>
 
-<script setup>
+<script setup lang="ts">
+    import type { PropType } from "vue";
+    import type { VButton } from "@types";
+
     const props = defineProps({
         variant: {
-            type: String,
-            validator(value) {
-                return [
-                    'accent',
-                    'bright',
-                    'error',
-                    'success'
-                ].includes(value)
-            }
+            type: String as PropType<VButton>,
         },
-        inactive: Boolean
+        inactive: Boolean,
     });
 </script>
 

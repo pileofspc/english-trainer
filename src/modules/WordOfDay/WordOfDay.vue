@@ -9,25 +9,27 @@
 </template>
 
 <script setup lang="ts">
-    import Doughnut from '@components/Doughnut.vue';
-    import apis from '/src/api';
-    import { computed, ref } from 'vue';
-    import type { WordOfDayJson, Res } from '@types';
+    import Doughnut from "@components/Doughnut.vue";
+    import apis from "/src/api";
+    import { computed, ref } from "vue";
+    import type { IWordFull, WordOfDayJson } from "@types";
 
-    const wordData = ref<WordOfDayJson>();
+    const wordData = ref<IWordFull>();
     const word = computed(() => wordData.value?.word);
     const transcription = computed(() => wordData.value?.transcription);
     const chartItems = computed(
-        () => wordData.value?.translations.map((item) => ({ name: item.translation, value: item.frequency })) || []
+        () =>
+            wordData.value?.translations.map((item) => ({
+                name: item.translation,
+                value: item.frequency,
+            })) || []
     );
 
-
     fetch(apis.wordofday)
-    .then((res) => res.json())
-    .then((json: Res<WordOfDayJson>) => {
-        wordData.value = json.data;
-    });
-
+        .then((res) => res.json())
+        .then((json: WordOfDayJson) => {
+            wordData.value = json.data;
+        });
 </script>
 
 <style lang="scss" scoped>
