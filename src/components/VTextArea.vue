@@ -1,11 +1,10 @@
 <template>
     <div class="form-field">
-        <input
-            class="form-field__input"
+        <textarea
+            class="form-field__textarea"
             :id="id"
-            :type="props.type"
             :name="props.name"
-        />
+        ></textarea>
         <label class="form-field__label" :for="id">{{ props.label }}</label>
     </div>
 </template>
@@ -16,9 +15,6 @@
     const id = uuidv4();
 
     const props = defineProps({
-        type: {
-            type: String,
-        },
         name: {
             type: String,
         },
@@ -36,7 +32,11 @@
         font-size: 16px;
         font-weight: var(--fw-semi-bold);
 
-        &__input {
+        &__textarea {
+            max-height: 200px;
+            min-height: 120px;
+            resize: none;
+
             margin-top: 6px;
             padding: 12px;
             border: none;
@@ -47,7 +47,7 @@
             transition: outline-color 0.2s;
         }
 
-        &__input:focus {
+        &__textarea:focus {
             outline-color: var(--c-accent);
 
             + .form-field__label {

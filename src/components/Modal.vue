@@ -7,17 +7,19 @@
 </template>
 
 <script setup>
-    import {onMounted, onUnmounted} from "vue";
+    import { onMounted, onUnmounted } from "vue";
 
-    const emit = defineEmits(['close']);
+    const emit = defineEmits(["close"]);
 
     onMounted(() => {
-        document.body.style.overflow = 'hidden';
-    })
+        document.body.style.overflow = "hidden";
+        document.querySelector(".app-wrapper").style.filter = "blur(4px)";
+    });
 
     onUnmounted(() => {
-        document.body.style.overflow = '';
-    })
+        document.body.style.overflow = "";
+        document.querySelector(".app-wrapper").style.filter = "";
+    });
 </script>
 
 <style lang="scss" scoped>

@@ -5,6 +5,7 @@ const PageError = () => import("@pages/error/PageError.vue");
 const PageWordSet = () => import("@pages/word-set/PageWordSet.vue");
 const PageTrain = () => import("@pages/train/PageTrain.vue");
 const PageWordSets = () => import("@pages/word-sets/PageWordSets.vue");
+const PageContacts = () => import("@pages/contacts/PageContacts.vue");
 
 export default createRouter({
     history: createWebHistory(),
@@ -44,6 +45,11 @@ export default createRouter({
             path: "/word-sets",
             name: "PageWordSets",
             component: PageWordSets,
+        },
+        {
+            path: "/contacts",
+            name: "PageContacts",
+            component: PageContacts,
         },
     ],
 });

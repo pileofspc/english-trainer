@@ -16,7 +16,12 @@
                     <router-link class="header__link" to="/">
                         Главная
                     </router-link>
-                    <a class="header__link" href="/contacts.html">О нас</a>
+                    <router-link
+                        class="header__link"
+                        :to="{ name: 'PageContacts' }"
+                    >
+                        Контакты
+                    </router-link>
                     <router-link
                         class="header__link"
                         :to="{ name: 'PageWordSets' }"
@@ -48,7 +53,7 @@
     import FormLogin from "@components/FormLogin.vue";
 
     const isVisible = ref(false);
-    const modalContent = ref(FormRegister);
+    const modalContent = FormRegister;
 
     function showLogin() {
         isVisible.value = true;
