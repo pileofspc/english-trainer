@@ -2,9 +2,24 @@ export type Res<T> = { status: Boolean; data: T };
 
 export type VButton = "accent" | "bright" | "error" | "success";
 
+export type RouterLink =
+    | string
+    | { name: string; params?: any; replace?: boolean };
 export interface IBreadcrumb {
     displayName: string;
-    to?: string | { name: string; params?: any; replace?: boolean };
+    to?: RouterLink;
+}
+
+export interface IDoughnutItem {
+    name: string;
+    value: number;
+}
+
+export interface IVCard {
+    img: string;
+    title: string;
+    subtitle?: string;
+    description?: string;
 }
 
 export interface IReview {
@@ -32,15 +47,11 @@ export interface IWordTranslation {
 
 export interface IWordSet {
     id: string;
-    imgPath: string;
+    img: string;
     title: string;
     description: string;
+    shortDescription: string;
     words?: IWordShallow[];
-}
-
-export interface IDoughnutItem {
-    name: string;
-    value: number;
 }
 
 // Типы для данных для тренажеров
