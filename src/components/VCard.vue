@@ -1,15 +1,14 @@
 <template>
-    <div class="card-word card">
-        <div class="card-word__img-container">
-            <img
-                class="card-word__img"
-                :src="props.img"
-                :alt="props.translation || 'Слово'"
-            />
+    <div class="vcard card">
+        <div class="vcard__img-container">
+            <img class="vcard__img" :src="props.img" :alt="props.title" />
         </div>
-        <div class="card-word__word">
-            <div class="card-word__title">{{ props.word }}</div>
-            <div class="card-word__translation">{{ props.translation }}</div>
+        <div class="vcard__data">
+            <div class="vcard__title">{{ props.title }}</div>
+            <div class="vcard__subtitle">{{ props.subtitle }}</div>
+            <div v-if="props.description" class="vcard__description">
+                {{ props.description }}
+            </div>
         </div>
     </div>
 </template>
@@ -17,20 +16,20 @@
 <script setup lang="ts">
     const props = defineProps({
         img: String,
-        word: String,
-        translation: String,
-        transcription: String,
+        title: String,
+        subtitle: String,
+        description: String,
     });
 </script>
 
 <style scoped lang="scss">
-    .card-word {
+    .vcard {
         display: flex;
         flex-direction: column;
         align-items: center;
         padding: 10px;
 
-        font-size: 18px;
+        font-size: 20px;
 
         width: 180px;
         height: 220px;
@@ -51,17 +50,13 @@
             text-align: center;
         }
 
-        &__word {
-            text-align: center;
-        }
-
         &__title {
             margin-top: 6px;
             font-weight: var(--fw-semi-bold);
-            font-size: 20px;
+            font-size: 24px;
         }
 
-        &__translation {
+        &__subtitle {
             filter: opacity(0.6);
         }
 

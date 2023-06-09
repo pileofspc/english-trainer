@@ -2,11 +2,7 @@
     <LayoutDefault v-if="!isLoading">
         <WordSetHeader v-bind="wordSet" />
         <TrainLinks class="page-theme__train-links" />
-        <InfListWords
-            class="page-theme__words"
-            :words="words"
-            :word-set-id="wordSet?.id"
-        />
+        <InfListWords class="page-theme__words" :items="cardItems" />
     </LayoutDefault>
 </template>
 
@@ -17,28 +13,32 @@
     import WordSetHeader from "@modules/WordSetHeader/WordSetHeader.vue";
 
     import { useBreadcrumbsStore } from "@stores/storeBreadcrumbs";
+    import type { IBreadcrumb, IWordSet, IVCard, WordSetJson } from "@types";
     import { computed, ref, watch } from "vue";
-    import type {
-        IBreadcrumb,
-        IWordSet,
-        WordSetJson,
-        IWordShallow,
-        Res,
-    } from "@types";
-    import { useRouter, useRoute } from "vue-router";
+    import { useRoute, useRouter } from "vue-router";
     import apis from "/src/api";
-    import api from "/src/api";
 
     const route = useRoute();
     const router = useRouter();
     const isLoading = ref(true);
 
     const wordSet = ref<IWordSet>();
-    const words = computed<IWordShallow[]>(() => wordSet.value?.words || []);
+    const cardItems = computed<IVCard[]>(() => {
+        return (
+            wordSet.value?.words?.map((word) => ({
+                img: word.img,
+                title: word.word,
+                subtitle: word.translation,
+            })) || []
+        );
+    });
 
     const breadCrumbs = computed<IBreadcrumb[]>(() => [
         { displayName: "Главная", to: { name: "PageMain", replace: true } },
-        { displayName: "Наборы слов", to: { name: "PageMain", replace: true } },
+        {
+            displayName: "Наборы слов",
+            to: { name: "PageWordSets", replace: true },
+        },
         { displayName: wordSet.value?.title || "" },
     ]);
     const bcstore = useBreadcrumbsStore();
@@ -47,7 +47,7 @@
         bcstore.breadcrumbs = breadCrumbs.value;
     });
 
-    fetch(`${apis.wordset}?id=${route.params.wordSetId}&full=true`)
+    fetch(`${apis.wordset}?id=${route.params.wordSetId}`)
         .then((res) => res.json())
         .then((res: WordSetJson) => {
             if (res.status) {
