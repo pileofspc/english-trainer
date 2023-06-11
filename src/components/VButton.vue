@@ -1,11 +1,12 @@
 <template>
     <button
-        class="button"
+        class="btn"
         :class="{
-            [`button_${props.variant}`]: true,
-            button_inactive: props.inactive,
+            [`btn_${props.variant}`]: true,
+            btn_inactive: props.inactive,
         }"
         :disabled="props.inactive"
+        :type="props.type"
     >
         <slot></slot>
     </button>
@@ -20,18 +21,19 @@
             type: String as PropType<VButton>,
         },
         inactive: Boolean,
+        type: String as PropType<"submit" | "reset" | "button">,
     });
 </script>
 
 <style scoped lang="scss">
-    .button {
+    .btn {
         font-size: 14px;
         font-weight: 500;
         padding: 8px 28px;
 
         border: none;
         box-shadow: var(--card-shadow);
-        border-radius: 6px;
+        border-radius: 8px;
         cursor: pointer;
 
         &_accent {

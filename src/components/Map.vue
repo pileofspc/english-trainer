@@ -19,7 +19,7 @@
         margin-top: 20px;
 
         &__frame {
-            min-height: 280px;
+            min-height: 460px;
             width: 100%;
             border: none;
         }
