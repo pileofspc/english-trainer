@@ -1,4 +1,4 @@
-export type Res<T> = { status: Boolean; data: T };
+export type Res<T> = { status: boolean; message: string; data: T };
 
 export type VButton = "accent" | "bright" | "error" | "success";
 
@@ -98,3 +98,10 @@ export type TrainWithOptionJson = Res<{
     wordSet: IWordSet;
     trainerData: IWithOptionsWord[];
 }>;
+export interface IFeedback {
+    name: string;
+    email: string;
+    subject: string;
+    message: string;
+}
+export type FeedbackJSON = Res<IFeedback>;

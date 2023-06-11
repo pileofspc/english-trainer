@@ -7,11 +7,10 @@
             <VInput type="text" name="name">Полное имя</VInput>
             <VInput type="email" name="email">Email</VInput>
             <VInput type="password" name="password">Пароль</VInput>
-            <VInputCheckbox class="register__checkbox">Согласен с Политикой конфиденциальности</VInputCheckbox>
-            <VButton class="register__button"
-                     variant="accent"
-                     type="submit"
-            >
+            <VInputCheckbox class="register__checkbox">
+                Согласен с Политикой конфиденциальности
+            </VInputCheckbox>
+            <VButton class="register__button" variant="accent" type="submit">
                 Зарегистрироваться
             </VButton>
         </div>
@@ -19,13 +18,13 @@
 </template>
 
 <script setup>
-    import VInputCheckbox from '@components/VInputCheckbox.vue';
-    import VInput from '@components/VInput.vue';
-    import VButton from '@components/VButton.vue';
+    import VInputCheckbox from "@components/VInputCheckbox.vue";
+    import VInput from "@components/VInput.vue";
+    import VButton from "@components/VButton.vue";
 
     function submitForm() {
         if (policyChecked.value) {
-            console.log('Отправлено')
+            console.log("Отправлено");
         }
     }
 </script>

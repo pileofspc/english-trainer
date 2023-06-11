@@ -9,22 +9,7 @@
     import InfListWordSets from "@modules/InfListWordSets/InfListWordSets.vue";
     import { useBreadcrumbsStore } from "/src/stores/storeBreadcrumbs";
     import type { IBreadcrumb } from "@types";
-    // import { ref } from "vue";
-
-    // const items = ref<IVCard[]>([
-    //     {
-    //         img: "/static/artwork.svg",
-    //         title: "artwork",
-    //     },
-    //     {
-    //         img: "/static/artwork.svg",
-    //         title: "artwork",
-    //     },
-    //     {
-    //         img: "/static/artwork.svg",
-    //         title: "artwork",
-    //     },
-    // ]);
+    import Contacts from "@components/Contacts.vue";
 
     const bcstore = useBreadcrumbsStore();
     const breadcrumbs: IBreadcrumb[] = [

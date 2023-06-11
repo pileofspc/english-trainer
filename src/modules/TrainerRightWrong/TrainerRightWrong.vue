@@ -109,6 +109,16 @@
     );
 
     function getRenderedText(number: number) {
+        const lastTwoDigits = number % 100;
+        if (
+            lastTwoDigits === 11 ||
+            lastTwoDigits === 12 ||
+            lastTwoDigits === 13 ||
+            lastTwoDigits === 14
+        ) {
+            return `${number} слов`;
+        }
+
         const lastDigit = number % 10;
         if (lastDigit === 2 || lastDigit === 3 || lastDigit === 4) {
             return `${number} слова`;

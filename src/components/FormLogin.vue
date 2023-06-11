@@ -6,10 +6,7 @@
         <div class="login__content">
             <VInput type="email" name="email">Email</VInput>
             <VInput type="password" name="password">Пароль</VInput>
-            <VButton class="login__button"
-                     variant="accent"
-                     type="submit"
-            >
+            <VButton class="login__button" variant="accent" type="submit">
                 Войти
             </VButton>
         </div>
@@ -17,12 +14,12 @@
 </template>
 
 <script setup>
-    import VInput from '@components/VInput.vue';
-    import VButton from '@components/VButton.vue';
+    import VInput from "@components/VInput.vue";
+    import VButton from "@components/VButton.vue";
 
     function submitForm() {
         if (policyChecked.value) {
-            console.log('Отправлено')
+            console.log("Отправлено");
         }
     }
 </script>

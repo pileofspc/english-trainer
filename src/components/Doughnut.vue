@@ -23,11 +23,6 @@
 </template>
 
 <script setup lang="ts">
-    // @ts-nocheck
-    // ПРИ ВНЕСЕНИИ ИЗМЕНЕНИЙ УБРАТЬ @ts-nocheck!
-    // Перед сохранением добавить @ts-nocheck!
-    // В типах ChartJS ошибка, или я что-то не понял. ТС ругается на то, что я передаю массив colors, а не строку, хотя всё прекрасно работает и с массивом.
-    // Так как ошибку показывает в темплейте, и я не знаю как заглушить конкретную ошибку в нем, пришлось отключать проверку для всего файла, а не для конкретной строки.
     import { computed, ref } from "vue";
     import { Doughnut } from "vue-chartjs";
     import { Chart, PieController, ArcElement, Tooltip } from "chart.js";
@@ -36,7 +31,9 @@
 
     const props = defineProps({
         items: {
-            type: Array as PropType<IDoughnutItem[] | undefined[]>,
+            // тут IDoughnutItem[] вместо IDoughnutItem[] | undefined[], чтобы не было ошибки типов с chartjs
+            // но по факту может прийти и пустой массив
+            type: Array as PropType<IDoughnutItem[]>,
             required: true,
         },
     });
@@ -58,6 +55,9 @@
             return text;
         }
 
+        let currentSlice = text;
+        let result = [];
+
         function getSpaceIndex() {
             const before = currentSlice.lastIndexOf(" ", maxChars);
             if (before !== -1) {
@@ -66,12 +66,16 @@
             return currentSlice.indexOf(" ", maxChars);
         }
 
-        let currentSlice = text;
-        let result = [];
         let closestSpaceIndex = getSpaceIndex();
         while (closestSpaceIndex !== -1) {
+            if (currentSlice.length <= maxChars) {
+                result.push(currentSlice);
+                currentSlice = "";
+                break;
+            }
             result.push(currentSlice.slice(0, closestSpaceIndex));
             currentSlice = currentSlice.slice(closestSpaceIndex + 1);
+
             closestSpaceIndex = getSpaceIndex();
         }
         if (currentSlice.length > 0) {
