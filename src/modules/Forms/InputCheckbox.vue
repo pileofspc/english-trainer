@@ -1,19 +1,26 @@
 <template>
     <label class="checkbox">
-        <input class="checkbox__input" type="checkbox">
+        <input class="checkbox__input" type="checkbox" />
         <div class="checkbox__box">
-            <svg class="checkbox__checkmark" >
+            <svg class="checkbox__checkmark">
                 <use :href="`#${Checkmark.id}`"></use>
             </svg>
         </div>
         <span class="checkbox__label-text">
-            <slot></slot>
+            {{ props.label }}
         </span>
     </label>
 </template>
 
-<script setup>
-    import Checkmark from '@images/icons/Checkmark.svg?sprite';
+<script setup lang="ts">
+    import Checkmark from "@images/icons/Checkmark.svg?sprite";
+
+    const props = defineProps({
+        label: {
+            type: String,
+            required: true,
+        },
+    });
 </script>
 
 <style lang="scss" scoped>

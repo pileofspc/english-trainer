@@ -4,8 +4,8 @@
         <div class="login__subtitle">Еще нет аккаунта?</div>
         <div class="login__sign-in">Зарегистрироваться</div>
         <div class="login__content">
-            <VInput type="email" name="email">Email</VInput>
-            <VInput type="password" name="password">Пароль</VInput>
+            <Input type="email" name="email" label="Email" />
+            <Input type="password" name="password" label="Пароль" />
             <VButton class="login__button" variant="accent" type="submit">
                 Войти
             </VButton>
@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-    import VInput from "@components/VInput.vue";
+    import Input from "@modules/Forms/Input.vue";
     import VButton from "@components/VButton.vue";
 
     function submitForm() {

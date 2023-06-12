@@ -49,8 +49,8 @@
     import VButton from "@components/VButton.vue";
     import mainLogo from "@images/main-logo.svg";
     import Modal from "@components/Modal.vue";
-    import FormRegister from "@components/FormRegister.vue";
-    import FormLogin from "@components/FormLogin.vue";
+    import FormRegister from "@modules/Forms/FormRegister.vue";
+    import FormLogin from "@modules/Forms/FormLogin.vue";
 
     const isVisible = ref(false);
     const modalContent = FormRegister;

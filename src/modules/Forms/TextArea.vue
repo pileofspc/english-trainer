@@ -1,42 +1,48 @@
 <template>
-    <div class="form-field">
-        <input
-            class="form-field__input"
+    <div class="form-textarea">
+        <textarea
+            class="form-textarea__textarea"
             :id="id"
-            :type="props.type"
             :name="props.name"
+            v-model="value"
         />
-        <label class="form-field__label" :for="id">{{ props.label }}</label>
+        <label class="form-textarea__label" :for="id">{{ props.label }}</label>
+        <span class="form-textarea__errors">{{ errorMessage }}</span>
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
     import { v4 as uuidv4 } from "uuid";
+    import { useField } from "vee-validate";
 
     const id = uuidv4();
 
     const props = defineProps({
-        type: {
-            type: String,
-        },
         name: {
             type: String,
+            required: true,
         },
         label: {
             type: String,
         },
     });
+
+    const { value, errorMessage } = useField<string>(() => props.name);
 </script>
 
 <style lang="scss" scoped>
-    .form-field {
+    .form-textarea {
         display: flex;
         flex-direction: column;
         color: var(--c-secondary);
         font-size: 16px;
         font-weight: var(--fw-semi-bold);
 
-        &__input {
+        &__textarea {
+            max-height: 200px;
+            min-height: 120px;
+            resize: none;
+
             margin-top: 6px;
             padding: 12px;
             border: none;
@@ -47,10 +53,10 @@
             transition: outline-color 0.2s;
         }
 
-        &__input:focus {
+        &__textarea:focus {
             outline-color: var(--c-accent);
 
-            + .form-field__label {
+            + .form-textarea__label {
                 color: var(--c-accent);
             }
         }
@@ -58,6 +64,12 @@
         &__label {
             transition: color 0.2s;
             order: -1;
+        }
+
+        &__errors {
+            font-size: 12px;
+            margin-top: 8px;
+            color: var(--c-error);
         }
     }
 </style>

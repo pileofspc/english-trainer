@@ -13,10 +13,10 @@
                 Как правило, наша команда отвечает в течение 24-28 часов.
             </div>
         </div>
-        <VInput name="name" label="Имя" />
-        <VInput name="email" label="Почта" />
-        <VInput name="subject" label="Тема" />
-        <VTextArea name="message" label="Текст сообщения" />
+        <Input name="name" label="Имя*" />
+        <Input name="email" label="Почта*" />
+        <Input name="subject" label="Тема*" />
+        <TextArea name="message" label="Текст сообщения*" />
         <VButton type="submit" class="form-feedback__button" variant="accent">
             Отправить
         </VButton>
@@ -25,19 +25,54 @@
 
 <script setup lang="ts">
     import ModalBlock from "@components/ModalBlock.vue";
-    import VInput from "@components/VInput.vue";
-    import VTextArea from "@components/VTextArea.vue";
+    import Input from "@modules/Forms/Input.vue";
+    import TextArea from "@modules/Forms/TextArea.vue";
     import VButton from "@components/VButton.vue";
 
     import type { FeedbackJSON } from "@types";
     import api from "/src/api";
     import { ref } from "vue";
+    import { useForm } from "vee-validate";
+    import * as yup from "yup";
 
     const showModal = ref(false);
     const isFetching = ref(true);
     const message = ref("");
 
+    yup.setLocale({
+        mixed: {
+            required: "Это поле обязательно для заполнения",
+        },
+        string: {
+            min: "Поле не должно содержать менее ${min} символов",
+            email: "Укажите полный адрес электронной почты",
+        },
+    });
+
+    const schema = yup.object({
+        name: yup.string().required(),
+        email: yup
+            .string()
+            .required()
+            .email()
+            .matches(
+                /^[a-z0-9@\._]*$/gi,
+                "Поле не должно содержать специальных символов"
+            ),
+        subject: yup.string().required().min(3),
+        message: yup.string().required().min(3),
+    });
+
+    const { meta, validate } = useForm({
+        validationSchema: schema,
+    });
+
     function submit(e: Event) {
+        if (!meta.value.valid) {
+            validate();
+            return;
+        }
+
         const formDataObject = Object.fromEntries(
             new FormData(e.currentTarget as HTMLFormElement)
         );
