@@ -1,7 +1,13 @@
 <template>
     <header class="header">
         <Modal v-if="isVisible" @close="closeModal">
-            <component :is="modalContent"></component>
+            <KeepAlive>
+                <component
+                    :is="modalContent"
+                    @login="showLogin"
+                    @register="showRegister"
+                />
+            </KeepAlive>
         </Modal>
         <div class="_container">
             <div class="header__inner block">
@@ -44,25 +50,25 @@
 </template>
 
 <script setup lang="ts">
-    import { ref } from "vue";
-
+    import Modal from "@components/Modal.vue";
     import VButton from "@components/VButton.vue";
     import mainLogo from "@images/main-logo.svg";
-    import Modal from "@components/Modal.vue";
-    import FormRegister from "@modules/Forms/FormRegister.vue";
     import FormLogin from "@modules/Forms/FormLogin.vue";
+    import FormRegister from "@modules/Forms/FormRegister.vue";
+
+    import { ref, shallowRef } from "vue";
 
     const isVisible = ref(false);
-    const modalContent = FormRegister;
+    const modalContent = shallowRef();
 
     function showLogin() {
-        isVisible.value = true;
         modalContent.value = FormLogin;
+        isVisible.value = true;
     }
 
     function showRegister() {
-        isVisible.value = true;
         modalContent.value = FormRegister;
+        isVisible.value = true;
     }
 
     function closeModal() {

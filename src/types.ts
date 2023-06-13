@@ -1,3 +1,5 @@
+import { type } from "os";
+
 export type Res<T> = { status: boolean; message: string; data: T };
 
 export type VButton = "accent" | "bright" | "error" | "success";
@@ -104,4 +106,7 @@ export interface IFeedback {
     subject: string;
     message: string;
 }
-export type FeedbackJSON = Res<IFeedback>;
+export type FeedbackJson = Res<IFeedback>;
+// TODO: Поменять any на правильные типы
+export type RegisterJson = Res<any>;
+export type LoginJson = Res<any>;

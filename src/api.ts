@@ -7,6 +7,8 @@ const api = {
     "train-ru-en": "http://localhost:4000/api/train-ru-en",
     reviews: "http://localhost:4000/api/reviews",
     feedback: "http://localhost:4000/api/feedback",
+    register: "http://localhost:4000/api/register",
+    login: "http://localhost:4000/api/login",
 };
 
 export default api;

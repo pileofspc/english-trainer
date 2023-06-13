@@ -9,14 +9,14 @@
             @input="onInput"
         />
         <svg
-            class="form-field__status-svg form-field__status-svg_success"
             v-if="meta.validated && meta.valid"
+            class="form-field__status-svg form-field__status-svg_success"
         >
             <use :href="`#${Checkmark.id}`"></use>
         </svg>
         <svg
-            class="form-field__status-svg form-field__status-svg_error"
             v-if="meta.validated && !meta.valid"
+            class="form-field__status-svg form-field__status-svg_error"
         >
             <use :href="`#${Cross.id}`"></use>
         </svg>
@@ -24,7 +24,7 @@
 
         <TransitionGroup>
             <span
-                class="form-field__errors"
+                class="form-field__error"
                 v-for="error in errors"
                 :key="error"
             >
@@ -129,7 +129,7 @@
             }
         }
 
-        &__errors {
+        &__error {
             font-size: 12px;
             margin-top: 8px;
             color: var(--c-error);

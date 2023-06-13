@@ -2,7 +2,18 @@
     <router-view></router-view>
 </template>
 
-<script setup></script>
+<script setup lang="ts">
+    import * as yup from "yup";
+    yup.setLocale({
+        mixed: {
+            required: "Это поле обязательно для заполнения",
+        },
+        string: {
+            min: "Поле должно содержать не менее ${min} символов",
+            email: "Укажите полный адрес электронной почты",
+        },
+    });
+</script>
 
 <style lang="scss">
     .app-wrapper {

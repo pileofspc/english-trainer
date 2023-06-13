@@ -1,5 +1,5 @@
 <template>
-    <form class="form-feedback block" @submit.prevent="submit">
+    <form class="feedback block" @submit.prevent="submit">
         <ModalBlock
             v-if="showModal"
             @close="showModal = false"
@@ -8,16 +8,16 @@
             {{ message }}
         </ModalBlock>
         <div>
-            <div class="form-feedback__header">Форма обратной связи</div>
-            <div class="form-feedback__description">
+            <div class="feedback__header">Форма обратной связи</div>
+            <div class="feedback__description">
                 Как правило, наша команда отвечает в течение 24-28 часов.
             </div>
         </div>
-        <Input name="name" label="Имя*" />
-        <Input name="email" label="Почта*" />
-        <Input name="subject" label="Тема*" />
+        <InputDefault name="name" label="Имя*" />
+        <InputDefault name="email" label="Почта*" />
+        <InputDefault name="subject" label="Тема*" />
         <TextArea name="message" label="Текст сообщения*" />
-        <VButton type="submit" class="form-feedback__button" variant="accent">
+        <VButton type="submit" class="feedback__button" variant="accent">
             Отправить
         </VButton>
     </form>
@@ -25,11 +25,11 @@
 
 <script setup lang="ts">
     import ModalBlock from "@components/ModalBlock.vue";
-    import Input from "@modules/Forms/Input.vue";
+    import InputDefault from "@modules/Forms/InputDefault.vue";
     import TextArea from "@modules/Forms/TextArea.vue";
     import VButton from "@components/VButton.vue";
 
-    import type { FeedbackJSON } from "@types";
+    import type { FeedbackJson } from "@types";
     import api from "/src/api";
     import { ref } from "vue";
     import { useForm } from "vee-validate";
@@ -38,16 +38,6 @@
     const showModal = ref(false);
     const isFetching = ref(true);
     const message = ref("");
-
-    yup.setLocale({
-        mixed: {
-            required: "Это поле обязательно для заполнения",
-        },
-        string: {
-            min: "Поле не должно содержать менее ${min} символов",
-            email: "Укажите полный адрес электронной почты",
-        },
-    });
 
     const schema = yup.object({
         name: yup.string().required(),
@@ -85,7 +75,7 @@
             body: JSON.stringify(formDataObject),
         })
             .then((res) => res.json())
-            .then((json: FeedbackJSON) => {
+            .then((json: FeedbackJson) => {
                 if (!json.status) {
                     throw new Error(json.message);
                 }
@@ -102,7 +92,7 @@
 </script>
 
 <style lang="scss" scoped>
-    .form-feedback {
+    .feedback {
         display: flex;
         flex-direction: column;
         flex-basis: 50%;
