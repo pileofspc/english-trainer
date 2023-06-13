@@ -11,7 +11,7 @@
 <script setup lang="ts">
     import LayoutDefault from "@components/LayoutDefault.vue";
     import Contacts from "@components/Contacts.vue";
-    import FormFeedback from "@components/FormFeedback.vue";
+    import FormFeedback from "@modules/Forms/FormFeedback.vue";
     import Map from "@components/Map.vue";
     import type { IBreadcrumb } from "@types";
     import { useBreadcrumbsStore } from "/src/stores/storeBreadcrumbs";

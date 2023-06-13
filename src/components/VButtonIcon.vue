@@ -1,39 +1,37 @@
 <template>
     <button
-        class="button"
-        :class="{[`button_${props.variant}`]: true, 'button_inactive': props.inactive}"
+        class="btn-icon"
+        :class="{
+            [`btn-icon_${props.variant}`]: true,
+            'btn-icon_inactive': props.inactive,
+        }"
         :disabled="props.inactive"
     >
-    <svg class="button__icon">
-        <use class="button__icon-svg" :href="`#${props.iconId}`"></use>
-    </svg>
+        <svg class="btn-icon__icon">
+            <use class="btn-icon__icon-svg" :href="`#${props.iconId}`"></use>
+        </svg>
     </button>
 </template>
 
-<script setup>
+<script setup lang="ts">
+    import type { PropType } from "vue";
+    import type { VButton } from "@types";
+
     const props = defineProps({
         iconId: {
             type: String,
-            required: true
+            required: true,
         },
         variant: {
-            type: String,
+            type: String as PropType<VButton>,
             required: true,
-            validator(value) {
-                return [
-                    'accent',
-                    'bright',
-                    'error',
-                    'success'
-                ].includes(value)
-            }
         },
-        inactive: Boolean
+        inactive: Boolean,
     });
 </script>
 
 <style scoped lang="scss">
-    .button {
+    .btn-icon {
         font-size: 14px;
         font-weight: 500;
         line-height: 0;
