@@ -22,6 +22,7 @@
 
         // We expect users to use bundlers.
         // So here we enable some resolution features that are only available in bundlers.
+        // Если поставить bundler, то в конфигах вебпака плохо работает интеллисенс
         "moduleResolution": "node",
         "resolveJsonModule": true,
 
@@ -45,6 +46,7 @@
         // This enables stricter inference for data properties on `this`.
         "strict": true,
         "noImplicitThis": true,
+        "noImplicitAny": true,
 
         // <https://devblogs.microsoft.com/typescript/announcing-typescript-5-0/#verbatimmodulesyntax>
         // Any imports or exports without a type modifier are left around. This is important for `<script setup>`.
