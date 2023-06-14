@@ -3,15 +3,12 @@
 @use "/src/assets/styles/bem.scss";
 
 .main-content {
-
     &__cards {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(285px, 1fr));
         gap: 20px;
-
     }
 }
-
 
 .card {
     display: flex;
@@ -33,11 +30,15 @@
     }
 
     &__img_animals {
-        background-image: url('/src/assets/images/cards/cat_640x640.jpg');
+        background-image: url("/src/assets/images/cards/cat_640x640.jpg");
     }
 
     &__img_sports {
-        background-image: url('/src/assets/images/cards/sport1.jpg');
+        background-image: url("/src/assets/images/cards/sport1.jpg");
+    }
+
+    &__img_big {
+        background-image: url("/src/assets/images/cards/big.jpg");
     }
 
     &__title {
@@ -70,4 +71,3 @@
         background-color: var(--alternate-button);
     }
 }
-

@@ -8,7 +8,9 @@
             "@components/*": ["src/components/*"],
             "@pages/*": ["src/pages/*"],
             "@styles/*": ["src/assets/styles/*"],
-            "@images/*": ["src/assets/images/*"]
+            "@images/*": ["src/assets/images/*"],
+            "@stores/*": ["src/stores/*"],
+            "@types": ["src/types.ts"]
         }
     }
 }
