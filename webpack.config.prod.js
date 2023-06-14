@@ -231,6 +231,10 @@ const prod = {
             filename: `${PATHS.distCss}/[name].[fullhash].css`,
         }),
         new VueLoaderPlugin(),
+        new webpack.DefinePlugin({
+            __VUE_OPTIONS_API__: true,
+            __VUE_PROD_DEVTOOLS__: false,
+        }),
     ],
 };
 

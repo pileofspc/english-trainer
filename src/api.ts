@@ -1,4 +1,4 @@
-const api = {
+export default {
     wordset: "http://localhost:4000/api/word-set",
     wordsets: "http://localhost:4000/api/word-sets",
     wordofday: "http://localhost:4000/api/word-of-day",
@@ -10,5 +10,3 @@ const api = {
     register: "http://localhost:4000/api/register",
     login: "http://localhost:4000/api/login",
 };
-
-export default api;

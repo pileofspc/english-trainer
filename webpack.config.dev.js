@@ -46,7 +46,7 @@ const dev = {
                 test: /\.(woff(2)?|ttf|eot)$/i,
                 type: "asset/resource",
                 generator: {
-                    filename: `${PATHS.dist}/assets/fonts/[name][ext]`,
+                    filename: `${PATHS.distAssets}/fonts/[name][ext]`,
                 },
             },
             {
