@@ -66,7 +66,7 @@
 
     watch(fetchedData, () => {
         if (fetchedData.value) {
-            // genStore.saveWordsets(fetchedData.value);
+            genStore.cacheWordSets(fetchedData.value);
         }
     });
 

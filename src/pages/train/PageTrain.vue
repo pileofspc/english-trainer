@@ -10,30 +10,32 @@
 </template>
 
 <script lang="ts">
-    import type {
-        IBreadcrumb,
-        ITrainMap,
-        IWordSet,
-        TrainingType,
-        WordSetJson,
-    } from "@types";
+    import type { ITrainMap, IWordSet, TrainingType } from "@types";
     import useFetch from "/src/composables/useFetch";
+    import useBreadcrumbs from "/src/composables/useBreadcrumbs";
+    import { useGeneralStore } from "/src/stores/storeGeneral";
 </script>
 
 <script setup lang="ts">
     import LayoutDefault from "@components/LayoutDefault.vue";
     import TrainerRightWrong from "@modules/TrainerRightWrong/TrainerRightWrong.vue";
     import TrainerWithOptions from "@modules/TrainerWithOptions/TrainerWithOptions.vue";
-    import { computed, watch } from "vue";
     import { useRoute } from "vue-router";
     import apis from "/src/api";
-    import { useBreadcrumbsStore } from "@stores/storeBreadcrumbs";
 
+    const genStore = useGeneralStore();
     const route = useRoute();
 
+    const wordSetId =
+        typeof route.params.wordSetId === "string"
+            ? route.params.wordSetId
+            : route.params.wordSetId[0];
+
     const { fetchedData, fetchStatus } = useFetch<IWordSet>({
-        api: `${apis.wordset}?id=${route.params.wordSetId}`,
+        api: `${apis.wordset}?id=${wordSetId}`,
     });
+
+    const wordSet = fetchedData;
 
     let varMap: ITrainMap = {
         train: {
@@ -52,11 +54,7 @@
 
     const chosenVariant = varMap[route.params.trainingType as TrainingType];
 
-    const bcstore = useBreadcrumbsStore();
-    const displayName = computed(() => {
-        return fetchedData.value?.title || "";
-    });
-    const breadCrumbs = computed<IBreadcrumb[]>(() => [
+    useBreadcrumbs([
         {
             displayName: "Главная",
             to: {
@@ -72,11 +70,14 @@
             },
         },
         {
-            displayName: displayName.value,
+            displayName:
+                wordSet.value?.title ||
+                genStore.getFromCache(wordSetId)?.title ||
+                "Тренажер",
             to: {
                 name: "PageWordSet",
                 params: {
-                    wordSetId: route.params.wordSetId,
+                    wordSetId: wordSetId,
                 },
             },
         },
@@ -84,17 +85,6 @@
             displayName: chosenVariant.displayName,
         },
     ]);
-
-    bcstore.breadcrumbs = breadCrumbs.value;
-    watch(breadCrumbs, () => {
-        bcstore.breadcrumbs = breadCrumbs.value;
-    });
-
-    // fetch(`${apis.wordset}?id=${route.params.wordSetId}`)
-    //     .then((res) => res.json())
-    //     .then((json: WordSetJson) => {
-    //         displayName.value = json.data.title;
-    //     });
 </script>
 
 <style lang="scss" scoped></style>

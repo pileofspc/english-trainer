@@ -91,10 +91,6 @@
         api: `${api.train}?id=${props.wordSetId}`,
     });
 
-    setInterval(() => {
-        console.log(fetchedData.value);
-    }, 500);
-
     // const trainerData = ref<IRightWrongWord[]>([]);
     const trainerData = computed(() => {
         return fetchedData.value?.trainerData;
@@ -202,10 +198,6 @@
             statusColor.value = "var(--c-error)";
         }
     }
-
-    // fetch(api.train + `?id=${props.wordSetId}`)
-    //     .then((res) => res.json())
-    //     .then((json: TrainJson) => (trainerData.value = json.data.trainerData));
 </script>
 
 <style lang="scss" scoped>

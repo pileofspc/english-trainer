@@ -13,16 +13,12 @@
     import Contacts from "@components/Contacts.vue";
     import FormFeedback from "@modules/Forms/FormFeedback.vue";
     import Map from "@components/Map.vue";
-    import type { IBreadcrumb } from "@types";
-    import { useBreadcrumbsStore } from "/src/stores/storeBreadcrumbs";
+    import useBreadcrumbs from "/src/composables/useBreadcrumbs";
 
-    const breadcrumbs: IBreadcrumb[] = [
+    useBreadcrumbs([
         { displayName: "Главная", to: { name: "PageMain" } },
         { displayName: "Контакты" },
-    ];
-
-    const bcstore = useBreadcrumbsStore();
-    bcstore.breadcrumbs = breadcrumbs;
+    ]);
 </script>
 
 <style lang="scss" scoped>

@@ -8,23 +8,31 @@ export const useGeneralStore = defineStore("general", () => {
     // State
     const wordSetsCache = ref<IWordSet[]>([]);
 
-    const { fetchedData, fetchMessage, fetchStatus, startFetch } = useFetch<
-        IWordSet[]
-    >({ stagger: true });
+    // setInterval(() => {
+    //     console.log(wordSetsCache.value);
+    // }, 500);
 
-    const wordSets = fetchedData;
-    const message = fetchMessage;
-    const status = fetchStatus;
+    // const { fetchedData, fetchMessage, fetchStatus, startFetch } = useFetch<
+    //     IWordSet[]
+    // >({ stagger: true });
+
+    // const wordSets = fetchedData;
+    // const message = fetchMessage;
+    // const status = fetchStatus;
 
     // Getters
-    const getterWordSets = computed(() => wordSets.value);
-    const getterMessage = computed(() => message.value);
-    const getterStatus = computed(() => status.value);
+    // const getterWordSets = computed(() => wordSets.value);
+    // const getterMessage = computed(() => message.value);
+    // const getterStatus = computed(() => status.value);
+    const getFromCache = computed(() => {
+        return (id: string) =>
+            wordSetsCache.value.find((wordset) => wordset.id === id);
+    });
 
     // Actions and Mutations
-    function fetchWordSets(count: number) {
-        startFetch(api.wordsets + count);
-    }
+    // function fetchWordSets(count: number) {
+    //     startFetch(api.wordsets + count);
+    // }
 
     function cacheWordSets(wordSetArray: IWordSet[]) {
         for (let item of wordSetArray) {
@@ -37,23 +45,19 @@ export const useGeneralStore = defineStore("general", () => {
                 };
                 delete valueToPush.words;
                 wordSetsCache.value.push(valueToPush);
-                return;
             }
         }
     }
 
     // Watchers
-    watch(getterWordSets, () => {
-        if (Array.isArray(getterWordSets.value)) {
-            cacheWordSets(getterWordSets.value);
-        }
-    });
+    // watch(getterWordSets, () => {
+    //     if (Array.isArray(getterWordSets.value)) {
+    //         cacheWordSets(getterWordSets.value);
+    //     }
+    // });
 
     return {
-        getterStatus,
-        getterMessage,
-        getterWordSets,
-        fetchWordSets,
+        getFromCache,
         cacheWordSets,
     };
 });
