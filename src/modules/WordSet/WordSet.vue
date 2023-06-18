@@ -1,12 +1,20 @@
 <template>
     <div class="theme">
-        <router-link class="theme__link block" :to="toRoute">
+        <router-link
+            class="theme__link block"
+            :to="toRoute"
+            @click="handleClick"
+        >
             <img class="theme__link-img" :src="props.img" :alt="props.title" />
         </router-link>
         <div class="theme__data">
             <div class="theme__title large-block-title">{{ props.title }}</div>
             <div class="theme__description">{{ props.description }}</div>
-            <router-link class="theme__button-learn" :to="toRoute">
+            <router-link
+                class="theme__button-learn"
+                :to="toRoute"
+                @click="handleClick"
+            >
                 <VButton variant="accent">Изучить</VButton>
             </router-link>
         </div>
@@ -15,15 +23,26 @@
 
 <script setup lang="ts">
     import VButton from "@components/VButton.vue";
+    import { useGeneralStore } from "/src/stores/storeGeneral";
+
+    const genStore = useGeneralStore();
 
     const props = defineProps({
-        id: [String, Number],
+        id: {
+            type: String,
+        },
         img: String,
         title: String,
         description: String,
     });
 
     const toRoute = `/word-set/${props.id}`;
+
+    function handleClick() {
+        if (props.title) {
+            // genStore.saveDisplayName(props.title);
+        }
+    }
 </script>
 
 <style lang="scss" scoped>

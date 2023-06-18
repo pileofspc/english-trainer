@@ -19,9 +19,13 @@
     const props = defineProps({
         variant: {
             type: String as PropType<VButton>,
+            default: "accent" as VButton,
+        },
+        type: {
+            type: String as PropType<"submit" | "reset" | "button">,
+            default: "button",
         },
         inactive: Boolean,
-        type: String as PropType<"submit" | "reset" | "button">,
     });
 </script>
 

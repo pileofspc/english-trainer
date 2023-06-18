@@ -13,21 +13,28 @@
     import type {
         IBreadcrumb,
         ITrainMap,
+        IWordSet,
         TrainingType,
         WordSetJson,
     } from "@types";
+    import useFetch from "/src/composables/useFetch";
 </script>
 
 <script setup lang="ts">
     import LayoutDefault from "@components/LayoutDefault.vue";
     import TrainerRightWrong from "@modules/TrainerRightWrong/TrainerRightWrong.vue";
     import TrainerWithOptions from "@modules/TrainerWithOptions/TrainerWithOptions.vue";
-    import { computed, ref, watch } from "vue";
+    import { computed, watch } from "vue";
     import { useRoute } from "vue-router";
     import apis from "/src/api";
     import { useBreadcrumbsStore } from "@stores/storeBreadcrumbs";
 
     const route = useRoute();
+
+    const { fetchedData, fetchStatus } = useFetch<IWordSet>({
+        api: `${apis.wordset}?id=${route.params.wordSetId}`,
+    });
+
     let varMap: ITrainMap = {
         train: {
             component: TrainerRightWrong,
@@ -46,7 +53,9 @@
     const chosenVariant = varMap[route.params.trainingType as TrainingType];
 
     const bcstore = useBreadcrumbsStore();
-    const displayName = ref("");
+    const displayName = computed(() => {
+        return fetchedData.value?.title || "";
+    });
     const breadCrumbs = computed<IBreadcrumb[]>(() => [
         {
             displayName: "Главная",
@@ -76,15 +85,16 @@
         },
     ]);
 
+    bcstore.breadcrumbs = breadCrumbs.value;
     watch(breadCrumbs, () => {
         bcstore.breadcrumbs = breadCrumbs.value;
     });
 
-    fetch(`${apis.wordset}?id=${route.params.wordSetId}`)
-        .then((res) => res.json())
-        .then((json: WordSetJson) => {
-            displayName.value = json.data.title;
-        });
+    // fetch(`${apis.wordset}?id=${route.params.wordSetId}`)
+    //     .then((res) => res.json())
+    //     .then((json: WordSetJson) => {
+    //         displayName.value = json.data.title;
+    //     });
 </script>
 
 <style lang="scss" scoped></style>

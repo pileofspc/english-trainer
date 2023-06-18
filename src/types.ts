@@ -1,7 +1,10 @@
-import { type } from "os";
-
+// Общие типы
+export type KeyOfType<T, U> = {
+    [P in keyof T]: T[P] extends U ? P : never;
+}[keyof T];
 export type Res<T> = { status: boolean; message: string; data: T };
 
+// Типы, специфичные для приложения
 export type VButton = "accent" | "bright" | "error" | "success";
 
 export type RouterLink =
@@ -87,7 +90,7 @@ export interface IWithOptionsWord {
     options: ITrainerOption[];
 }
 
-// Типы для ответов с бэкенда
+// Типы для ответов с бэкенда (скорее всего надо будет удалить)
 export type WordSetJson = Res<IWordSet>;
 export type WordSetsJson = Res<IWordSet[]>;
 export type ReviewsJson = Res<IReview[]>;
@@ -110,3 +113,9 @@ export type FeedbackJson = Res<IFeedback>;
 // TODO: Поменять any на правильные типы
 export type RegisterJson = Res<any>;
 export type LoginJson = Res<any>;
+
+//
+export type TrainerData = {
+    wordSet: IWordSet;
+    trainerData: IRightWrongWord[];
+};
