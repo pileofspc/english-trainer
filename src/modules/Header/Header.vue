@@ -6,6 +6,7 @@
                     :is="modalContent"
                     @login="showLogin"
                     @register="showRegister"
+                    @close="closeModal"
                 />
             </KeepAlive>
         </Modal>

@@ -1,21 +1,39 @@
 <template>
     <form class="register form" @submit.prevent="submit">
-        <div class="register__title form-title">Регистрация</div>
-        <div class="register__subtitle">Уже есть аккаунт?</div>
-        <a class="register__log-in" @click.prevent="emit('login')">Войти</a>
-        <div class="register__content">
-            <InputDefault type="text" name="name" label="Полное имя*" />
-            <InputDefault type="email" name="email" label="Email*" />
-            <InputPassword type="password" name="password" label="Пароль*" />
-            <InputCheckbox
-                class="register__checkbox"
-                label="Согласен с Политикой конфиденциальности"
-                name="policy"
-            />
-            <VButton class="register__button" variant="accent" type="submit">
-                Зарегистрироваться
-            </VButton>
-        </div>
+        <Container
+            :status="fetchStatus"
+            :message="fetchMessage"
+            @ready="emit('close')"
+        >
+            <div class="register__title form-title">Регистрация</div>
+            <div class="register__subtitle">Уже есть аккаунт?</div>
+            <a class="register__log-in" @click.prevent="emit('login')">Войти</a>
+            <div class="register__content">
+                <InputDefault type="text" name="name" label="Полное имя*" />
+                <InputDefault type="email" name="email" label="Email*" />
+                <InputPassword
+                    type="password"
+                    name="password"
+                    label="Пароль*"
+                />
+                <InputCheckbox
+                    class="register__checkbox"
+                    label="Согласен с Политикой конфиденциальности"
+                    name="policy"
+                />
+                <VButton
+                    class="register__button"
+                    variant="accent"
+                    type="submit"
+                >
+                    Зарегистрироваться
+                </VButton>
+            </div>
+
+            <template #successMessage>
+                <VSuccess :message="fetchMessage" />
+            </template>
+        </Container>
     </form>
 </template>
 
@@ -24,14 +42,16 @@
     import InputDefault from "@modules/Forms/InputDefault.vue";
     import InputPassword from "@modules/Forms/InputPassword.vue";
     import VButton from "@components/VButton.vue";
+    import VSuccess from "@components/VSuccess.vue";
 
     import { useForm } from "vee-validate";
     import * as yup from "yup";
     import api from "/src/api";
-    import type { RegisterJson } from "@types";
-    import { ref } from "vue";
+    import useFetch from "@composables/useFetch";
 
-    const emit = defineEmits(["login"]);
+    const { fetchedData, fetchMessage, fetchStatus, startFetch } = useFetch();
+
+    const emit = defineEmits(["login", "close"]);
 
     const schema = yup.object({
         name: yup.string().required().min(4),
@@ -52,9 +72,6 @@
             ),
     });
 
-    const isFetching = ref(true);
-    const message = ref("");
-
     const { meta, validate } = useForm({
         validationSchema: schema,
     });
@@ -69,26 +86,13 @@
             new FormData(e.currentTarget as HTMLFormElement)
         );
 
-        fetch(api.register, {
-            method: "POST",
+        startFetch(api.register, {
+            method: "post",
             headers: {
                 "Content-Type": "application/json;charset=utf-8",
             },
             body: JSON.stringify(formDataObject),
-        })
-            .then((res) => res.json())
-            .then((json: RegisterJson) => {
-                if (!json.status) {
-                    throw new Error(json.message);
-                }
-                message.value = json.message;
-            })
-            .catch((err) => {
-                message.value = err.message;
-            })
-            .finally(() => {
-                isFetching.value = false;
-            });
+        });
     }
 </script>
 

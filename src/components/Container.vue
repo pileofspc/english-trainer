@@ -49,11 +49,23 @@
         },
     });
 
+    const emit = defineEmits(["ready", "error", "empty"]);
+
     watch(
         () => props.status,
         (value) => {
             if (props.redirect && props.status === FetchStatuses.Error) {
                 router.replace("/error404");
+            }
+
+            if (props.status === FetchStatuses.Empty) {
+                emit("empty");
+            }
+            if (props.status === FetchStatuses.Error) {
+                emit("error");
+            }
+            if (props.status === FetchStatuses.Ready) {
+                emit("ready");
             }
         }
     );
