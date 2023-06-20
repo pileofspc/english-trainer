@@ -4,10 +4,18 @@
             class="form-textarea__textarea"
             :id="id"
             :name="props.name"
-            v-model="value"
+            @input="onInput"
         />
         <label class="form-textarea__label" :for="id">{{ props.label }}</label>
-        <span class="form-textarea__errors">{{ errorMessage }}</span>
+        <TransitionGroup>
+            <span
+                class="form-textarea__error"
+                v-for="error in errors"
+                :key="error"
+            >
+                {{ error }}
+            </span>
+        </TransitionGroup>
     </div>
 </template>
 
@@ -27,10 +35,30 @@
         },
     });
 
-    const { value, errorMessage } = useField<string>(() => props.name);
+    const { value, errors } = useField<string>(() => props.name);
+
+    let timer: ReturnType<typeof setTimeout>;
+    function onInput(e: Event) {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            value.value = (e.target as HTMLInputElement).value;
+        }, 300);
+    }
 </script>
 
 <style lang="scss" scoped>
+    .v-enter-active,
+    .v-leave-active {
+        $duration: 0.3s;
+        transition: opacity $duration, transform $duration;
+    }
+
+    .v-enter-from,
+    .v-leave-to {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+
     .form-textarea {
         display: flex;
         flex-direction: column;
@@ -66,7 +94,7 @@
             order: -1;
         }
 
-        &__errors {
+        &__error {
             font-size: 12px;
             margin-top: 8px;
             color: var(--c-error);
