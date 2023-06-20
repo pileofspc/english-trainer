@@ -1,19 +1,26 @@
 <template>
-    <slot
-        name="fetching"
-        v-if="
-            props.status === FetchStatuses.Fetching ||
-            props.status === FetchStatuses.NotStarted
-        "
-    >
+    <slot name="fetching" v-if="props.status === FetchStatuses.Fetching">
         <VLoader />
     </slot>
-    <slot v-if="props.status === FetchStatuses.Ready"></slot>
+
+    <slot
+        name="successMessage"
+        v-if="props.showSuccess && props.status === FetchStatuses.Ready"
+    >
+        <div>{{ props.message }}</div>
+    </slot>
+    <slot
+        v-else-if="
+            props.status === FetchStatuses.Ready ||
+            props.status === FetchStatuses.NotStarted
+        "
+    ></slot>
+
+    <slot name="errorMessage" v-if="props.status === FetchStatuses.Error">
+        <div>{{ props.message || "Произошла ошибка при запросе" }}</div>
+    </slot>
     <slot name="empty" v-if="props.status === FetchStatuses.Empty">
         <div>Нет данных для отображения</div>
-    </slot>
-    <slot name="error" v-if="props.status === FetchStatuses.Error">
-        <div>Произошла ошибка при запросе</div>
     </slot>
 </template>
 
@@ -30,6 +37,12 @@
         status: {
             type: String as PropType<FetchStatuses>,
             required: true,
+        },
+        message: {
+            type: String,
+        },
+        showSuccess: {
+            type: Boolean,
         },
         redirect: {
             type: Boolean,

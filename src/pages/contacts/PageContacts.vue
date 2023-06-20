@@ -15,7 +15,7 @@
     import Map from "@components/Map.vue";
     import useBreadcrumbs from "/src/composables/useBreadcrumbs";
 
-    useBreadcrumbs([
+    useBreadcrumbs(() => [
         { displayName: "Главная", to: { name: "PageMain" } },
         { displayName: "Контакты" },
     ]);

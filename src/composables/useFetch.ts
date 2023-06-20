@@ -2,39 +2,60 @@ import type { Res } from "@types";
 import type { Ref } from "vue";
 import { ref } from "vue";
 import { FetchStatuses } from "/src/FetchStatuses";
-// type?: KeyOfType<Response, Function>;
+import { random } from "lodash";
+
+export default function useFetch<T>(options?: {
+    defaultValue?: undefined;
+    url?: string;
+    stagger?: boolean;
+    fetchOptions?: any;
+}): {
+    fetchedData: Ref<T | undefined>;
+    fetchStatus: Ref<FetchStatuses>;
+    fetchMessage: Ref<string>;
+    isFetching: Ref<boolean>;
+    startFetch: Function;
+};
+
+export default function useFetch<T>(options?: {
+    defaultValue: T;
+    url?: string;
+    stagger?: boolean;
+    fetchOptions?: any;
+}): {
+    fetchedData: Ref<T>;
+    fetchStatus: Ref<FetchStatuses>;
+    fetchMessage: Ref<string>;
+    isFetching: Ref<boolean>;
+    startFetch: Function;
+};
 
 export default function useFetch<T>({
-    api,
+    url,
     stagger = false,
     defaultValue,
-    method,
-    body,
+    fetchOptions,
 }: {
-    api?: string;
-    defaultValue?: T;
+    url?: string;
     stagger?: boolean;
-    method?: string;
-    body?: unknown;
-}) {
+    defaultValue?: T;
+    fetchOptions?: any;
+} = {}) {
     const fetchedData = ref(defaultValue) as Ref<T | undefined>;
     const fetchStatus = ref(FetchStatuses.NotStarted);
     const isFetching = ref(true);
     const fetchMessage = ref("");
 
-    const fetchOptions: any = {};
-    if (method) {
-        fetchOptions.method = method;
-    }
-    if (body) {
-        fetchOptions.body = body;
-    }
-
     const randomTime = Math.random() * 5000;
+    // const randomTime = 9999999;
 
-    function startFetch(apiOverride: string) {
+    function startFetch(
+        urlOverride: string,
+        fetchOptionsOverride: any = fetchOptions
+    ) {
+        fetchStatus.value = FetchStatuses.Fetching;
         setTimeout(() => {
-            fetch(apiOverride, fetchOptions)
+            fetch(urlOverride, fetchOptionsOverride)
                 .then((res) => res.json())
                 .then((resOfType: Res<T>) => {
                     if (!resOfType.status) {
@@ -64,8 +85,8 @@ export default function useFetch<T>({
         }, randomTime);
     }
 
-    if (!stagger && api) {
-        startFetch(api);
+    if (!stagger && url) {
+        startFetch(url, fetchOptions);
     }
 
     return {

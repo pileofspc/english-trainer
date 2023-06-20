@@ -88,7 +88,7 @@
     });
 
     const { fetchedData, fetchStatus } = useFetch<TrainerData>({
-        api: `${api.train}?id=${props.wordSetId}`,
+        url: `${api.train}?id=${props.wordSetId}`,
     });
 
     // const trainerData = ref<IRightWrongWord[]>([]);

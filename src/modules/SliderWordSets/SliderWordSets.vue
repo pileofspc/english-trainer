@@ -61,7 +61,7 @@
     let timer: ReturnType<typeof setInterval> | null;
 
     const { fetchedData, fetchStatus } = useFetch<IWordSet[]>({
-        api: apis.wordsets + "?count=" + sliderCount,
+        url: apis.wordsets + "?count=" + sliderCount,
     });
 
     watch(fetchedData, () => {

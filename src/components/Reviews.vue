@@ -15,12 +15,12 @@
     import Review from "@components/Review.vue";
     import api from "/src/api";
     import type { IReview } from "@types";
-    import useFetch from "/src/composables/useFetch";
+    import useFetch from "@composables/useFetch";
 
     const count = 5;
 
     const { fetchedData, fetchStatus } = useFetch<IReview[]>({
-        api: api.reviews + "?count=" + count,
+        url: api.reviews + "?count=" + count,
     });
 
     const reviews = fetchedData;

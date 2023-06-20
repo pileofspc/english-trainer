@@ -4,13 +4,11 @@
             :status="cachedWordset ? FetchStatuses.Ready : fetchStatus"
             redirect
         >
-            <WordSetHeader v-bind="wordSet || cachedWordset" />
+            <WordSetHeader v-bind="wordsetHeaderData" />
         </Container>
 
         <TrainLinks class="page-theme__train-links" />
-        <Container :status="fetchStatus" redirect>
-            <InfListWords class="page-theme__words" :items="cardItems" />
-        </Container>
+        <InfListWords class="page-theme__words" />
     </LayoutDefault>
 </template>
 
@@ -20,8 +18,7 @@
     import TrainLinks from "@modules/TrainLinks/TrainLinks.vue";
     import WordSetHeader from "@modules/WordSetHeader/WordSetHeader.vue";
 
-    import { useBreadcrumbsStore } from "@stores/storeBreadcrumbs";
-    import type { IBreadcrumb, IWordSet, IVCard } from "@types";
+    import type { IWordSet } from "@types";
     import { computed, watch } from "vue";
     import { useRoute } from "vue-router";
     import useFetch from "@composables/useFetch";
@@ -39,7 +36,7 @@
             : route.params.wordSetId[0];
 
     const { fetchedData, fetchStatus } = useFetch<IWordSet>({
-        api: `${api.wordset}?id=${wordSetId}`,
+        url: `${api.wordset}?id=${wordSetId}`,
     });
 
     const wordSet = fetchedData;
@@ -51,17 +48,24 @@
         }
     });
 
-    const cardItems = computed<IVCard[]>(() => {
-        return (
-            wordSet.value?.words?.map((word) => ({
-                img: word.img,
-                title: word.word,
-                subtitle: word.translation,
-            })) || []
-        );
+    const wordsetHeaderData = computed(() => {
+        if (wordSet.value) {
+            return {
+                img: wordSet.value.img,
+                title: wordSet.value.title,
+                description: wordSet.value.description,
+            };
+        }
+        if (cachedWordset) {
+            return {
+                img: cachedWordset.img,
+                title: cachedWordset.title,
+                description: cachedWordset.description,
+            };
+        }
     });
 
-    useBreadcrumbs([
+    useBreadcrumbs(() => [
         { displayName: "Главная", to: { name: "PageMain", replace: true } },
         {
             displayName: "Наборы слов",

@@ -1,13 +1,15 @@
 <template>
-    <div class="inf-list-words">
+    <div>
         <Container :status="fetchStatus">
-            <VCard
-                v-for="item in wordSet?.words"
-                class="inf-list-words__word"
-                :img="item.img"
-                :title="item.word"
-                :subtitle="item.translation"
-            />
+            <div class="inf-list-words">
+                <VCard
+                    v-for="item in wordSet?.words"
+                    class="inf-list-words__word"
+                    :img="item.img"
+                    :title="item.word"
+                    :subtitle="item.translation"
+                />
+            </div>
         </Container>
     </div>
 </template>
@@ -22,7 +24,7 @@
     const route = useRoute();
 
     const { fetchedData, fetchStatus } = useFetch<IWordSet>({
-        api: `${api.wordset}?id=${route.params.wordSetId}&full=true`,
+        url: `${api.wordset}?id=${route.params.wordSetId}&full=true`,
     });
 
     const wordSet = fetchedData;

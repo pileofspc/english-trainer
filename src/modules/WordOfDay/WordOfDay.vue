@@ -20,7 +20,7 @@
     import api from "/src/api";
 
     const { fetchedData, fetchStatus } = useFetch<IWordFull>({
-        api: api.wordofday,
+        url: api.wordofday,
     });
 
     const wordData = fetchedData;

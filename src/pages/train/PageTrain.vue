@@ -11,9 +11,10 @@
 
 <script lang="ts">
     import type { ITrainMap, IWordSet, TrainingType } from "@types";
-    import useFetch from "/src/composables/useFetch";
-    import useBreadcrumbs from "/src/composables/useBreadcrumbs";
-    import { useGeneralStore } from "/src/stores/storeGeneral";
+    import useFetch from "@composables/useFetch";
+    import useBreadcrumbs from "@composables/useBreadcrumbs";
+    import { useGeneralStore } from "@stores/storeGeneral";
+    import { watch } from "vue";
 </script>
 
 <script setup lang="ts">
@@ -32,10 +33,16 @@
             : route.params.wordSetId[0];
 
     const { fetchedData, fetchStatus } = useFetch<IWordSet>({
-        api: `${apis.wordset}?id=${wordSetId}`,
+        url: `${apis.wordset}?id=${wordSetId}`,
     });
 
     const wordSet = fetchedData;
+
+    watch(wordSet, () => {
+        if (wordSet.value) {
+            genStore.cacheWordSets([wordSet.value]);
+        }
+    });
 
     let varMap: ITrainMap = {
         train: {
@@ -54,7 +61,7 @@
 
     const chosenVariant = varMap[route.params.trainingType as TrainingType];
 
-    useBreadcrumbs([
+    useBreadcrumbs(() => [
         {
             displayName: "Главная",
             to: {
@@ -73,7 +80,7 @@
             displayName:
                 wordSet.value?.title ||
                 genStore.getFromCache(wordSetId)?.title ||
-                "Тренажер",
+                "Текущий набор",
             to: {
                 name: "PageWordSet",
                 params: {

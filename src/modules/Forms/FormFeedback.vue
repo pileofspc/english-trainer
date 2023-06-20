@@ -1,43 +1,42 @@
 <template>
     <form class="feedback block" @submit.prevent="submit">
-        <ModalBlock
-            v-if="showModal"
-            @close="showModal = false"
-            title="Обратная связь"
-        >
-            {{ message }}
-        </ModalBlock>
-        <div>
-            <div class="feedback__header">Форма обратной связи</div>
-            <div class="feedback__description">
-                Как правило, наша команда отвечает в течение 24-28 часов.
+        <Container :status="fetchStatus" :message="fetchMessage" show-success>
+            <div>
+                <div class="feedback__header">Форма обратной связи</div>
+                <div class="feedback__description">
+                    Как правило, наша команда отвечает в течение 24-28 часов.
+                </div>
             </div>
-        </div>
-        <InputDefault name="name" label="Имя*" />
-        <InputDefault name="email" label="Почта*" />
-        <InputDefault name="subject" label="Тема*" />
-        <TextArea name="message" label="Текст сообщения*" />
-        <VButton type="submit" class="feedback__button" variant="accent">
-            Отправить
-        </VButton>
+            <InputDefault name="name" label="Имя*" />
+            <InputDefault name="email" label="Почта*" />
+            <InputDefault name="subject" label="Тема*" />
+            <TextArea name="message" label="Текст сообщения*" />
+            <VButton type="submit" class="feedback__button" variant="accent">
+                Отправить
+            </VButton>
+
+            <template #successMessage>
+                <VSuccess :message="fetchMessage" />
+            </template>
+        </Container>
     </form>
 </template>
 
 <script setup lang="ts">
-    import ModalBlock from "@components/ModalBlock.vue";
     import InputDefault from "@modules/Forms/InputDefault.vue";
     import TextArea from "@modules/Forms/TextArea.vue";
     import VButton from "@components/VButton.vue";
 
-    import type { FeedbackJson } from "@types";
+    import VSuccess from "@components/VSuccess.vue";
+
     import api from "/src/api";
-    import { ref } from "vue";
     import { useForm } from "vee-validate";
     import * as yup from "yup";
+    import useFetch from "@composables/useFetch";
 
-    const showModal = ref(false);
-    const isFetching = ref(true);
-    const message = ref("");
+    const { fetchMessage, fetchStatus, startFetch } = useFetch({
+        stagger: true,
+    });
 
     const schema = yup.object({
         name: yup.string().required(),
@@ -67,27 +66,13 @@
             new FormData(e.currentTarget as HTMLFormElement)
         );
 
-        fetch(api.feedback, {
+        startFetch(api.feedback, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json;charset=utf-8",
             },
             body: JSON.stringify(formDataObject),
-        })
-            .then((res) => res.json())
-            .then((json: FeedbackJson) => {
-                if (!json.status) {
-                    throw new Error(json.message);
-                }
-                message.value = json.message;
-            })
-            .catch((err) => {
-                message.value = err.message;
-            })
-            .finally(() => {
-                isFetching.value = false;
-                showModal.value = true;
-            });
+        });
     }
 </script>
 

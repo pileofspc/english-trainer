@@ -1,14 +1,14 @@
 <template>
-    <div class="loader">
-        <svg class="loader__svg">
-            <use :href="`#${Loader.id}`"></use>
+    <div class="success">
+        <svg class="success__svg">
+            <use :href="`#${Success.id}`"></use>
         </svg>
-        <div class="loader__message">{{ props.message }}</div>
+        <div class="success__message">{{ props.message }}</div>
     </div>
 </template>
 
 <script setup lang="ts">
-    import Loader from "@images/icons/Loader.svg?sprite";
+    import Success from "@images/icons/Success.svg?sprite";
 
     const props = defineProps({
         message: {
@@ -18,7 +18,7 @@
 </script>
 
 <style lang="scss" scoped>
-    .loader {
+    .success {
         width: 100%;
         height: 100%;
 
@@ -29,16 +29,16 @@
 
         &__svg {
             display: block;
-            color: var(--c-muted);
+            color: var(--c-success);
             width: 100%;
             height: 100%;
 
-            max-width: 160px;
-            max-height: 160px;
+            max-width: 100px;
+            max-height: 100px;
         }
 
-        // &__message {
-        //     font-size: 16px;
-        // }
+        &__message {
+            margin-top: 24px;
+        }
     }
 </style>

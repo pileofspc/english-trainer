@@ -1,5 +1,6 @@
 <template>
     <div class="trainer-eng-to-rus block">
+        <Container :status="fetchStatus"></Container>
         <div class="trainer-eng-to-rus__content" v-if="!showResults">
             <ProgressBarCounter
                 class="trainer-eng-to-rus__progress"
@@ -77,12 +78,12 @@
     import type {
         ITrainerOption,
         IWithOptionsWord,
-        TrainWithOptionJson,
         TrainingType,
     } from "@types";
     import type { PropType } from "vue";
     import { computed, ref } from "vue";
     import api from "/src/api";
+    import useFetch from "@composables/useFetch";
 
     const props = defineProps({
         trainingType: {
@@ -94,7 +95,17 @@
         },
     });
 
-    const trainerData = ref<IWithOptionsWord[] | undefined[]>([]);
+    let url =
+        props.trainingType === "train-en-ru"
+            ? api["train-en-ru"]
+            : api["train-ru-en"];
+    const { fetchedData, fetchStatus } = useFetch<IWithOptionsWord[]>({
+        url: `${url}?id=${props.wordSetId}`,
+        defaultValue: [],
+    });
+
+    // const trainerData = ref<IWithOptionsWord[] | undefined[]>([]);
+    const trainerData = fetchedData;
     const currentWordPos = ref(0);
     const showResults = ref(false);
     const revealed = ref(false);
@@ -183,15 +194,15 @@
         }
     }
 
-    let url =
-        props.trainingType === "train-en-ru"
-            ? api["train-en-ru"]
-            : api["train-ru-en"];
-    fetch(`${url}?id=${props.wordSetId}`)
-        .then((res) => res.json())
-        .then((json: TrainWithOptionJson) => {
-            trainerData.value = json.data.trainerData;
-        });
+    // let url =
+    //     props.trainingType === "train-en-ru"
+    //         ? api["train-en-ru"]
+    //         : api["train-ru-en"];
+    // fetch(`${url}?id=${props.wordSetId}`)
+    //     .then((res) => res.json())
+    //     .then((json: TrainWithOptionJson) => {
+    //         trainerData.value = json.data.trainerData;
+    //     });
 </script>
 
 <style lang="scss" scoped>

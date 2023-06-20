@@ -1,23 +1,16 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-
-import { useGeneralStore } from "@stores/storeGeneral";
-
 import type { IBreadcrumb } from "@types";
+import { computed } from "vue";
 
 export const useBreadcrumbsStore = defineStore("breadcrumbs", () => {
-    const genStore = useGeneralStore();
-
     const breadcrumbs = ref<IBreadcrumb[]>([]);
-    const pageWordSetDisplayName = ref("");
+
+    const getterBreadcrumbs = computed(() => breadcrumbs.value);
 
     function setBreadcrumbs(value: IBreadcrumb[]) {
         breadcrumbs.value = value;
     }
 
-    function getDisplayName() {
-        genStore;
-    }
-
-    return { breadcrumbs, pageWordSetDisplayName, setBreadcrumbs };
+    return { getterBreadcrumbs, setBreadcrumbs };
 });

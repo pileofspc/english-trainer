@@ -9,7 +9,7 @@
     import InfListWordSets from "@modules/InfListWordSets/InfListWordSets.vue";
     import useBreadcrumbs from "/src/composables/useBreadcrumbs";
 
-    useBreadcrumbs([
+    useBreadcrumbs(() => [
         {
             displayName: "Главная",
             to: {
