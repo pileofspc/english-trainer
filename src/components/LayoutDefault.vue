@@ -2,7 +2,10 @@
     <Header />
     <main class="layout__main">
         <div class="_container">
-            <Breadcrumbs class="layout__breadcrumbs" :items="bcstore.breadcrumbs" />
+            <Breadcrumbs
+                class="layout__breadcrumbs"
+                :items="bcstore.getterBreadcrumbs"
+            />
             <slot></slot>
         </div>
     </main>
@@ -10,9 +13,9 @@
 </template>
 
 <script setup lang="ts">
-    import Header from '@modules/Header/Header.vue';
-    import Footer from '@modules/Footer/Footer.vue';
-    import Breadcrumbs from '@components/Breadcrumbs.vue';
+    import Header from "@modules/Header/Header.vue";
+    import Footer from "@modules/Footer/Footer.vue";
+    import Breadcrumbs from "@components/Breadcrumbs.vue";
     import { useBreadcrumbsStore } from "@stores/storeBreadcrumbs";
 
     const bcstore = useBreadcrumbsStore();

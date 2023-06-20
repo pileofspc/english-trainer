@@ -1,3 +1,5 @@
+// import VLoader from "";
+
 declare module "*.jpg" {
     const content: Jpg;
     export default content;

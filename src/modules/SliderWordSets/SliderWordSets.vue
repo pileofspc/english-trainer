@@ -5,36 +5,40 @@
         @mouseleave="startAutoSlide(time)"
         v-resizer="update"
     >
-        <button class="slider__slide slider__slide_left" @click="slidePrev">
-            <svg class="slider__slide-svg">
-                <use :href="`#${ChevronLeft.id}`"></use>
-            </svg>
-        </button>
+        <Container :status="fetchStatus">
+            <button class="slider__slide slider__slide_left" @click="slidePrev">
+                <svg class="slider__slide-svg">
+                    <use :href="`#${ChevronLeft.id}`"></use>
+                </svg>
+            </button>
 
-        <div
-            class="slider__item-container"
-            :class="{ 'slider__item-container_transition': inTransition }"
-            ref="itemContainer"
-            :style="{ transform: `translate(${currentX}px)` }"
-        >
-            <!-- Транзишны убраны, чтобы они не мешали itemContainer'у -->
-            <WordSet
-                v-for="item in mappedItems"
-                @transitionstart.stop
-                @transitionend.stop
-                @transitioncancel.stop
-                :key="uuidv4()"
-                v-bind="item"
-                class="slider__item"
+            <div
+                class="slider__item-container"
+                :class="{ 'slider__item-container_transition': inTransition }"
+                ref="itemContainer"
+                :style="{ transform: `translate(${currentX}px)` }"
             >
-            </WordSet>
-        </div>
+                <!-- Транзишны убраны, чтобы они не мешали itemContainer'у -->
+                <WordSet
+                    v-for="item in mappedItems"
+                    @transitionstart.stop
+                    @transitionend.stop
+                    @transitioncancel.stop
+                    :key="uuidv4()"
+                    v-bind="item"
+                    class="slider__item"
+                />
+            </div>
 
-        <button class="slider__slide slider__slide_right" @click="slideNext">
-            <svg class="slider__slide-svg">
-                <use :href="`#${ChevronRight.id}`"></use>
-            </svg>
-        </button>
+            <button
+                class="slider__slide slider__slide_right"
+                @click="slideNext"
+            >
+                <svg class="slider__slide-svg">
+                    <use :href="`#${ChevronRight.id}`"></use>
+                </svg>
+            </button>
+        </Container>
     </div>
 </template>
 
@@ -42,16 +46,31 @@
     import ChevronLeft from "@images/icons/ChevronLeft.svg?sprite";
     import ChevronRight from "@images/icons/ChevronRight.svg?sprite";
     import WordSet from "@modules/WordSet/WordSet.vue";
-    import type { IWordSet, WordSetsJson } from "@types";
+    import type { IWordSet } from "@types";
     import { v4 as uuidv4 } from "uuid";
     import { computed, onBeforeUnmount, onMounted, ref } from "vue";
     import apis from "/src/api";
+    import useFetch from "@composables/useFetch";
+    import { watch } from "vue";
+    import { useGeneralStore } from "/src/stores/storeGeneral";
 
+    const genStore = useGeneralStore();
+
+    let sliderCount = 5;
     const time = 5000;
     let timer: ReturnType<typeof setInterval> | null;
 
-    let sliderCount = 5;
-    const sliderItems = ref<IWordSet[]>([]);
+    const { fetchedData, fetchStatus } = useFetch<IWordSet[]>({
+        url: apis.wordsets + "?count=" + sliderCount,
+    });
+
+    watch(fetchedData, () => {
+        if (fetchedData.value) {
+            genStore.cacheWordSets(fetchedData.value);
+        }
+    });
+
+    const sliderItems = fetchedData;
     const sliderWidth = ref(1164);
     let middleIndex = Math.ceil((sliderCount + 2) / 2 - 1);
     const currentPos = ref(middleIndex);
@@ -59,22 +78,28 @@
     const inTransition = ref(false);
     const itemContainer = ref<HTMLDivElement | null>(null);
 
-    const mappedItems = computed<IWordSet[]>(() => [
-        sliderItems.value[sliderItems.value.length - 1],
-        ...sliderItems.value,
-        sliderItems.value[0],
-    ]);
+    const mappedItems = computed<IWordSet[]>(() => {
+        if (!sliderItems.value) {
+            return [];
+        }
+
+        return [
+            sliderItems.value[sliderItems.value.length - 1],
+            ...sliderItems.value,
+            sliderItems.value[0],
+        ];
+    });
     const firstIndex = 1;
     const lastIndex = computed(() => mappedItems.value.length - 2);
     const itemWidth = computed(() => sliderWidth.value);
     const offset = computed(() => itemWidth.value + gap.value);
     const currentX = computed(() => offset.value * -1 * currentPos.value);
 
-    fetch(apis.wordsets + "?count=" + sliderCount)
-        .then((res) => res.json())
-        .then((json: WordSetsJson) => {
-            sliderItems.value = json.data;
-        });
+    // fetch(apis.wordsets + "?count=" + sliderCount)
+    //     .then((res) => res.json())
+    //     .then((json: WordSetsJson) => {
+    //         sliderItems.value = json.data;
+    //     });
 
     onMounted(() => {
         startAutoSlide(time);

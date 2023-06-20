@@ -1,66 +1,70 @@
 <template>
     <div class="trainer block">
-        <div class="trainer__main" v-if="!showResults">
-            <ProgressBarCounter
-                class="trainer__progress"
-                :current="correctAnswers"
-                :total="totalAnswers"
-                :max="trainerData.length"
-            />
-            <div class="trainer__middle">
-                <div class="trainer__word">
-                    {{ currentWordData?.word }}
-                </div>
-                <div class="trainer__translation">
-                    {{ currentWordData?.visibleTranslation }}
-                </div>
-                <div class="trainer__status" v-if="!showCurrentWordResult">
-                    Верный ли это перевод?
-                </div>
-                <div class="trainer__status" v-if="showCurrentWordResult">
-                    <svg
-                        class="trainer__status-svg"
-                        :style="{ color: statusColor }"
-                    >
-                        <use :href="`#${statusIcon.id}`"></use>
-                    </svg>
-                    <span class="trainer__status-text">{{ statusText }}</span>
-                </div>
-                <div class="trainer__controls">
-                    <VButton
-                        :style="{
-                            width: '400px',
-                            'font-size': '20px',
-                        }"
-                        variant="error"
-                        @click="checkUserAnswer(false)"
-                    >
-                        Не верно
-                    </VButton>
-                    <VButton
-                        :style="{
-                            width: '400px',
-                            'font-size': '20px',
-                        }"
-                        variant="success"
-                        @click="checkUserAnswer(true)"
-                    >
-                        Верно
-                    </VButton>
+        <Container :status="fetchStatus">
+            <div class="trainer__main" v-if="!showResults">
+                <ProgressBarCounter
+                    class="trainer__progress"
+                    :current="correctAnswers"
+                    :total="totalAnswers"
+                    :max="trainerData?.length"
+                />
+                <div class="trainer__middle">
+                    <div class="trainer__word">
+                        {{ currentWordData?.word }}
+                    </div>
+                    <div class="trainer__translation">
+                        {{ currentWordData?.visibleTranslation }}
+                    </div>
+                    <div class="trainer__status" v-if="!showCurrentWordResult">
+                        Верный ли это перевод?
+                    </div>
+                    <div class="trainer__status" v-if="showCurrentWordResult">
+                        <svg
+                            class="trainer__status-svg"
+                            :style="{ color: statusColor }"
+                        >
+                            <use :href="`#${statusIcon.id}`"></use>
+                        </svg>
+                        <span class="trainer__status-text">{{
+                            statusText
+                        }}</span>
+                    </div>
+                    <div class="trainer__controls">
+                        <VButton
+                            :style="{
+                                width: '400px',
+                                'font-size': '20px',
+                            }"
+                            variant="error"
+                            @click="checkUserAnswer(false)"
+                        >
+                            Не верно
+                        </VButton>
+                        <VButton
+                            :style="{
+                                width: '400px',
+                                'font-size': '20px',
+                            }"
+                            variant="success"
+                            @click="checkUserAnswer(true)"
+                        >
+                            Верно
+                        </VButton>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="trainer__results" v-if="showResults">
-            <svg class="trainer__result-image">
-                <use :href="`#${successImage.id}`"></use>
-            </svg>
-            <div class="trainer__result-title">Упражнение завершено</div>
-            <div class="trainer__result-description">
-                Вы правильно перевели {{ correctAnswersText }}, переведено
-                неправильно {{ wrongAnswersText }}
+            <div class="trainer__results" v-else>
+                <svg class="trainer__result-image">
+                    <use :href="`#${successImage.id}`"></use>
+                </svg>
+                <div class="trainer__result-title">Упражнение завершено</div>
+                <div class="trainer__result-description">
+                    Вы правильно перевели {{ correctAnswersText }}, переведено
+                    неправильно {{ wrongAnswersText }}
+                </div>
             </div>
-        </div>
+        </Container>
     </div>
 </template>
 
@@ -72,8 +76,9 @@
 
     import Checkmark from "@images/icons/Checkmark.svg?sprite";
     import Cross from "@images/icons/Cross.svg?sprite";
-    import type { IRightWrongWord, TrainJson } from "@types";
+    import type { IRightWrongWord, TrainerData } from "@types";
     import api from "/src/api";
+    import useFetch from "/src/composables/useFetch";
 
     const props = defineProps({
         wordSetId: {
@@ -82,7 +87,14 @@
         },
     });
 
-    const trainerData = ref<IRightWrongWord[]>([]);
+    const { fetchedData, fetchStatus } = useFetch<TrainerData>({
+        url: `${api.train}?id=${props.wordSetId}`,
+    });
+
+    // const trainerData = ref<IRightWrongWord[]>([]);
+    const trainerData = computed(() => {
+        return fetchedData.value?.trainerData;
+    });
 
     const currentWordPos = ref(0);
     const correctAnswers = ref(0);
@@ -94,7 +106,7 @@
     const showResults = ref(false);
 
     const currentWordData = computed(
-        () => trainerData.value[currentWordPos.value]
+        () => trainerData.value?.[currentWordPos.value]
     );
     const isTranslationCorrect = computed(
         () =>
@@ -130,6 +142,10 @@
     }
 
     function nextWord() {
+        if (!trainerData.value) {
+            return;
+        }
+
         if (currentWordPos.value < trainerData.value.length - 1) {
             currentWordPos.value++;
         } else {
@@ -182,10 +198,6 @@
             statusColor.value = "var(--c-error)";
         }
     }
-
-    fetch(api.train + `?id=${props.wordSetId}`)
-        .then((res) => res.json())
-        .then((json: TrainJson) => (trainerData.value = json.data.trainerData));
 </script>
 
 <style lang="scss" scoped>

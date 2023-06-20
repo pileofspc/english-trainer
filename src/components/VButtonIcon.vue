@@ -24,7 +24,7 @@
         },
         variant: {
             type: String as PropType<VButton>,
-            required: true,
+            default: "accent" as VButton,
         },
         inactive: Boolean,
     });

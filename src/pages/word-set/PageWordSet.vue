@@ -1,8 +1,14 @@
 <template>
-    <LayoutDefault v-if="!isLoading">
-        <WordSetHeader v-bind="wordSet" />
+    <LayoutDefault>
+        <Container
+            :status="cachedWordset ? FetchStatuses.Ready : fetchStatus"
+            redirect
+        >
+            <WordSetHeader v-bind="wordsetHeaderData" />
+        </Container>
+
         <TrainLinks class="page-theme__train-links" />
-        <InfListWords class="page-theme__words" :items="cardItems" />
+        <InfListWords class="page-theme__words" />
     </LayoutDefault>
 </template>
 
@@ -12,51 +18,66 @@
     import TrainLinks from "@modules/TrainLinks/TrainLinks.vue";
     import WordSetHeader from "@modules/WordSetHeader/WordSetHeader.vue";
 
-    import { useBreadcrumbsStore } from "@stores/storeBreadcrumbs";
-    import type { IBreadcrumb, IWordSet, IVCard, WordSetJson } from "@types";
-    import { computed, ref, watch } from "vue";
-    import { useRoute, useRouter } from "vue-router";
-    import apis from "/src/api";
+    import type { IWordSet } from "@types";
+    import { computed, watch } from "vue";
+    import { useRoute } from "vue-router";
+    import useFetch from "@composables/useFetch";
+    import api from "/src/api";
+    import { useGeneralStore } from "/src/stores/storeGeneral";
+    import { FetchStatuses } from "/src/FetchStatuses";
+    import useBreadcrumbs from "/src/composables/useBreadcrumbs";
 
+    const genStore = useGeneralStore();
     const route = useRoute();
-    const router = useRouter();
-    const isLoading = ref(true);
 
-    const wordSet = ref<IWordSet>();
-    const cardItems = computed<IVCard[]>(() => {
-        return (
-            wordSet.value?.words?.map((word) => ({
-                img: word.img,
-                title: word.word,
-                subtitle: word.translation,
-            })) || []
-        );
+    const wordSetId =
+        typeof route.params.wordSetId === "string"
+            ? route.params.wordSetId
+            : route.params.wordSetId[0];
+
+    const { fetchedData, fetchStatus } = useFetch<IWordSet>({
+        url: `${api.wordset}?id=${wordSetId}`,
     });
 
-    const breadCrumbs = computed<IBreadcrumb[]>(() => [
+    const wordSet = fetchedData;
+
+    const cachedWordset = genStore.getFromCache(wordSetId);
+    watch(wordSet, () => {
+        if (wordSet.value) {
+            genStore.cacheWordSets([wordSet.value]);
+        }
+    });
+
+    const wordsetHeaderData = computed(() => {
+        if (wordSet.value) {
+            return {
+                img: wordSet.value.img,
+                title: wordSet.value.title,
+                description: wordSet.value.description,
+            };
+        }
+        if (cachedWordset) {
+            return {
+                img: cachedWordset.img,
+                title: cachedWordset.title,
+                description: cachedWordset.description,
+            };
+        }
+    });
+
+    useBreadcrumbs(() => [
         { displayName: "Главная", to: { name: "PageMain", replace: true } },
         {
             displayName: "Наборы слов",
             to: { name: "PageWordSets", replace: true },
         },
-        { displayName: wordSet.value?.title || "" },
+        {
+            displayName:
+                wordSet.value?.title ||
+                genStore.getFromCache(wordSetId)?.title ||
+                "Текущий набор",
+        },
     ]);
-    const bcstore = useBreadcrumbsStore();
-    // вотчер вместо присваивания компьютед свойства нужен, чтобы избежать ошибки типов
-    watch(breadCrumbs, () => {
-        bcstore.breadcrumbs = breadCrumbs.value;
-    });
-
-    fetch(`${apis.wordset}?id=${route.params.wordSetId}`)
-        .then((res) => res.json())
-        .then((res: WordSetJson) => {
-            if (res.status) {
-                wordSet.value = res.data;
-                isLoading.value = false;
-            } else {
-                router.replace("/error404");
-            }
-        });
 </script>
 
 <style scoped lang="scss">

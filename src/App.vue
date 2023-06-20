@@ -26,5 +26,9 @@
         main {
             flex-grow: 1;
         }
+
+        .loader {
+            flex-grow: 1;
+        }
     }
 </style>

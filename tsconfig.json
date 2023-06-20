@@ -10,7 +10,8 @@
             "@styles/*": ["src/assets/styles/*"],
             "@images/*": ["src/assets/images/*"],
             "@stores/*": ["src/stores/*"],
-            "@types": ["src/types.ts"]
+            "@types": ["src/types.ts"],
+            "@composables/*": ["src/composables/*"]
         },
 
         // As long as you are using a build tool, we recommend you to author and ship in ES modules.
@@ -22,6 +23,7 @@
 
         // We expect users to use bundlers.
         // So here we enable some resolution features that are only available in bundlers.
+        // "moduleResolution": "bundler",
         // Если поставить bundler, то в конфигах вебпака плохо работает интеллисенс
         "moduleResolution": "node",
         "resolveJsonModule": true,
@@ -33,7 +35,6 @@
         // Considering it's not likely to be commonly used in Vue codebases, we don't enable it here.
 
         // Для себя сделал так. noEmit нужен, чтобы в src не появлялись js файлы, а allowImportingTsExtensions - просто мне кажется так более удобно
-        // webstorm не понимает allowImportingTsExtensions, но все равно оставлю хотя бы для вскода
         "noEmit": true,
         // "allowImportingTsExtensions": true,
 

@@ -10,24 +10,40 @@
 </template>
 
 <script lang="ts">
-    import type {
-        IBreadcrumb,
-        ITrainMap,
-        TrainingType,
-        WordSetJson,
-    } from "@types";
+    import type { ITrainMap, IWordSet, TrainingType } from "@types";
+    import useFetch from "@composables/useFetch";
+    import useBreadcrumbs from "@composables/useBreadcrumbs";
+    import { useGeneralStore } from "@stores/storeGeneral";
+    import { watch } from "vue";
 </script>
 
 <script setup lang="ts">
     import LayoutDefault from "@components/LayoutDefault.vue";
     import TrainerRightWrong from "@modules/TrainerRightWrong/TrainerRightWrong.vue";
     import TrainerWithOptions from "@modules/TrainerWithOptions/TrainerWithOptions.vue";
-    import { computed, ref, watch } from "vue";
     import { useRoute } from "vue-router";
     import apis from "/src/api";
-    import { useBreadcrumbsStore } from "@stores/storeBreadcrumbs";
 
+    const genStore = useGeneralStore();
     const route = useRoute();
+
+    const wordSetId =
+        typeof route.params.wordSetId === "string"
+            ? route.params.wordSetId
+            : route.params.wordSetId[0];
+
+    const { fetchedData, fetchStatus } = useFetch<IWordSet>({
+        url: `${apis.wordset}?id=${wordSetId}`,
+    });
+
+    const wordSet = fetchedData;
+
+    watch(wordSet, () => {
+        if (wordSet.value) {
+            genStore.cacheWordSets([wordSet.value]);
+        }
+    });
+
     let varMap: ITrainMap = {
         train: {
             component: TrainerRightWrong,
@@ -45,9 +61,7 @@
 
     const chosenVariant = varMap[route.params.trainingType as TrainingType];
 
-    const bcstore = useBreadcrumbsStore();
-    const displayName = ref("");
-    const breadCrumbs = computed<IBreadcrumb[]>(() => [
+    useBreadcrumbs(() => [
         {
             displayName: "Главная",
             to: {
@@ -63,11 +77,14 @@
             },
         },
         {
-            displayName: displayName.value,
+            displayName:
+                wordSet.value?.title ||
+                genStore.getFromCache(wordSetId)?.title ||
+                "Текущий набор",
             to: {
                 name: "PageWordSet",
                 params: {
-                    wordSetId: route.params.wordSetId,
+                    wordSetId: wordSetId,
                 },
             },
         },
@@ -75,16 +92,6 @@
             displayName: chosenVariant.displayName,
         },
     ]);
-
-    watch(breadCrumbs, () => {
-        bcstore.breadcrumbs = breadCrumbs.value;
-    });
-
-    fetch(`${apis.wordset}?id=${route.params.wordSetId}`)
-        .then((res) => res.json())
-        .then((json: WordSetJson) => {
-            displayName.value = json.data.title;
-        });
 </script>
 
 <style lang="scss" scoped></style>

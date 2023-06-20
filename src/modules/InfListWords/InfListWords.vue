@@ -1,33 +1,33 @@
 <template>
-    <div class="inf-list-words">
-        <VCard
-            v-for="item in wordSet?.words"
-            class="inf-list-words__word"
-            :img="item.img"
-            :title="item.word"
-            :subtitle="item.translation"
-        />
+    <div>
+        <Container :status="fetchStatus">
+            <div class="inf-list-words">
+                <VCard
+                    v-for="item in wordSet?.words"
+                    class="inf-list-words__word"
+                    :img="item.img"
+                    :title="item.word"
+                    :subtitle="item.translation"
+                />
+            </div>
+        </Container>
     </div>
 </template>
 
 <script setup lang="ts">
     import VCard from "@components/VCard.vue";
     import api from "/src/api";
-    import type { IWordSet, WordSetJson } from "@types";
-    import { ref } from "vue";
+    import type { IWordSet } from "@types";
     import { useRoute } from "vue-router";
-
-    const wordSet = ref<IWordSet>();
+    import useFetch from "/src/composables/useFetch";
 
     const route = useRoute();
 
-    fetch(`${api.wordset}?id=${route.params.wordSetId}&full=true`)
-        .then((res) => res.json())
-        .then((res: WordSetJson) => {
-            if (res.status) {
-                wordSet.value = res.data;
-            }
-        });
+    const { fetchedData, fetchStatus } = useFetch<IWordSet>({
+        url: `${api.wordset}?id=${route.params.wordSetId}&full=true`,
+    });
+
+    const wordSet = fetchedData;
 </script>
 
 <style scoped lang="scss">

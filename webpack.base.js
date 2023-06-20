@@ -1,3 +1,5 @@
+"use strict";
+
 const path = require("path");
 const fs = require("fs");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -19,6 +21,7 @@ const PATHS = {
     static: path.resolve(__dirname, "src", "static"),
     stores: path.resolve(__dirname, "src", "stores"),
     types: path.resolve(__dirname, "src", "types.ts"),
+    composables: path.resolve(__dirname, "src", "composables"),
 
     distJs: ".",
     distAssets: "assets",
@@ -45,11 +48,18 @@ const htmlPluginPages = pages.map(
 
 // Js entries for each page of PAGES:
 pages.forEach((page) => {
-    let entryName = path.parse(page).name;
-    let filePath = path.join(PATHS.pages, entryName, `${entryName}.js`);
-    if (fs.existsSync(filePath)) {
-        entries[entryName] = filePath;
-    }
+    const entryName = path.parse(page).name;
+    const extensions = ["ts", "js"];
+    extensions.forEach((ext) => {
+        const filePath = path.join(
+            PATHS.pages,
+            entryName,
+            `${entryName}.${ext}`
+        );
+        if (fs.existsSync(filePath)) {
+            entries[entryName] = filePath;
+        }
+    });
 });
 
 module.exports = exports = {
@@ -70,6 +80,7 @@ module.exports = exports = {
                 "@images": PATHS.images,
                 "@stores": PATHS.stores,
                 "@types": PATHS.types,
+                "@composables": PATHS.composables,
             },
         },
         entry: entries,

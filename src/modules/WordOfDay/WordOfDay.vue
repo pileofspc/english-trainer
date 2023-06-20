@@ -1,20 +1,29 @@
 <template>
     <div class="word-of-day block">
-        <div class="word-of-day__title small-block-title">Слово дня</div>
-        <div class="word-of-day__word">{{ `${word} ${transcription}` }}</div>
-        <div class="word-of-day__main">
-            <Doughnut :items="chartItems"></Doughnut>
-        </div>
+        <Container :status="fetchStatus">
+            <div class="word-of-day__title small-block-title">Слово дня</div>
+            <div class="word-of-day__word">
+                {{ `${word} ${transcription}` }}
+            </div>
+            <div class="word-of-day__main">
+                <Doughnut :items="chartItems"></Doughnut>
+            </div>
+        </Container>
     </div>
 </template>
 
 <script setup lang="ts">
     import Doughnut from "@components/Doughnut.vue";
-    import apis from "/src/api";
-    import { computed, ref } from "vue";
-    import type { IWordFull, WordOfDayJson } from "@types";
+    import { computed } from "vue";
+    import type { IWordFull } from "@types";
+    import useFetch from "/src/composables/useFetch";
+    import api from "/src/api";
 
-    const wordData = ref<IWordFull>();
+    const { fetchedData, fetchStatus } = useFetch<IWordFull>({
+        url: api.wordofday,
+    });
+
+    const wordData = fetchedData;
     const word = computed(() => wordData.value?.word);
     const transcription = computed(() => wordData.value?.transcription);
     const chartItems = computed(
@@ -24,12 +33,6 @@
                 value: item.frequency,
             })) || []
     );
-
-    fetch(apis.wordofday)
-        .then((res) => res.json())
-        .then((json: WordOfDayJson) => {
-            wordData.value = json.data;
-        });
 </script>
 
 <style lang="scss" scoped>
