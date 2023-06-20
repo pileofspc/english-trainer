@@ -1,72 +1,73 @@
 <template>
     <div class="trainer-eng-to-rus block">
-        <Container :status="fetchStatus"></Container>
-        <div class="trainer-eng-to-rus__content" v-if="!showResults">
-            <ProgressBarCounter
-                class="trainer-eng-to-rus__progress"
-                :current="correctAnswers"
-                :total="totalAnswers"
-                :max="trainerData.length"
-            />
-            <div class="trainer-eng-to-rus__middle">
-                <div class="trainer-eng-to-rus__main">
-                    <div class="trainer-eng-to-rus__word-data">
-                        <div class="trainer-eng-to-rus__word">
-                            {{ currentWordData?.word }}
+        <Container :status="fetchStatus">
+            <div class="trainer-eng-to-rus__content" v-if="!showResults">
+                <ProgressBarCounter
+                    class="trainer-eng-to-rus__progress"
+                    :current="correctAnswers"
+                    :total="totalAnswers"
+                    :max="trainerData.length"
+                />
+                <div class="trainer-eng-to-rus__middle">
+                    <div class="trainer-eng-to-rus__main">
+                        <div class="trainer-eng-to-rus__word-data">
+                            <div class="trainer-eng-to-rus__word">
+                                {{ currentWordData?.word }}
+                            </div>
+                            <div
+                                class="trainer-eng-to-rus__transcription"
+                                v-if="props.trainingType !== 'train-ru-en'"
+                            >
+                                {{ currentWordData?.transcription }}
+                            </div>
+                            <div
+                                class="trainer-eng-to-rus__image-container"
+                                :class="{
+                                    'trainer-eng-to-rus__image-container_blurred':
+                                        !revealed,
+                                }"
+                            >
+                                <img
+                                    class="trainer-eng-to-rus__image"
+                                    :src="currentWordData?.img"
+                                    alt=""
+                                />
+                            </div>
                         </div>
-                        <div
-                            class="trainer-eng-to-rus__transcription"
-                            v-if="props.trainingType !== 'train-ru-en'"
-                        >
-                            {{ currentWordData?.transcription }}
-                        </div>
-                        <div
-                            class="trainer-eng-to-rus__image-container"
-                            :class="{
-                                'trainer-eng-to-rus__image-container_blurred':
-                                    !revealed,
-                            }"
-                        >
-                            <img
-                                class="trainer-eng-to-rus__image"
-                                :src="currentWordData?.img"
-                                alt=""
+                        <div class="trainer-eng-to-rus__options">
+                            <TrainerOption
+                                v-for="option in options"
+                                class="trainer-eng-to-rus__option"
+                                :word="option.word"
+                                :status="option.status"
+                                @click="onChoose(option)"
                             />
                         </div>
                     </div>
-                    <div class="trainer-eng-to-rus__options">
-                        <TrainerOption
-                            v-for="option in options"
-                            class="trainer-eng-to-rus__option"
-                            :word="option.word"
-                            :status="option.status"
-                            @click="onChoose(option)"
-                        />
+                    <div class="trainer-eng-to-rus__controls">
+                        <VButton
+                            variant="accent"
+                            :inactive="!revealed"
+                            @click="onContinue"
+                        >
+                            Продолжить
+                        </VButton>
                     </div>
                 </div>
-                <div class="trainer-eng-to-rus__controls">
-                    <VButton
-                        variant="accent"
-                        :inactive="!revealed"
-                        @click="onContinue"
-                    >
-                        Продолжить
-                    </VButton>
+            </div>
+            <div class="trainer-eng-to-rus__results" v-else>
+                <svg class="trainer-eng-to-rus__result-image">
+                    <use :href="`#${successImage.id}`"></use>
+                </svg>
+                <div class="trainer-eng-to-rus__result-title">
+                    Упражнение завершено
+                </div>
+                <div class="trainer-eng-to-rus__result-description">
+                    Вы правильно перевели {{ correctAnswersText }}, переведено
+                    неправильно {{ wrongAnswersText }}
                 </div>
             </div>
-        </div>
-        <div class="trainer-eng-to-rus__results" v-if="showResults">
-            <svg class="trainer-eng-to-rus__result-image">
-                <use :href="`#${successImage.id}`"></use>
-            </svg>
-            <div class="trainer-eng-to-rus__result-title">
-                Упражнение завершено
-            </div>
-            <div class="trainer-eng-to-rus__result-description">
-                Вы правильно перевели {{ correctAnswersText }}, переведено
-                неправильно {{ wrongAnswersText }}
-            </div>
-        </div>
+        </Container>
     </div>
 </template>
 
@@ -193,16 +194,6 @@
             userAnsweredIncorrectly();
         }
     }
-
-    // let url =
-    //     props.trainingType === "train-en-ru"
-    //         ? api["train-en-ru"]
-    //         : api["train-ru-en"];
-    // fetch(`${url}?id=${props.wordSetId}`)
-    //     .then((res) => res.json())
-    //     .then((json: TrainWithOptionJson) => {
-    //         trainerData.value = json.data.trainerData;
-    //     });
 </script>
 
 <style lang="scss" scoped>

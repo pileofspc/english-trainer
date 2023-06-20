@@ -2,7 +2,13 @@ import type { Res } from "@types";
 import type { Ref } from "vue";
 import { ref } from "vue";
 import { FetchStatuses } from "/src/FetchStatuses";
-import { random } from "lodash";
+
+// TODO: Разобраться как не повторять сигнатуры по несколько раз для одних и тех же функций
+
+type StartFetch = (
+    urlOverride: string,
+    fetchOptionsOverride?: any
+) => Promise<unknown>;
 
 export default function useFetch<T>(options?: {
     defaultValue?: undefined;
@@ -14,7 +20,7 @@ export default function useFetch<T>(options?: {
     fetchStatus: Ref<FetchStatuses>;
     fetchMessage: Ref<string>;
     isFetching: Ref<boolean>;
-    startFetch: Function;
+    startFetch: StartFetch;
 };
 
 export default function useFetch<T>(options?: {
@@ -27,7 +33,7 @@ export default function useFetch<T>(options?: {
     fetchStatus: Ref<FetchStatuses>;
     fetchMessage: Ref<string>;
     isFetching: Ref<boolean>;
-    startFetch: Function;
+    startFetch: StartFetch;
 };
 
 export default function useFetch<T>({
@@ -46,7 +52,7 @@ export default function useFetch<T>({
     const isFetching = ref(true);
     const fetchMessage = ref("");
 
-    const randomTime = Math.random() * 5000;
+    const randomTime = Math.random() * 3000;
     // const randomTime = 9999999;
 
     function startFetch(
@@ -54,35 +60,46 @@ export default function useFetch<T>({
         fetchOptionsOverride: any = fetchOptions
     ) {
         fetchStatus.value = FetchStatuses.Fetching;
-        setTimeout(() => {
-            fetch(urlOverride, fetchOptionsOverride)
-                .then((res) => res.json())
-                .then((resOfType: Res<T>) => {
-                    if (!resOfType.status) {
-                        throw new Error("Произошла ошибка при запросе данных");
-                    }
 
-                    fetchMessage.value = resOfType.message;
-                    fetchedData.value = resOfType.data;
+        return new Promise((res, rej) => {
+            setTimeout(() => {
+                fetch(urlOverride, fetchOptionsOverride)
+                    .then((res) => res.json())
+                    .catch((err) => {
+                        throw new Error(
+                            "Произошла ошибка при запросе данных. Сервер вернул неправильный формат"
+                        );
+                    })
+                    .then((json: Res<T>) => {
+                        if (!json.status) {
+                            throw new Error(
+                                "Произошла ошибка при запросе данных"
+                            );
+                        }
 
-                    if (
-                        Array.isArray(resOfType.data) &&
-                        resOfType.data.length === 0
-                    ) {
-                        fetchStatus.value = FetchStatuses.Empty;
-                    } else {
-                        fetchStatus.value = FetchStatuses.Ready;
-                    }
-                })
-                .catch((err) => {
-                    fetchStatus.value = FetchStatuses.Error;
-                    fetchMessage.value = err;
-                    console.error(err);
-                })
-                .finally(() => {
-                    isFetching.value = false;
-                });
-        }, randomTime);
+                        fetchMessage.value = json.message;
+                        fetchedData.value = json.data;
+
+                        if (
+                            Array.isArray(json.data) &&
+                            json.data.length === 0
+                        ) {
+                            fetchStatus.value = FetchStatuses.Empty;
+                        } else {
+                            fetchStatus.value = FetchStatuses.Ready;
+                        }
+                    })
+                    .catch((err) => {
+                        fetchStatus.value = FetchStatuses.Error;
+                        fetchMessage.value = err.message;
+                        console.error(err);
+                    })
+                    .finally(() => {
+                        isFetching.value = false;
+                        res(true);
+                    });
+            }, randomTime);
+        });
     }
 
     if (!stagger && url) {

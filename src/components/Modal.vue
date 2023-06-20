@@ -1,6 +1,6 @@
 <template>
     <Teleport to="body">
-        <div class="modal" @click.self="emit('close')">
+        <div class="modal" @mousedown.self="emit('close')">
             <slot></slot>
         </div>
     </Teleport>
