@@ -11,15 +11,8 @@ export default createRouter({
     history: createWebHistory(),
     routes: [
         {
-            path: "/error404",
-            name: "PageError",
-            component: PageError,
-        },
-        {
             path: "/:pathMatch(.*)*",
-            redirect: {
-                name: "PageError",
-            },
+            component: PageError,
         },
         {
             path: "/",
