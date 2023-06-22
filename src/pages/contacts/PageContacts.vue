@@ -1,6 +1,6 @@
 <template>
     <LayoutDefault>
-        <div class="page__first-row">
+        <div class="page-contacts__first-row">
             <Contacts />
             <FormFeedback />
         </div>
@@ -22,11 +22,20 @@
 </script>
 
 <style lang="scss" scoped>
-    .page {
+    @use "@styles/mixins" as m;
+    .page-contacts {
         &__first-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 24px;
+        }
+    }
+
+    @include m.respondSimple("sm") {
+        .page-contacts {
+            &__first-row {
+                grid-template-columns: auto;
+            }
         }
     }
 </style>

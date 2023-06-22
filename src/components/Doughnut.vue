@@ -1,22 +1,22 @@
 <template>
-    <div class="pie-chart">
-        <div class="pie-chart__chart-container">
+    <div class="doughnut">
+        <div class="doughnut__chart-container">
             <Doughnut
-                class="pie-chart__chart"
+                class="doughnut__chart"
                 :options="chartOptions"
                 :data="chartData"
             />
         </div>
-        <div class="pie-chart__data">
-            <div class="pie-chart__item" v-for="(item, index) in props.items">
+        <div class="doughnut__data">
+            <div class="doughnut__item" v-for="(item, index) in props.items">
                 <div
-                    class="pie-chart__item-square"
+                    class="doughnut__item-square"
                     :style="{ backgroundColor: colors[index] }"
                 ></div>
-                <div class="pie-chart__item-percentage">
+                <div class="doughnut__item-percentage">
                     {{ `${getPercentage(item?.value, sum)}` }}
                 </div>
-                <div class="pie-chart__item-text">{{ `${item?.name}` }}</div>
+                <div class="doughnut__item-text">{{ `${item?.name}` }}</div>
             </div>
         </div>
     </div>
@@ -131,20 +131,21 @@
 </script>
 
 <style lang="scss" scoped>
-    .pie-chart {
+    @use "@styles/mixins" as m;
+
+    .doughnut {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: center;
         gap: 24px;
 
         &__chart-container {
             width: 200px;
         }
 
-        &__data {
-            margin-left: auto;
-            margin-right: auto;
-        }
+        // &__data {
+        //     width: fit-content;
+        // }
 
         &__item {
             display: flex;
@@ -171,4 +172,12 @@
             margin-left: 4px;
         }
     }
+
+    // @include m.respondSimple("md") {
+    //     .doughnut {
+    //         &__data {
+    //             margin-left: 80px;
+    //         }
+    //     }
+    // }
 </style>

@@ -38,13 +38,27 @@
                 </nav>
 
                 <VButton
-                    class="header__first-button"
+                    class="header__button header__button_first"
                     variant="bright"
                     @click="showRegister"
                 >
                     Регистрация
                 </VButton>
-                <VButton variant="accent" @click="showLogin"> Войти </VButton>
+                <VButton
+                    class="header__button"
+                    variant="accent"
+                    @click="showLogin"
+                >
+                    Войти
+                </VButton>
+
+                <div class="header__burger-container">
+                    <Burger
+                        class="header__burger"
+                        @login="showLogin"
+                        @register="showRegister"
+                    />
+                </div>
             </div>
         </div>
     </header>
@@ -56,6 +70,7 @@
     import mainLogo from "@images/main-logo.svg";
     import FormLogin from "@modules/Forms/FormLogin.vue";
     import FormRegister from "@modules/Forms/FormRegister.vue";
+    import Burger from "@components/Burger.vue";
 
     import { ref, shallowRef } from "vue";
 
@@ -113,8 +128,28 @@
             }
         }
 
-        &__first-button {
+        &__button_first {
             margin-left: auto;
+        }
+
+        &__burger-container {
+            display: none;
+            margin-left: auto;
+        }
+    }
+
+    @include m.respondSimple("sm") {
+        .header {
+            &__nav {
+                display: none;
+            }
+            &__button {
+                display: none;
+            }
+
+            &__burger-container {
+                display: block;
+            }
         }
     }
 </style>

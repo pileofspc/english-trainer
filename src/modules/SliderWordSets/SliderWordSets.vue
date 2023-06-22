@@ -83,6 +83,11 @@
             return [];
         }
 
+        const sliderItemsCopy = [...sliderItems.value];
+        for (let item of sliderItemsCopy) {
+            delete item.words;
+        }
+
         return [
             sliderItems.value[sliderItems.value.length - 1],
             ...sliderItems.value,
@@ -94,12 +99,6 @@
     const itemWidth = computed(() => sliderWidth.value);
     const offset = computed(() => itemWidth.value + gap.value);
     const currentX = computed(() => offset.value * -1 * currentPos.value);
-
-    // fetch(apis.wordsets + "?count=" + sliderCount)
-    //     .then((res) => res.json())
-    //     .then((json: WordSetsJson) => {
-    //         sliderItems.value = json.data;
-    //     });
 
     onMounted(() => {
         startAutoSlide(time);
@@ -185,6 +184,8 @@
 </script>
 
 <style scoped lang="scss">
+    @use "@styles/mixins" as m;
+
     .slider {
         position: relative;
         padding: 32px 60px;
@@ -236,6 +237,13 @@
             &:hover {
                 opacity: 1;
             }
+        }
+    }
+
+    @include m.respondSimple("md") {
+        .slider {
+            padding-top: 24px;
+            padding-bottom: 24px;
         }
     }
 </style>
