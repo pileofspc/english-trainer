@@ -30,6 +30,10 @@
             flex-basis: 62%;
         }
 
+        &__word-of-day {
+            flex-basis: 38%;
+        }
+
         &__slider {
             margin-top: 24px;
         }

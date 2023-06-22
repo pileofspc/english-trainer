@@ -52,54 +52,90 @@ export default function useFetch<T>({
     const isFetching = ref(true);
     const fetchMessage = ref("");
 
-    const randomTime = Math.random() * 3000;
+    // const randomTime = Math.random() * 3000;
     // const randomTime = 9999999;
+
+    // function startFetch(
+    //     urlOverride: string,
+    //     fetchOptionsOverride: any = fetchOptions
+    // ) {
+    //     fetchStatus.value = FetchStatuses.Fetching;
+
+    //     return new Promise((res, rej) => {
+    //         setTimeout(() => {
+    //             fetch(urlOverride, fetchOptionsOverride)
+    //                 .then((res) => res.json())
+    //                 .catch((err) => {
+    //                     throw new Error(
+    //                         "Произошла ошибка при запросе данных. Сервер вернул неправильный формат"
+    //                     );
+    //                 })
+    //                 .then((json: Res<T>) => {
+    //                     if (!json.status) {
+    //                         throw new Error(
+    //                             "Произошла ошибка при запросе данных"
+    //                         );
+    //                     }
+
+    //                     fetchMessage.value = json.message;
+    //                     fetchedData.value = json.data;
+
+    //                     if (
+    //                         Array.isArray(json.data) &&
+    //                         json.data.length === 0
+    //                     ) {
+    //                         fetchStatus.value = FetchStatuses.Empty;
+    //                     } else {
+    //                         fetchStatus.value = FetchStatuses.Ready;
+    //                     }
+    //                 })
+    //                 .catch((err) => {
+    //                     fetchStatus.value = FetchStatuses.Error;
+    //                     fetchMessage.value = err.message;
+    //                     console.error(err);
+    //                 })
+    //                 .finally(() => {
+    //                     isFetching.value = false;
+    //                     res(true);
+    //                 });
+    //         }, randomTime);
+    //     });
+    // }
 
     function startFetch(
         urlOverride: string,
         fetchOptionsOverride: any = fetchOptions
     ) {
         fetchStatus.value = FetchStatuses.Fetching;
+        return fetch(urlOverride, fetchOptionsOverride)
+            .then((res) => res.json())
+            .catch((err) => {
+                throw new Error(
+                    "Произошла ошибка при запросе данных. Сервер вернул неправильный формат"
+                );
+            })
+            .then((json: Res<T>) => {
+                if (!json.status) {
+                    throw new Error("Произошла ошибка при запросе данных");
+                }
 
-        return new Promise((res, rej) => {
-            setTimeout(() => {
-                fetch(urlOverride, fetchOptionsOverride)
-                    .then((res) => res.json())
-                    .catch((err) => {
-                        throw new Error(
-                            "Произошла ошибка при запросе данных. Сервер вернул неправильный формат"
-                        );
-                    })
-                    .then((json: Res<T>) => {
-                        if (!json.status) {
-                            throw new Error(
-                                "Произошла ошибка при запросе данных"
-                            );
-                        }
+                fetchMessage.value = json.message;
+                fetchedData.value = json.data;
 
-                        fetchMessage.value = json.message;
-                        fetchedData.value = json.data;
-
-                        if (
-                            Array.isArray(json.data) &&
-                            json.data.length === 0
-                        ) {
-                            fetchStatus.value = FetchStatuses.Empty;
-                        } else {
-                            fetchStatus.value = FetchStatuses.Ready;
-                        }
-                    })
-                    .catch((err) => {
-                        fetchStatus.value = FetchStatuses.Error;
-                        fetchMessage.value = err.message;
-                        console.error(err);
-                    })
-                    .finally(() => {
-                        isFetching.value = false;
-                        res(true);
-                    });
-            }, randomTime);
-        });
+                if (Array.isArray(json.data) && json.data.length === 0) {
+                    fetchStatus.value = FetchStatuses.Empty;
+                } else {
+                    fetchStatus.value = FetchStatuses.Ready;
+                }
+            })
+            .catch((err) => {
+                fetchStatus.value = FetchStatuses.Error;
+                fetchMessage.value = err.message;
+                console.error(err);
+            })
+            .finally(() => {
+                isFetching.value = false;
+            });
     }
 
     if (!stagger && url) {

@@ -16,7 +16,7 @@
     import useBreadcrumbs from "/src/composables/useBreadcrumbs";
 
     useBreadcrumbs(() => [
-        { displayName: "Главная", to: { name: "Page-contactsMain" } },
+        { displayName: "Главная", to: { name: "PageMain" } },
         { displayName: "Контакты" },
     ]);
 </script>
