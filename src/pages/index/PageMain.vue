@@ -10,14 +10,16 @@
 </template>
 
 <script setup lang="ts">
-    import SliderWordSets from '@modules/SliderWordSets/SliderWordSets.vue';
-    import LayoutMainPage from '@components/LayoutMainPage.vue';
-    import WordOfDay from '@modules/WordOfDay/WordOfDay.vue';
-    import About from '@components/About.vue';
-    import Reviews from '@components/Reviews.vue';
+    import SliderWordSets from "@modules/SliderWordSets/SliderWordSets.vue";
+    import LayoutMainPage from "@components/LayoutMainPage.vue";
+    import WordOfDay from "@modules/WordOfDay/WordOfDay.vue";
+    import About from "@components/About.vue";
+    import Reviews from "@components/Reviews.vue";
 </script>
 
 <style lang="scss" scoped>
+    @use "@styles/mixins" as m;
+
     .page-main {
         &__first-row {
             display: flex;
@@ -25,11 +27,7 @@
         }
 
         &__about {
-            flex-grow: 1;
-        }
-
-        &__word-of-day {
-            flex-basis: 38%;
+            flex-basis: 62%;
         }
 
         &__slider {
@@ -42,6 +40,14 @@
 
         &__breadcrumbs {
             margin-bottom: 24px;
+        }
+    }
+
+    @include m.respondSimple("md") {
+        .page-main {
+            &__first-row {
+                flex-direction: column;
+            }
         }
     }
 </style>

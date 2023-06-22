@@ -29,7 +29,7 @@
 <style lang="scss" scoped>
     .reviews {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
         justify-content: center;
         gap: 24px;
         padding: 24px;

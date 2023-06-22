@@ -36,9 +36,12 @@
 </script>
 
 <style lang="scss" scoped>
+    @use "@styles/mixins" as m;
     .word-of-day {
         padding: 12px 20px;
-        width: fit-content;
+
+        display: flex;
+        flex-direction: column;
 
         &__title {
             padding-bottom: 12px;
@@ -54,4 +57,23 @@
             margin-top: 8px;
         }
     }
+
+    // @include m.respond("md") {
+    //     .word-of-day {
+    //         flex-direction: row;
+    //         gap: 24px;
+    //         justify-content: space-between;
+    //         align-items: center;
+
+    //         &__title {
+    //             border-bottom: none;
+    //             padding-bottom: 0;
+    //             flex-shrink: 0;
+    //         }
+
+    //         &__word {
+    //             margin-top: 0;
+    //         }
+    //     }
+    // }
 </style>

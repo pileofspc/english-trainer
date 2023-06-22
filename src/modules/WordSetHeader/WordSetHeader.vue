@@ -1,18 +1,18 @@
 <template>
-    <div class="theme-header block">
-        <div class="theme-header__theme">
-            <div class="theme-header__img-container block">
+    <div class="wordset-header block">
+        <div class="wordset-header__wordset">
+            <div class="wordset-header__img-container block">
                 <img
-                    class="theme-header__img"
+                    class="wordset-header__img"
                     :src="props.img"
                     :alt="props.title"
                 />
             </div>
-            <div class="theme-header__data">
-                <div class="theme-header__title block-title">
+            <div class="wordset-header__data">
+                <div class="wordset-header__title block-title">
                     {{ props.title }}
                 </div>
-                <div class="theme-header__description">
+                <div class="wordset-header__description">
                     {{ props.description }}
                 </div>
             </div>
@@ -29,7 +29,8 @@
 </script>
 
 <style scoped lang="scss">
-    .theme-header {
+    @use "@styles/mixins" as m;
+    .wordset-header {
         position: relative;
         padding: 20px;
         overflow: hidden;
@@ -38,7 +39,7 @@
             0%;
         background-size: auto 101%;
 
-        &__theme {
+        &__wordset {
             display: flex;
             flex-shrink: 0;
             gap: 24px;
@@ -47,8 +48,10 @@
         &__img-container {
             width: 180px;
             height: 180px;
+            max-width: 100%;
             overflow: hidden;
             align-self: center;
+            flex-shrink: 0;
         }
 
         &__img {
@@ -72,6 +75,37 @@
             font-size: 14px;
             margin-top: 12px;
             align-self: flex-start;
+        }
+    }
+
+    @include m.respondSimple("mdlg") {
+        .wordset-header {
+            background-position: calc(100% + 120px) 0;
+            &__data {
+                width: calc(100% - 360px);
+            }
+        }
+    }
+
+    @include m.respondSimple("sm") {
+        .wordset-header {
+            background: var(--c-bright);
+
+            &__data {
+                width: auto;
+            }
+        }
+    }
+
+    @include m.respondSimple("xsm") {
+        .wordset-header {
+            &__wordset {
+                flex-direction: column;
+            }
+
+            &__img-container {
+                width: 260px;
+            }
         }
     }
 </style>
