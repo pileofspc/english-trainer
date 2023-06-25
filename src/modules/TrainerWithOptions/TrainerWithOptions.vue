@@ -24,14 +24,18 @@
                                 class="trainer-eng-to-rus__image-container"
                                 :class="{
                                     'trainer-eng-to-rus__image-container_blurred':
-                                        !revealed,
+                                        !revealed &&
+                                        fetchStatusImage !==
+                                            FetchStatuses.Fetching,
                                 }"
                             >
-                                <img
-                                    class="trainer-eng-to-rus__image"
-                                    :src="currentWordData?.img"
-                                    alt=""
-                                />
+                                <Container :status="fetchStatusImage">
+                                    <img
+                                        class="trainer-eng-to-rus__image"
+                                        :src="fetchedImage"
+                                        :alt="currentWordData?.word"
+                                    />
+                                </Container>
                             </div>
                         </div>
                         <div class="trainer-eng-to-rus__options">
@@ -85,6 +89,8 @@
     import { computed, ref } from "vue";
     import api from "/src/api";
     import useFetch from "@composables/useFetch";
+    import useFetchImage from "@composables/useFetchImage";
+    import { FetchStatuses } from "/src/FetchStatuses";
 
     const props = defineProps({
         trainingType: {
@@ -96,16 +102,24 @@
         },
     });
 
+    const { fetchedImage, fetchStatusImage, startFetchImage } = useFetchImage();
+
     let url =
         props.trainingType === "train-en-ru"
             ? api["train-en-ru"]
             : api["train-ru-en"];
-    const { fetchedData, fetchStatus } = useFetch<IWithOptionsWord[]>({
+    const { fetchedData, fetchStatus, startFetch } = useFetch<
+        IWithOptionsWord[]
+    >({
         url: `${url}?id=${props.wordSetId}`,
         defaultValue: [],
+        stagger: true,
     });
 
-    // const trainerData = ref<IWithOptionsWord[] | undefined[]>([]);
+    startFetch().then(() => {
+        startFetchImage(fetchedData.value[0].img);
+    });
+
     const trainerData = fetchedData;
     const currentWordPos = ref(0);
     const showResults = ref(false);
@@ -149,6 +163,7 @@
     function nextWord() {
         if (currentWordPos.value < trainerData.value.length - 1) {
             currentWordPos.value++;
+            startFetchImage(currentWordData.value.img);
         } else {
             showResults.value = true;
         }

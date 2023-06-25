@@ -42,8 +42,12 @@
 </script>
 
 <style lang="scss" scoped>
+    @use "@styles/mixins" as m;
+
     .breadcrumbs {
         display: flex;
+        flex-wrap: wrap;
+        row-gap: 8px;
         align-items: center;
         padding: 8px;
 
@@ -66,4 +70,6 @@
             margin: 0 10px;
         }
     }
+
+    // @include m.respondSimple();
 </style>

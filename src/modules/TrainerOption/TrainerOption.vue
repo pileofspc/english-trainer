@@ -32,7 +32,7 @@
     import Checkmark from "@images/icons/Checkmark.svg?sprite";
     import Cross from "@images/icons/Cross.svg?sprite";
     import type { PropType } from "vue";
-    import type { OptionStatus } from "@types";
+    import type { TrainerOptionStatus } from "@types";
 
     const props = defineProps({
         word: {
@@ -40,7 +40,7 @@
             required: true,
         },
         status: {
-            type: String as PropType<OptionStatus>,
+            type: String as PropType<TrainerOptionStatus>,
         },
     });
 
