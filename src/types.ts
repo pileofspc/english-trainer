@@ -69,7 +69,6 @@ export interface ITrainMapItem {
     component: any;
     displayName: string;
 }
-// type Trainer = typeof TrainerRightWrong | typeof TrainerWithOptions;
 export type TrainingType = keyof ITrainMap;
 
 export type IRightWrongWord = {
@@ -77,11 +76,14 @@ export type IRightWrongWord = {
     visibleTranslation: string;
     actualTranslation: string;
 };
-export type OptionStatus = "chosen-correct" | "chosen-incorrect" | "correct";
+export type TrainerOptionStatus =
+    | "chosen-correct"
+    | "chosen-incorrect"
+    | "correct";
 export interface ITrainerOption {
     word: string;
     isCorrect: boolean;
-    status?: OptionStatus;
+    status?: TrainerOptionStatus;
 }
 export interface IWithOptionsWord {
     word: string;
@@ -109,12 +111,7 @@ export interface IFeedback {
     subject: string;
     message: string;
 }
-export type FeedbackJson = Res<IFeedback>;
-// TODO: Поменять any на правильные типы
-export type RegisterJson = Res<any>;
-export type LoginJson = Res<any>;
 
-//
 export type TrainerData = {
     wordSet: IWordSet;
     trainerData: IRightWrongWord[];

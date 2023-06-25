@@ -5,11 +5,6 @@ import { FetchStatuses } from "/src/FetchStatuses";
 
 // TODO: Разобраться как не повторять сигнатуры по несколько раз для одних и тех же функций
 
-type StartFetch = (
-    urlOverride: string,
-    fetchOptionsOverride?: any
-) => Promise<unknown>;
-
 export default function useFetch<T>(options?: {
     defaultValue?: undefined;
     url?: string;
@@ -20,7 +15,11 @@ export default function useFetch<T>(options?: {
     fetchStatus: Ref<FetchStatuses>;
     fetchMessage: Ref<string>;
     isFetching: Ref<boolean>;
-    startFetch: StartFetch;
+    startFetch: (
+        urlOverride?: string,
+        fetchOptionsOverride?: any
+    ) => Promise<unknown>;
+    fetchPromise: Promise<unknown> | undefined;
 };
 
 export default function useFetch<T>(options?: {
@@ -33,7 +32,11 @@ export default function useFetch<T>(options?: {
     fetchStatus: Ref<FetchStatuses>;
     fetchMessage: Ref<string>;
     isFetching: Ref<boolean>;
-    startFetch: StartFetch;
+    startFetch: (
+        urlOverride?: string,
+        fetchOptionsOverride?: any
+    ) => Promise<unknown>;
+    fetchPromise: Promise<unknown> | undefined;
 };
 
 export default function useFetch<T>({
@@ -102,14 +105,20 @@ export default function useFetch<T>({
     //     });
     // }
 
-    function startFetch(
-        urlOverride: string,
-        fetchOptionsOverride: any = fetchOptions
-    ) {
+    function startFetch(urlOverride?: string, fetchOptionsOverride?: any) {
         fetchStatus.value = FetchStatuses.Fetching;
+        if (!urlOverride && url) {
+            urlOverride = url;
+        }
+        if (!fetchOptionsOverride && fetchOptions) {
+            fetchOptionsOverride = fetchOptions;
+        }
+        if (!urlOverride) {
+            throw new Error("Не указан адрес для запроса!");
+        }
         return fetch(urlOverride, fetchOptionsOverride)
             .then((res) => res.json())
-            .catch((err) => {
+            .catch(() => {
                 throw new Error(
                     "Произошла ошибка при запросе данных. Сервер вернул неправильный формат"
                 );
@@ -138,8 +147,9 @@ export default function useFetch<T>({
             });
     }
 
+    let fetchPromise: Promise<unknown> | undefined;
     if (!stagger && url) {
-        startFetch(url, fetchOptions);
+        fetchPromise = startFetch(url, fetchOptions);
     }
 
     return {
@@ -148,5 +158,6 @@ export default function useFetch<T>({
         fetchedData,
         isFetching,
         startFetch,
+        fetchPromise,
     };
 }

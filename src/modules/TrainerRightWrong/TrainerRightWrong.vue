@@ -76,7 +76,7 @@
 
     import Checkmark from "@images/icons/Checkmark.svg?sprite";
     import Cross from "@images/icons/Cross.svg?sprite";
-    import type { IRightWrongWord, TrainerData } from "@types";
+    import type { TrainerData } from "@types";
     import api from "/src/api";
     import useFetch from "/src/composables/useFetch";
 
@@ -91,7 +91,6 @@
         url: `${api.train}?id=${props.wordSetId}`,
     });
 
-    // const trainerData = ref<IRightWrongWord[]>([]);
     const trainerData = computed(() => {
         return fetchedData.value?.trainerData;
     });
