@@ -53,6 +53,8 @@
 </script>
 
 <style lang="scss" scoped>
+    @use "@styles/mixins" as m;
+
     .trainer-option {
         position: relative;
 
@@ -122,23 +124,11 @@
         }
     }
 
-    .trainer-option_correct {
-        .trainer-option__main {
-            border-color: var(--c-success);
-        }
-
-        .trainer-option__status-svg {
-            color: var(--c-success);
-        }
-    }
-
-    .trainer-option_incorrect {
-        .trainer-option__main {
-            border-color: var(--c-error);
-        }
-
-        .trainer-option__status-svg {
-            color: var(--c-error);
+    @include m.respondSimple("md") {
+        .trainer-option {
+            &__status {
+                display: none;
+            }
         }
     }
 </style>
