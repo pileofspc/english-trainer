@@ -8,55 +8,52 @@
                     :total="totalAnswers"
                     :max="trainerData.length"
                 />
-                <div class="trainer-eng-to-rus__middle">
-                    <div class="trainer-eng-to-rus__main">
-                        <div class="trainer-eng-to-rus__word-data">
-                            <div class="trainer-eng-to-rus__word">
-                                {{ currentWordData?.word }}
-                            </div>
-                            <div
-                                class="trainer-eng-to-rus__transcription"
-                                v-if="props.trainingType !== 'train-ru-en'"
-                            >
-                                {{ currentWordData?.transcription }}
-                            </div>
-                            <div
-                                class="trainer-eng-to-rus__image-container"
-                                :class="{
-                                    'trainer-eng-to-rus__image-container_blurred':
-                                        !revealed &&
-                                        fetchStatusImage !==
-                                            FetchStatuses.Fetching,
-                                }"
-                            >
-                                <Container :status="fetchStatusImage">
-                                    <img
-                                        class="trainer-eng-to-rus__image"
-                                        :src="fetchedImage"
-                                        :alt="currentWordData?.word"
-                                    />
-                                </Container>
-                            </div>
+                <div class="trainer-eng-to-rus__main">
+                    <div class="trainer-eng-to-rus__word-data">
+                        <div class="trainer-eng-to-rus__word">
+                            {{ currentWordData?.word }}
                         </div>
-                        <div class="trainer-eng-to-rus__options">
-                            <TrainerOption
-                                v-for="option in options"
-                                class="trainer-eng-to-rus__option"
-                                :word="option.word"
-                                :status="option.status"
-                                @click="onChoose(option)"
-                            />
-                        </div>
-                    </div>
-                    <div class="trainer-eng-to-rus__controls">
-                        <VButton
-                            variant="accent"
-                            :inactive="!revealed"
-                            @click="onContinue"
+                        <div
+                            class="trainer-eng-to-rus__transcription"
+                            v-if="props.trainingType !== 'train-ru-en'"
                         >
-                            Продолжить
-                        </VButton>
+                            {{ currentWordData?.transcription }}
+                        </div>
+                        <div
+                            class="trainer-eng-to-rus__image-container"
+                            :class="{
+                                'trainer-eng-to-rus__image-container_blurred':
+                                    !revealed &&
+                                    fetchStatusImage !== FetchStatuses.Fetching,
+                            }"
+                        >
+                            <Container :status="fetchStatusImage">
+                                <img
+                                    class="trainer-eng-to-rus__image"
+                                    :src="fetchedImage"
+                                    :alt="currentWordData?.word"
+                                />
+                            </Container>
+                        </div>
                     </div>
+                    <div class="trainer-eng-to-rus__options">
+                        <TrainerOption
+                            v-for="option in options"
+                            class="trainer-eng-to-rus__option"
+                            :word="option.word"
+                            :status="option.status"
+                            @click="onChoose(option)"
+                        />
+                    </div>
+                </div>
+                <div class="trainer-eng-to-rus__controls">
+                    <VButton
+                        variant="accent"
+                        :inactive="!revealed"
+                        @click="onContinue"
+                    >
+                        Продолжить
+                    </VButton>
                 </div>
             </div>
             <div class="trainer-eng-to-rus__results" v-else>
@@ -213,14 +210,8 @@
 
 <style lang="scss" scoped>
     .trainer-eng-to-rus {
+        overflow: hidden;
         padding: 20px;
-
-        &__middle {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 32px;
-        }
 
         &__main {
             display: flex;
@@ -228,6 +219,9 @@
             gap: 80px;
 
             font-size: 32px;
+
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         &__word-data {
@@ -260,15 +254,14 @@
         }
 
         &__controls {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
             margin-top: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        &__option {
-            min-width: 320px;
+        &__options {
+            flex-grow: 1;
         }
 
         &__option:not(:first-child) {
@@ -279,6 +272,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+
+            text-align: center;
         }
 
         &__result-image {
