@@ -4,6 +4,7 @@ const { merge } = require("webpack-merge");
 const ImageMinimizerPlugin = require("image-minimizer-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { VueLoaderPlugin } = require("vue-loader");
+const webpack = require("webpack");
 
 const prod = {
     mode: "production",
