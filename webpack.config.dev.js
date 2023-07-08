@@ -11,9 +11,9 @@ const dev = {
     devServer: {
         static: {
             // from
-            directory: PATHS.static,
+            directory: PATHS.resources,
             // to
-            publicPath: "/static",
+            publicPath: "/resources",
         },
         port: 3000,
         hot: true,

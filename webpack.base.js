@@ -18,7 +18,7 @@ const PATHS = {
     assets: path.resolve(__dirname, "src", "assets"),
     images: path.resolve(__dirname, "src", "assets", "images"),
     styles: path.resolve(__dirname, "src", "assets", "styles"),
-    static: path.resolve(__dirname, "src", "static"),
+    resources: path.resolve(__dirname, "src", "resources"),
     stores: path.resolve(__dirname, "src", "stores"),
     types: path.resolve(__dirname, "src", "types.ts"),
     composables: path.resolve(__dirname, "src", "composables"),

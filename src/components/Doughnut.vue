@@ -25,7 +25,13 @@
 <script setup lang="ts">
     import { computed, ref } from "vue";
     import { Doughnut } from "vue-chartjs";
-    import { Chart, PieController, ArcElement, Tooltip } from "chart.js";
+    import {
+        Chart,
+        DoughnutController,
+        ArcElement,
+        Tooltip,
+        LinearScale,
+    } from "chart.js";
     import type { PropType } from "vue";
     import type { IDoughnutItem } from "@types";
 
@@ -38,7 +44,10 @@
         },
     });
 
-    Chart.register(PieController, ArcElement, Tooltip);
+    // Здесь пришлось добавить LinearScale, хоть и в документации это не написано. Либо можно просто импортировать всё сразу:
+    // import Chart from 'chart.js/auto';
+    // и ничего уже не регистрировать после этого
+    Chart.register(DoughnutController, ArcElement, Tooltip, LinearScale);
 
     // Максимум 5 элементов и соответственно 5 цветов
     const rootStyle = getComputedStyle(document.documentElement);
